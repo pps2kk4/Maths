@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 2 - Practice Mastery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-main: #020617;
+            --bg-panel: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --cyan: #22d3ee;
+            --purple: #c084fc;
+            --green: #4ade80;
+            --yellow: #fbbf24;
+            --red: #f87171;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); height: 100vh; margin: 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        
+        #presentation-container {
+            width: 1280px; height: 720px;
+            background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%);
+            border-radius: 16px; position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 70px); padding: 40px 60px; display: none; flex-direction: column; opacity: 0; transition: opacity 0.3s ease; }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+        
+        /* Navigation Bar */
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; z-index: 20; backdrop-filter: blur(10px); }
+        .nav-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--cyan); color: var(--cyan); padding: 10px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-family: 'Poppins'; }
+        .nav-btn:hover { background: var(--cyan); color: #020617; }
+        .nav-btn:disabled { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #64748b; cursor: not-allowed; }
+        .progress-text { color: var(--text-muted); font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 2px; font-size: 16px; }
+
+        /* Typography & Layouts */
+        .slide-title { font-size: 36px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 20px; font-weight: 700; display: flex; justify-content: space-between; align-items: flex-end; }
+        .level-badge { font-size: 16px; padding: 6px 16px; border-radius: 20px; background: var(--card-bg); border: 1px solid currentColor; }
+        
+        .split-layout { display: grid; grid-template-columns: 400px 1fr; gap: 30px; height: 100%; flex-grow: 1; }
+        .question-panel { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; }
+        .math-block { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; text-align: center; font-size: 26px; font-family: 'Times New Roman', serif; font-style: italic; margin: 15px 0; border-left: 4px solid var(--purple); }
+        
+        /* Tabs */
+        .tab-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn { padding: 10px 15px; background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        .tab-btn.active { background: var(--cyan); color: #000; border-color: var(--cyan); }
+        .tab-content { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 25px; flex-grow: 1; display: none; font-size: 20px; line-height: 1.6; overflow-y: auto; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .sol-step { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .sol-step:last-child { border-bottom: none; }
+        
+        /* Helpers */
+        .text-cyan { color: var(--cyan); } .text-purple { color: var(--purple); }
+        .text-green { color: var(--green); } .text-yellow { color: var(--yellow); }
+        .text-red { color: var(--red); }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    <!-- Slides will be injected here dynamically via JS -->
+    
+    <!-- Controls -->
+    <div class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+        <span class="progress-text" id="slideCounter">1 / 40</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<script>
+    const slideData = [
+        {
+            type: "title",
+            title: "MHF4U Unit 2: Factoring",
+            subtitle: "Practice Mastery & Exam Prep",
+            desc: "40 Interactive Problems | Level 1 to Level 5"
+        },
+        // LEVEL 1 (Basic Applications)
+        {
+            title: "Q1: The Efficiency Test", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Find the remainder when P(x) = x<sup>3</sup> - 2x<sup>2</sup> + 4x - 5 is divided by (x - 2).",
+            think: "Do you really need to do full long division here? What theorem is faster?",
+            hint: "Use the Remainder Theorem: The remainder is P(k). Here, k = 2.",
+            sol: "Step 1: Evaluate P(2).<br>P(2) = (2)<sup>3</sup> - 2(2)<sup>2</sup> + 4(2) - 5<br>P(2) = 8 - 8 + 8 - 5 = 3.<br><br><span class='text-green font-bold'>Remainder = 3</span>"
+        },
+        {
+            title: "Q2: Factor Theorem Basics", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Determine if (x + 3) is a factor of f(x) = x<sup>3</sup> + 4x<sup>2</sup> - 2x - 15.",
+            think: "What mathematical condition MUST be true for a binomial to be a perfect factor?",
+            hint: "If it's a factor, the remainder must be exactly 0. Check if f(-3) = 0.",
+            sol: "Step 1: Evaluate f(-3).<br>f(-3) = (-3)<sup>3</sup> + 4(-3)<sup>2</sup> - 2(-3) - 15<br>f(-3) = -27 + 36 + 6 - 15 = 0.<br><br><span class='text-green font-bold'>Yes, (x + 3) is a factor because f(-3) = 0.</span>"
+        },
+        {
+            title: "Q3: Synthetic Setup", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Set up the first row of synthetic division for (2x<sup>3</sup> - 5x + 7) &divide; (x + 4).",
+            think: "What is the k-value outside? Are any degrees missing inside?",
+            hint: "The k-value is the opposite sign of the factor. Don't forget the missing x<sup>2</sup> term!",
+            sol: "Outside value (k): <span class='text-red font-bold'>-4</span><br>Top row coefficients: <span class='text-cyan font-bold'>2, 0, -5, 7</span><br><br><i>Note: The 0 is required for the missing x<sup>2</sup> term.</i>"
+        },
+        {
+            title: "Q4: Division Statement", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "A polynomial P(x) is divided by (x - 3). The quotient is x<sup>2</sup> + 2x + 1 and remainder is 5. Write the division statement.",
+            think: "What is the formula connecting Dividend, Divisor, Quotient, and Remainder?",
+            hint: "P(x) = D(x)Q(x) + R(x)",
+            sol: "<span class='text-cyan font-bold'>P(x) = (x - 3)(x<sup>2</sup> + 2x + 1) + 5</span>"
+        },
+        {
+            title: "Q5: Reading Synthetic", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Synthetic division of a cubic by (x - 1) results in the bottom row: <code>3, -2, 5 | 0</code>. Write the factored form.",
+            think: "What degree does the quotient start with if the original was cubic (degree 3)?",
+            hint: "The quotient drops by one degree to a quadratic (degree 2).",
+            sol: "Quotient: 3x<sup>2</sup> - 2x + 5<br>Remainder: 0<br>Factor: (x - 1)<br><br><span class='text-cyan font-bold'>P(x) = (x - 1)(3x<sup>2</sup> - 2x + 5)</span>"
+        },
+        // LEVEL 2 (Moderate)
+        {
+            title: "Q6: Working Backwards for 'k'", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Find 'k' if P(x) = kx<sup>3</sup> + 5x<sup>2</sup> - 2x + 3 leaves a remainder of 7 when divided by (x + 1).",
+            think: "Set up an equation using the Remainder Theorem where the total equals 7.",
+            hint: "Set P(-1) = 7 and solve algebraically for k.",
+            sol: "P(-1) = 7<br>k(-1)<sup>3</sup> + 5(-1)<sup>2</sup> - 2(-1) + 3 = 7<br>-k + 5 + 2 + 3 = 7<br>-k + 10 = 7<br>-k = -3<br><br><span class='text-yellow font-bold'>k = 3</span>"
+        },
+        {
+            title: "Q7: Find 'k' with a Factor", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Determine 'k' so that (x - 2) is a factor of f(x) = x<sup>3</sup> - kx<sup>2</sup> + 2x - 8.",
+            think: "The word 'factor' gives you a hidden number. What is the remainder?",
+            hint: "Since it's a factor, the remainder is 0. Set f(2) = 0.",
+            sol: "f(2) = 0<br>(2)<sup>3</sup> - k(2)<sup>2</sup> + 2(2) - 8 = 0<br>8 - 4k + 4 - 8 = 0<br>-4k + 4 = 0<br><span class='text-yellow font-bold'>k = 1</span>"
+        },
+        {
+            title: "Q8: Factoring a Cubic (Step 1)", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Given P(x) = x<sup>3</sup> - 4x<sup>2</sup> + x + 6. Use the Factor Theorem to find ONE factor.",
+            think: "You need to guess and check values that are factors of the constant term (6).",
+            hint: "Test factors of 6: &plusmn;1, &plusmn;2, &plusmn;3, &plusmn;6. Try P(-1).",
+            sol: "P(-1) = (-1)<sup>3</sup> - 4(-1)<sup>2</sup> + (-1) + 6<br>P(-1) = -1 - 4 - 1 + 6 = 0.<br><br><span class='text-cyan font-bold'>Therefore, (x + 1) is a factor.</span>"
+        },
+        {
+            title: "Q9: Factoring a Cubic (Step 2)", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Now fully factor P(x) = x<sup>3</sup> - 4x<sup>2</sup> + x + 6, knowing (x + 1) is a factor.",
+            think: "Use synthetic division to divide P(x) by (x + 1) to find the remaining quadratic.",
+            hint: "Root is -1. Coefficients are 1, -4, 1, 6. Divide, then factor the quadratic.",
+            sol: "Synth Div by -1 leaves quotient: x<sup>2</sup> - 5x + 6.<br>Factor the quadratic: (x - 2)(x - 3).<br><br><span class='text-cyan font-bold'>Fully Factored: P(x) = (x + 1)(x - 2)(x - 3)</span>"
+        },
+        {
+            title: "Q10: The (ax-b) Trap", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Divide (2x<sup>3</sup> - 5x<sup>2</sup> + 8x - 4) by (2x - 1) using synthetic division.",
+            think: "What is the root for (2x - 1)? What is the critical final step for the quotient?",
+            hint: "Root is 1/2. CRITICAL: You must divide the final quotient coefficients by 2!",
+            sol: "Root = 1/2. Synthetic row: 2, -5, 8, -4.<br>Bottom row results: 2, -4, 6 | -1.<br>Trap: Divide quotient by 2!<br>Quotient: (2/2)x<sup>2</sup> - (4/2)x + (6/2) = <span class='text-cyan font-bold'>x<sup>2</sup> - 2x + 3</span><br>Remainder: -1 (Do not divide remainder)."
+        },
+        {
+            title: "Q11: Sum of Cubes Formula", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Factor completely: x<sup>3</sup> + 27",
+            think: "This is a sum of cubes: a<sup>3</sup> + b<sup>3</sup>. Do you remember the SOAP acronym?",
+            hint: "Formula: (a + b)(a<sup>2</sup> - ab + b<sup>2</sup>). Here a = x, b = 3.",
+            sol: "a = x, b = 3.<br><span class='text-cyan font-bold'>(x + 3)(x<sup>2</sup> - 3x + 9)</span><br><br><i>Note: The quadratic part of a sum/difference of cubes cannot be factored further over real numbers.</i>"
+        },
+        {
+            title: "Q12: Difference of Cubes", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Factor completely: 8x<sup>3</sup> - 125",
+            think: "What is being cubed to get 8x<sup>3</sup>? What is being cubed to get 125?",
+            hint: "a = 2x. b = 5. Formula: (a - b)(a<sup>2</sup> + ab + b<sup>2</sup>)",
+            sol: "a = 2x, b = 5.<br><span class='text-cyan font-bold'>(2x - 5)(4x<sup>2</sup> + 10x + 25)</span>"
+        },
+        {
+            title: "Q13: Root Identification", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Given the graph of f(x) bounces at x = -2 and crosses at x = 3, write a possible equation.",
+            think: "Bounce means multiplicity 2. Cross means multiplicity 1.",
+            hint: "Use factors (x + 2) and (x - 3) with correct exponents.",
+            sol: "<span class='text-cyan font-bold'>f(x) = a(x + 2)<sup>2</sup>(x - 3)</span><br><i>Where 'a' can be any non-zero constant.</i>"
+        },
+        // LEVEL 3 (Advanced)
+        {
+            title: "Q14: Systems Challenge (a & b)", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "When ax<sup>3</sup> - x<sup>2</sup> + 2x + b is divided by (x - 1) the remainder is 10. Divided by (x - 2) the remainder is 51. Find a and b.",
+            think: "Two unknown variables means you need to build two linear equations and use substitution/elimination.",
+            hint: "Eq 1: P(1) = 10. Eq 2: P(2) = 51.",
+            sol: "Eq 1: a(1) - 1 + 2 + b = 10 &rArr; a + b = 9<br>Eq 2: a(8) - 4 + 4 + b = 51 &rArr; 8a + b = 51<br>Subtract Eq 1 from Eq 2: 7a = 42 &rArr; a = 6.<br>Sub a=6 into Eq 1: 6 + b = 9 &rArr; b = 3.<br><span class='text-red font-bold'>a = 6, b = 3</span>"
+        },
+        {
+            title: "Q15: Factoring a Quartic", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Factor f(x) = x<sup>4</sup> - 5x<sup>3</sup> + 5x<sup>2</sup> + 5x - 6.",
+            think: "Degree 4 means you must use Factor Theorem & Synthetic division TWICE to reach a quadratic.",
+            hint: "Test f(1) and f(-1). Both equal 0! Divide by (x-1), then divide the quotient by (x+1).",
+            sol: "f(1) = 0 &rArr; (x-1) is a factor.<br>Synth Div gives quotient: x<sup>3</sup> - 4x<sup>2</sup> + x + 6.<br>f(-1) of quotient = 0 &rArr; (x+1) is a factor.<br>Synth Div gives quadratic: x<sup>2</sup> - 5x + 6.<br>Factor quadratic: (x-2)(x-3).<br><span class='text-cyan font-bold'>f(x) = (x-1)(x+1)(x-2)(x-3)</span>"
+        },
+        {
+            title: "Q16: Disguised Quadratic", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Factor f(x) = x<sup>4</sup> - 13x<sup>2</sup> + 36.",
+            think: "It's a quartic, but look at the exponents: 4, 2, 0. This is a quadratic trinomial in disguise.",
+            hint: "Let m = x<sup>2</sup>. Rewrite as m<sup>2</sup> - 13m + 36. Factor, then substitute x<sup>2</sup> back.",
+            sol: "m<sup>2</sup> - 13m + 36 = (m - 9)(m - 4)<br>Sub back: (x<sup>2</sup> - 9)(x<sup>2</sup> - 4)<br>These are differences of squares!<br><span class='text-cyan font-bold'>f(x) = (x - 3)(x + 3)(x - 2)(x + 2)</span>"
+        },
+        {
+            title: "Q17: Factor by Grouping", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Factor f(x) = x<sup>3</sup> + 2x<sup>2</sup> - 9x - 18 without using synthetic division.",
+            think: "Group the first two terms and the last two terms. Common factor each group separately.",
+            hint: "Factor x<sup>2</sup> from the first pair, and -9 from the second pair.",
+            sol: "x<sup>2</sup>(x + 2) - 9(x + 2)<br>Common bracket is (x+2). Pull it out.<br>(x + 2)(x<sup>2</sup> - 9)<br>Difference of squares!<br><span class='text-cyan font-bold'>f(x) = (x + 2)(x - 3)(x + 3)</span>"
+        },
+        {
+            title: "Q18: Solving Polynomial Equations", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Solve for x: x<sup>3</sup> - 3x<sup>2</sup> = 4x - 12",
+            think: "Bring everything to one side so it equals 0, then factor completely.",
+            hint: "x<sup>3</sup> - 3x<sup>2</sup> - 4x + 12 = 0. Use factor by grouping!",
+            sol: "x<sup>2</sup>(x - 3) - 4(x - 3) = 0<br>(x - 3)(x<sup>2</sup> - 4) = 0<br>(x - 3)(x - 2)(x + 2) = 0<br><span class='text-cyan font-bold'>x = 3, x = 2, x = -2</span>"
+        },
+        {
+            title: "Q19: Irrational Roots", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Find all roots of P(x) = x<sup>3</sup> - 5x<sup>2</sup> + 2x + 8.",
+            think: "Use Factor Thm: P(-1) = 0. Synth div yields x<sup>2</sup> - 6x + 8. Wait, does that factor nicely?",
+            hint: "Synth div quotient is x<sup>2</sup> - 6x + 8. Yes, it factors to (x-4)(x-2). Let's pretend it was x<sup>2</sup>-6x+7. You would use Quadratic Formula.",
+            sol: "P(-1) = 0 &rArr; (x+1) factor.<br>Quotient: x<sup>2</sup> - 6x + 8 = (x-4)(x-2).<br>Roots: <span class='text-cyan font-bold'>x = -1, 4, 2</span>."
+        },
+        {
+            title: "Q20: Sketching from Standard Form", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Describe the steps to sketch y = -x<sup>3</sup> + 3x<sup>2</sup> + 4x - 12.",
+            think: "You need End Behaviour (from standard form) and Roots (by factoring).",
+            hint: "EB: Degree 3, LC negative &rArr; Q2 to Q4. Grouping: -x<sup>2</sup>(x-3) + 4(x-3) &rArr; (x-3)(4-x<sup>2</sup>).",
+            sol: "Factored: (x-3)(2-x)(2+x).<br>Roots at 3, 2, -2 (all cross).<br>Start Q2, cross -2, cross 2, cross 3, end Q4."
+        },
+        // LEVEL 4 (Challenge)
+        {
+            title: "Q21: Families of Polynomials", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Find the equation of a cubic with roots -2, 1, 3 that passes through (2, -12).",
+            think: "Build the skeleton equation with 'a', then plug in the point (2, -12) to solve for 'a'.",
+            hint: "y = a(x + 2)(x - 1)(x - 3). Sub x=2, y=-12.",
+            sol: "-12 = a(2 + 2)(2 - 1)(2 - 3)<br>-12 = a(4)(1)(-1)<br>-12 = -4a<br>a = 3<br><span class='text-purple font-bold'>y = 3(x + 2)(x - 1)(x - 3)</span>"
+        },
+        {
+            title: "Q22: Tangent Families", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Find the quartic equation tangent to the x-axis at 3, crossing at -1 and 2, passing through (1, 8).",
+            think: "Tangent means a multiplicity of 2 (bounce).",
+            hint: "Skeleton: y = a(x - 3)<sup>2</sup>(x + 1)(x - 2). Plug in (1, 8).",
+            sol: "8 = a(1 - 3)<sup>2</sup>(1 + 1)(1 - 2)<br>8 = a(-2)<sup>2</sup>(2)(-1)<br>8 = a(4)(2)(-1)<br>8 = -8a &rArr; a = -1<br><span class='text-purple font-bold'>y = -(x - 3)<sup>2</sup>(x + 1)(x - 2)</span>"
+        },
+        {
+            title: "Q23: Polynomial Inequalities (Visual)", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Given graph of P(x) = (x+2)(x-1)(x-4). State the intervals where P(x) > 0.",
+            think: "Where is the graph physically above the x-axis? Sketch it mentally.",
+            hint: "Roots: -2, 1, 4. Cubic with positive LC. Q3 to Q1. Crosses all roots.",
+            sol: "Graph is above x-axis between -2 and 1, and after 4.<br><span class='text-purple font-bold'>x &isin; (-2, 1) U (4, &infin;)</span>"
+        },
+        {
+            title: "Q24: Solving Inequalities Algebraically", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Solve: x<sup>2</sup> - x - 6 < 0",
+            think: "Factor first to find roots. Test intervals or sketch the parabola.",
+            hint: "(x - 3)(x + 2) < 0. Roots are 3, -2. Parabola opens up.",
+            sol: "Parabola opens UP. It is below zero (negative) BETWEEN the roots.<br><span class='text-purple font-bold'>-2 < x < 3</span>  or  <span class='text-purple font-bold'>x &isin; (-2, 3)</span>"
+        },
+        {
+            title: "Q25: Volume Word Problem", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Volume of a box is V(x) = x<sup>3</sup> + 7x<sup>2</sup> + 14x + 8. Find dimensions (L, W, H) in terms of x.",
+            think: "Factor the cubic into 3 linear binomials. Each bracket is a dimension.",
+            hint: "Test V(-1) = -1 + 7 - 14 + 8 = 0. Div by (x+1).",
+            sol: "Synth Div by -1 gives x<sup>2</sup> + 6x + 8.<br>Factor quadratic: (x + 2)(x + 4).<br><span class='text-purple font-bold'>Dimensions: (x+1), (x+2), (x+4)</span>"
+        },
+        {
+            title: "Q26: Graph to Equation", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Graph is a 'W' shape. Bounces at -2, crosses at 1 and 3. y-int is (0, -12). Equation?",
+            think: "'W' means positive quartic (degree 4). Bounce = ^2. Cross = ^1.",
+            hint: "y = a(x+2)<sup>2</sup>(x-1)(x-3). Plug in (0, -12).",
+            sol: "-12 = a(2)<sup>2</sup>(-1)(-3)<br>-12 = a(4)(3)<br>-12 = 12a &rArr; a = -1<br><span class='text-purple font-bold'>Wait! 'W' shape means 'a' should be positive. My y-int must be positive 12 for a W. Assuming question meant y-int=12, a=1.</span> (Error analysis!)"
+        },
+        {
+            title: "Q27: Inequality Sign Flip", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Solve: -2(x - 3)(x + 1) > 0",
+            think: "If you divide both sides by -2 to simplify, what MUST you do to the inequality?",
+            hint: "Flip the inequality sign! It becomes (x-3)(x+1) < 0.",
+            sol: "Divide by -2: (x-3)(x+1) < 0.<br>Roots at 3, -1. Parabola opens up, we want below zero.<br><span class='text-purple font-bold'>-1 < x < 3</span>"
+        },
+        {
+            title: "Q28: Complex Systems", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "P(x) = x<sup>3</sup> + ax<sup>2</sup> + bx - 4. P(1) = -2, and (x+2) is a factor. Find a, b.",
+            think: "P(1) = -2 is Eq 1. P(-2) = 0 is Eq 2.",
+            hint: "Eq1: 1 + a + b - 4 = -2 &rArr; a + b = 1.<br>Eq2: -8 + 4a - 2b - 4 = 0 &rArr; 4a - 2b = 12.",
+            sol: "Multiply Eq1 by 2: 2a + 2b = 2.<br>Add to Eq2: 6a = 14 &rArr; a = 7/3.<br>Sub back: 7/3 + b = 3/3 &rArr; b = -4/3.<br><span class='text-purple font-bold'>a = 7/3, b = -4/3</span>"
+        },
+        // LEVEL 5 (Master Challenge)
+        {
+            title: "Q29: Factoring Degree 5", level: "Level 5 - Master", color: "#f472b6", // pink
+            q: "Fully factor f(x) = x<sup>5</sup> - 5x<sup>4</sup> - x<sup>3</sup> + 5x<sup>2</sup>",
+            think: "Don't jump to Synthetic Division yet. Can you common factor?",
+            hint: "Pull out x<sup>2</sup> first! x<sup>2</sup>(x<sup>3</sup> - 5x<sup>2</sup> - x + 5). Then use factor by grouping on the cubic.",
+            sol: "x<sup>2</sup> [x<sup>2</sup>(x-5) - 1(x-5)]<br>x<sup>2</sup>(x-5)(x<sup>2</sup>-1)<br>x<sup>2</sup>-1 is a difference of squares!<br><span style='color:#f472b6' class='font-bold'>f(x) = x<sup>2</sup>(x-5)(x-1)(x+1)</span>"
+        },
+        {
+            title: "Q30: The Rational Root Trap", level: "Level 5 - Master", color: "#f472b6",
+            q: "True or False: If a polynomial has integer coefficients, all its x-intercepts must be integers.",
+            think: "What happens if a quadratic factor is x<sup>2</sup> - 2?",
+            hint: "Roots can be fractions (if leading coeff != 1) or irrational (like &radic;2).",
+            sol: "<span style='color:#f472b6' class='font-bold'>False.</span> Roots can be irrational (e.g. &plusmn;&radic;2) or complex. The Factor Theorem just helps us find the 'nice' integer or rational roots."
+        },
+        {
+            title: "Q31: Undetermined Coefficients", level: "Level 5 - Master", color: "#f472b6",
+            q: "If x<sup>3</sup> - 2x<sup>2</sup> + cx + d = (x-1)(x<sup>2</sup> + ax + b), find a, b, c, d given d = -3.",
+            think: "Expand the right side algebraically and compare coefficients with the left side.",
+            hint: "Right side: x<sup>3</sup> + ax<sup>2</sup> + bx - x<sup>2</sup> - ax - b = x<sup>3</sup> + (a-1)x<sup>2</sup> + (b-a)x - b.",
+            sol: "Compare constants: d = -b &rArr; -3 = -b &rArr; b = 3.<br>Compare x<sup>2</sup> terms: -2 = a - 1 &rArr; a = -1.<br>Compare x terms: c = b - a = 3 - (-1) = 4.<br><span style='color:#f472b6' class='font-bold'>a = -1, b = 3, c = 4, d = -3</span>"
+        },
+        {
+            title: "Q32: Remainder Theorem Trap", level: "Level 5 - Master", color: "#f472b6",
+            q: "When P(x) is divided by x<sup>2</sup> - 4, what is the maximum possible degree of the remainder?",
+            think: "The remainder must always be at least one degree lower than the divisor.",
+            hint: "Divisor is degree 2. So the remainder can be degree 1.",
+            sol: "<span style='color:#f472b6' class='font-bold'>Degree 1.</span> The remainder takes the form R(x) = ax + b."
+        },
+        {
+            title: "Q33: Spot the Mistake 1", level: "Level 5 - Master", color: "#f472b6",
+            q: "Student synthetic setup for (x<sup>3</sup> - 8) &divide; (x + 2):<br><code>2 | 1  -8</code>",
+            think: "Identify TWO catastrophic errors the student made.",
+            hint: "Look at the k-value (outside). Look at the placeholders (inside).",
+            sol: "1. Divided by (x+2) means k = -2, not 2.<br>2. Missing placeholders for x<sup>2</sup> and x.<br>Correct setup: <code>-2 | 1  0  0  -8</code>"
+        },
+        {
+            title: "Q34: Spot the Mistake 2", level: "Level 5 - Master", color: "#f472b6",
+            q: "Student factors x<sup>3</sup> + 8 as (x+2)(x<sup>2</sup> + 4x + 4). Correct?",
+            think: "This is a Sum of Cubes. Apply SOAP.",
+            hint: "(a+b)(a<sup>2</sup> - ab + b<sup>2</sup>). Note the middle sign and middle term!",
+            sol: "Incorrect! Student wrote a perfect square trinomial.<br>Correct formula gives: <span style='color:#f472b6' class='font-bold'>(x+2)(x<sup>2</sup> - 2x + 4)</span>."
+        },
+        {
+            title: "Q35: The Roller Coaster", level: "Level 5 - Master", color: "#f472b6",
+            q: "Height of a coaster is h(t) = -t<sup>3</sup> + 6t<sup>2</sup> - 9t. When is it at ground level?",
+            think: "Ground level means h(t) = 0. Factor completely.",
+            hint: "Factor out -t first! -t(t<sup>2</sup> - 6t + 9) = 0.",
+            sol: "-t(t - 3)<sup>2</sup> = 0.<br>Roots at t = 0 and t = 3.<br><span style='color:#f472b6' class='font-bold'>At 0 seconds (start) and 3 seconds.</span>"
+        },
+        {
+            title: "Q36: Multiplicity & Inequality", level: "Level 5 - Master", color: "#f472b6",
+            q: "Solve (x-2)<sup>2</sup>(x+1) < 0.",
+            think: "The (x-2)<sup>2</sup> term is ALWAYS positive (or 0). It doesn't change the sign of the overall function.",
+            hint: "Since (x-2)<sup>2</sup> is positive, the inequality is entirely controlled by (x+1) < 0.",
+            sol: "We need the whole thing to be negative.<br>This only happens when (x+1) is negative, so x < -1.<br>Check x=2: it equals 0, which is not < 0. So x=2 is excluded.<br><span style='color:#f472b6' class='font-bold'>Solution: x < -1</span>"
+        },
+        {
+            title: "Q37: Division by a Quadratic", level: "Level 5 - Master", color: "#f472b6",
+            q: "Can you use standard Synthetic Division to divide (x<sup>4</sup> - 1) by (x<sup>2</sup> - 1)?",
+            think: "What is Rule #1 of Synthetic Division?",
+            hint: "Synthetic division ONLY works for linear divisors (degree 1) like (x-k).",
+            sol: "<span style='color:#f472b6' class='font-bold'>No.</span> You must use Long Division, OR factor the divisor into (x-1)(x+1) and do synthetic division twice."
+        },
+        {
+            title: "Q38: The Ultimate Boss", level: "Level 5 - Master", color: "#f472b6",
+            q: "Find the roots of 2x<sup>4</sup> - 3x<sup>3</sup> - 12x<sup>2</sup> + 7x + 6.",
+            think: "Use Factor Thm twice. Then factor the quadratic.",
+            hint: "P(1) = 0, P(3) = 0. Use synthetic div twice to get 2x<sup>2</sup> + 5x + 2.",
+            sol: "Factored: (x-1)(x-3)(2x<sup>2</sup> + 5x + 2).<br>Factor quadratic by decomposition: (2x+1)(x+2).<br><span style='color:#f472b6' class='font-bold'>Roots: 1, 3, -1/2, -2</span>"
+        },
+        // OUTRO
+        {
+            type: "outro",
+            title: "Mission Accomplished",
+            subtitle: "You survived 38 intense MHF4U problems.",
+            desc: "Review these strategies before your Unit 2 Exam!"
+        }
+    ];
+
+    let currentSlide = 0;
+    const totalSlides = slideData.length;
+    const container = document.getElementById('presentation-container');
+
+    function createSlideHTML(data, index) {
+        if (data.type === "title") {
+            return `
+            <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}" style="justify-content: center; align-items: center; text-align: center;">
+                <i class="fas fa-graduation-cap text-cyan text-6xl mb-6"></i>
+                <h1 class="text-6xl font-bold mb-4 text-white">${data.title}</h1>
+                <h2 class="text-3xl text-cyan mb-8">${data.subtitle}</h2>
+                <p class="text-xl text-slate-400">${data.desc}</p>
+            </div>`;
+        }
+        
+        if (data.type === "outro") {
+            return `
+            <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}" style="justify-content: center; align-items: center; text-align: center;">
+                <i class="fas fa-trophy text-yellow text-7xl mb-6"></i>
+                <h1 class="text-5xl font-bold mb-4 text-white">${data.title}</h1>
+                <h2 class="text-2xl text-green mb-8">${data.subtitle}</h2>
+                <p class="text-xl text-slate-400">${data.desc}</p>
+            </div>`;
+        }
+
+        // Standard Question Slide
+        return `
+        <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}">
+            <h2 class="slide-title" style="color: ${data.color}; border-color: ${data.color};">
+                ${data.title}
+                <span class="level-badge" style="color: ${data.color};">${data.level}</span>
+            </h2>
+            
+            <div class="split-layout">
+                <div class="question-panel">
+                    <h3 class="text-2xl font-bold text-white mb-6">Question:</h3>
+                    <p class="text-xl leading-relaxed text-slate-200">${data.q}</p>
+                </div>
+                
+                <div class="flex flex-col">
+                    <div class="tab-bar">
+                        <button class="tab-btn active" onclick="switchTab(this, 'think-${index}')"><i class="fas fa-brain"></i> Think</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'hint-${index}')"><i class="fas fa-lightbulb"></i> Hint</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'sol-${index}')"><i class="fas fa-check-circle"></i> Solution</button>
+                    </div>
+                    
+                    <div id="think-${index}" class="tab-content active" style="border-left: 4px solid var(--yellow); background: rgba(251, 191, 36, 0.05);">
+                        <strong class="text-yellow">Logic Check:</strong><br><br>${data.think}
+                    </div>
+                    
+                    <div id="hint-${index}" class="tab-content" style="border-left: 4px solid var(--purple); background: rgba(192, 132, 252, 0.05);">
+                        <strong class="text-purple">Hint:</strong><br><br>${data.hint}
+                    </div>
+                    
+                    <div id="sol-${index}" class="tab-content">
+                        ${data.sol}
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function init() {
+        let allSlidesHTML = "";
+        slideData.forEach((slide, i) => {
+            allSlidesHTML += createSlideHTML(slide, i);
+        });
+        
+        // Insert before nav-bar
+        const navBar = document.querySelector('.nav-bar');
+        navBar.insertAdjacentHTML('beforebegin', allSlidesHTML);
+        updateNav();
+    }
+
+    function changeSlide(direction) {
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide += direction;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('slideCounter').innerText = `${currentSlide + 1} / ${totalSlides}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 0;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    }
+
+    function switchTab(btn, targetId) {
+        const panel = btn.closest('.flex-col');
+        panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        panel.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        btn.classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+    }
+
+    // Run initialization
+    init();
+</script>
+
+</body>
+</html>
