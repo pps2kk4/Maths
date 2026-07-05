@@ -1,0 +1,530 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 2 - Polynomial Division &amp; Theorems</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* BASE SETUP */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #020617; 
+            display: grid; 
+            gap: 40px; 
+            grid-template-columns: 1fr;
+            place-items: center; 
+            min-height: 100vh; 
+            padding: 40px 0; 
+            font-family: 'Inter', sans-serif;
+        }
+        
+        /* SLIDE CONTAINER */
+        .slide-container {
+            width: 1280px; 
+            height: 720px;
+            background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%);
+            border-radius: 16px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 40px 60px; /* Reduced vertical padding to prevent text cut-off */
+        }
+        
+        /* Premium Background Grid */
+        .slide-container::before {
+            content: ''; 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px; 
+            z-index: 0; 
+            pointer-events: none;
+        }
+        .slide-container > * { position: relative; z-index: 1; }
+
+        /* TYPOGRAPHY */
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: #f8fafc; margin: 0; line-height: 1.2; }
+        h1 { font-size: 64px; font-weight: 800; letter-spacing: -1px; }
+        h1 .highlight { color: #22d3ee; }
+        
+        .slide-title { 
+            font-size: 42px; 
+            color: #4ade80; 
+            border-bottom: 2px solid rgba(74, 222, 128, 0.3); 
+            padding-bottom: 12px; 
+            margin-bottom: 20px; 
+            font-weight: 700; 
+            width: 100%;
+        }
+        
+        p { font-size: 22px; color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; }
+        
+        /* MATH STYLES - Replacing <math> tags for robust layout */
+        .math-inline { font-family: 'Times New Roman', Times, math, serif; font-style: italic; white-space: nowrap; }
+        .math-block { font-family: 'Times New Roman', Times, math, serif; font-style: italic; display: block; text-align: center; }
+
+        /* LAYOUTS */
+        .content-area { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; width: 100%; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; width: 100%; }
+        
+        /* MATH BLOCKS */
+        .math-box { 
+            background: rgba(34, 211, 238, 0.05); 
+            border-left: 4px solid #22d3ee; 
+            padding: 20px 25px; 
+            border-radius: 0 12px 12px 0; 
+            margin: 15px 0; 
+        }
+        .math-box.purple { border-color: #c084fc; background: rgba(192, 132, 252, 0.05); }
+        .math-box.green { border-color: #4ade80; background: rgba(74, 222, 128, 0.05); }
+        .math-box.pink { border-color: #f472b6; background: rgba(244, 114, 182, 0.05); }
+
+        /* LISTS */
+        .bullet-list { list-style: none; margin: 0; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 30px; margin-bottom: 15px; font-size: 22px; color: #cbd5e1; line-height: 1.5; }
+        .bullet-list li::before { 
+            content: '\f105'; 
+            font-family: 'Font Awesome 6 Free'; 
+            font-weight: 900;
+            position: absolute; left: 0; top: 2px; 
+            color: #22d3ee; 
+            font-size: 20px;
+        }
+
+        /* CARDS */
+        .card { 
+            background: rgba(30, 41, 59, 0.6); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 12px; 
+            padding: 25px; 
+            backdrop-filter: blur(8px);
+        }
+        .card h3 { color: #22d3ee; margin-bottom: 15px; font-size: 26px; }
+
+        /* SYNTHETIC DIVISION TABLE */
+        .synth-table {
+            display: grid;
+            grid-template-columns: 60px 20px repeat(4, 60px);
+            gap: 10px;
+            font-size: 28px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #f8fafc;
+            align-items: center;
+            justify-items: center;
+            margin: 15px auto;
+            width: max-content;
+        }
+        .synth-table .root { color: #f472b6; border-right: 2px solid #475569; padding-right: 15px; }
+        .synth-table .line { grid-column: 1 / -1; height: 2px; background: #475569; width: 100%; margin: 5px 0; }
+        .synth-table .rem { border-left: 2px dashed #475569; padding-left: 15px; color: #4ade80; }
+        .synth-table .multiply { color: #94a3b8; font-size: 20px; }
+
+        /* UTILS */
+        .text-center { text-align: center; }
+        .mt-4 { margin-top: 15px; }
+        .highlight-text { color: #22d3ee; font-weight: 600; }
+        .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .badge-cyan { background: #22d3ee; color: #020617; }
+        .badge-pink { background: #f472b6; color: #020617; }
+        .badge-green { background: #4ade80; color: #020617; }
+    </style>
+<style>
+  .lms-source-label {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #e0e0e0;
+    color: #333333;
+    border-radius: 10px;
+    padding: 4px 4px;
+    font-family: sans-serif;
+    font-size: 10px;
+    pointer-events: none;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+</style><style>
+  :where(.slide-attributions) {
+    padding: 60px;
+  }
+  .attribution-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .attribution-list__item {
+    align-items: center;
+    border-bottom: 1px solid #757575;
+    display: grid;
+    gap: 25px;
+    grid-template-columns: 90px 1fr;
+    padding: 15px 0;
+    margin: 0 !important;
+  }
+  .attribution-list__item::before {
+    display: none;
+  }
+  .attribution-list__item::after {
+    display: none;
+  }
+  .attribution-list__item:last-child {
+    border-bottom: none;
+  }
+  .attribution-list__item .attribution__thumbnail {
+    height: 50px;
+    width: 90px;
+  }
+  .attribution__thumbnail .attribution__thumbnail__image {
+    border-radius: 8px;
+    height: 100%;
+    object-fit: cover;
+    width: 100%;
+  }
+  .attribution__details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .attribution__details .attribution__raw-url {
+    color: inherit;
+    font-size: 13px;
+    margin: 0;
+    word-break: break-all;
+  }
+  .attribution__details .attribution__title {
+    color: inherit;
+    font-size: 16px;
+    margin: 0;
+  }
+  .attribution__details .attribution__title > .attribution__link {
+    color: #4f46e5;
+    text-decoration: none;
+  }
+</style></head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide-container" id="slide1" style="background-image: linear-gradient(rgba(2, 6, 23, 0.85), rgba(2, 6, 23, 0.95)), url('https://static.vecteezy.com/system/resources/thumbnails/070/604/447/small/dynamic-mathematical-formulas-and-geometric-shapes-on-a-black-background-an-abstract-scientific-visualization-a-complex-and-organized-pattern-of-mathematical-schematics-a-technical-blueprint-like-ba-free-video.jpg'); background-size: cover; justify-content: center; align-items: center; text-align: center;">
+    <span class="badge badge-cyan" style="margin-bottom: 20px;">Unit 2</span>
+    <h1>Factoring Higher-Degree <span class="highlight">Polynomials</span></h1>
+    <h3 style="font-size: 32px; color: #94a3b8; margin-top: 20px; font-weight: 400; letter-spacing: 2px;">MHF4U | ONTARIO CURRICULUM</h3>
+    <div style="width: 100px; height: 4px; background: #c084fc; margin: 40px auto;"></div>
+</div>
+
+<!-- SLIDE 2: Roadmap -->
+<div class="slide-container" id="slide2">
+    <h2 class="slide-title">Today's Roadmap</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <ul class="bullet-list" style="font-size: 28px;">
+                    <li style="margin-bottom: 30px;"><strong style="color:#22d3ee">1. Unit 1 Quick Check</strong><br><span style="font-size: 18px; color: #94a3b8;">Reviewing End Behaviour &amp; Factored Form</span></li>
+                    <li style="margin-bottom: 30px;"><strong style="color:#c084fc">2. Polynomial Long Division</strong><br><span style="font-size: 18px; color: #94a3b8;">The manual way to break down equations</span></li>
+                    <li style="margin-bottom: 30px;"><strong style="color:#f472b6">3. Synthetic Division</strong><br><span style="font-size: 18px; color: #94a3b8;">The mathematical cheat code for speed</span></li>
+                    <li style="margin-bottom: 30px;"><strong style="color:#4ade80">4. Remainder &amp; Factor Theorems</strong><br><span style="font-size: 18px; color: #94a3b8;">Graphing the impossible</span></li>
+                </ul>
+            </div>
+            <div class="card text-center" style="border-color: #22d3ee;">
+                <i class="fas fa-unlock-alt" style="font-size: 60px; color: #22d3ee; margin-bottom: 20px;"></i>
+                <h3 style="font-size: 32px; color: #f8fafc;">The Goal</h3>
+                <p>To give you the algebraic tools to find x-intercepts without needing a graphing calculator.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 3: Diagnostic -->
+<div class="slide-container" id="slide3">
+    <h2 class="slide-title" style="color:#fbbf24; border-color: rgba(251, 191, 36, 0.3);">Unit 1 Diagnostic: End Behaviour</h2>
+    <div class="content-area text-center">
+        <p>Without calculating anything, which quadrants do these graphs start and end in?</p>
+        <div class="two-column mt-4">
+            <div class="card" style="border-color: #fbbf24;">
+                <h3 style="color: #fbbf24;">Equation A</h3>
+                <div class="math-block" style="font-size: 36px; color: #f8fafc; margin: 20px 0;">f(x) = -4x<sup>5</sup> + 2x<sup>2</sup> - 1</div>
+            </div>
+            <div class="card" style="border-color: #fbbf24;">
+                <h3 style="color: #fbbf24;">Equation B</h3>
+                <div class="math-block" style="font-size: 36px; color: #f8fafc; margin: 20px 0;">g(x) = 3x<sup>4</sup> - x<sup>3</sup></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 4: The Transition -->
+<div class="slide-container" id="slide4">
+    <h2 class="slide-title" style="color:#f87171; border-color: rgba(248, 113, 113, 0.3);">The Transition: The "Monster"</h2>
+    <div class="content-area text-center">
+        <p style="font-size: 26px;">You can easily sketch graphs when they are given in <strong>Factored Form</strong>.</p>
+        <p style="font-size: 26px;">But what if a test gives you THIS standard form equation?</p>
+        
+        <div class="math-box pink" style="border-left: none; border-bottom: 4px solid #f87171; border-radius: 12px; margin: 30px auto; max-width: 800px;">
+            <div class="math-block" style="font-size: 48px; color: #f87171;">f(x) = 2x<sup>3</sup> - 3x<sup>2</sup> - 3x + 2</div>
+        </div>
+        
+        <ul class="bullet-list" style="text-align: left; max-width: 600px; margin: 0 auto;">
+            <li><i class="fas fa-times-circle" style="color: #f87171;"></i> You can't see the x-intercepts.</li>
+            <li><i class="fas fa-times-circle" style="color: #f87171;"></i> You can't factor it using Grade 10 quadratic rules.</li>
+            <li><i class="fas fa-check-circle" style="color: #4ade80;"></i> We must learn how to <strong>Divide</strong> it.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- SLIDE 5: Long Division -->
+<div class="slide-container" id="slide5">
+    <h2 class="slide-title">Polynomial Long Division</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="card" style="border-color: #94a3b8;">
+                <h3 style="color: #cbd5e1;">The "Old School" Loop</h3>
+                <p>Remember doing <span class="math-inline">125 &divide; 5</span> in elementary school? You used a 4-step loop:</p>
+                <ul class="bullet-list" style="margin-top: 20px;">
+                    <li><strong style="color: #22d3ee;">D</strong>ivide</li>
+                    <li><strong style="color: #22d3ee;">M</strong>ultiply</li>
+                    <li><strong style="color: #22d3ee;">S</strong>ubtract</li>
+                    <li><strong style="color: #22d3ee;">B</strong>ring Down</li>
+                </ul>
+                <p style="margin-top: 20px; font-style: italic; color: #94a3b8;">(Does McDonald's Sell Burgers?)</p>
+            </div>
+            
+            <div class="card" style="border-color: #22d3ee;">
+                <h3 style="color: #22d3ee;">The Algebraic Setup</h3>
+                <p>Polynomial division is the EXACT same loop.</p>
+                <div style="margin-top: 20px; text-align: center;">
+                    <p style="color: #f8fafc; font-size: 24px; font-weight: 600;">Quotient</p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin: 10px 0;">
+                        <span style="color: #f472b6; font-size: 24px;">Divisor</span>
+                        <div class="math-inline" style="font-size: 32px; color: #94a3b8;">) <span style="color: #4ade80; border-top: 2px solid #4ade80; padding-top: 2px; font-style: normal;">Dividend</span></div>
+                    </div>
+                    <p style="color: #fbbf24; font-size: 24px; font-weight: 600;">Remainder</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 6: Guided Example Long Division -->
+<div class="slide-container" id="slide6">
+    <h2 class="slide-title">Guided Example: D-M-S-B Loop</h2>
+    <div class="content-area">
+        <p style="text-align: center;">Divide <span class="math-inline" style="color:#4ade80;">(x<sup>3</sup> - 2x<sup>2</sup> - 5x + 6)</span> by <span class="math-inline" style="color:#f472b6;">(x - 3)</span></p>
+        
+        <div style="font-family: monospace; font-size: 28px; color: #f8fafc; max-width: 500px; margin: 20px auto; line-height: 1.8;">
+            <div style="margin-left: 120px; color: #22d3ee;">x² + x - 2</div>
+            <div style="border-top: 2px solid #94a3b8; display: flex;">
+                <span style="color: #f472b6; margin-right: 15px;">x - 3 )</span> 
+                <span style="color: #4ade80;">x³ - 2x² - 5x + 6</span>
+            </div>
+            <div style="margin-left: 100px; color: #cbd5e1;">-(x³ - 3x²)</div>
+            <div style="margin-left: 100px; border-top: 1px solid #475569; width: 150px;"></div>
+            <div style="margin-left: 150px;">x² - 5x</div>
+            <div style="margin-left: 130px; color: #cbd5e1;">-(x² - 3x)</div>
+            <div style="margin-left: 130px; border-top: 1px solid #475569; width: 130px;"></div>
+            <div style="margin-left: 170px;">-2x + 6</div>
+            <div style="margin-left: 150px; color: #cbd5e1;">-(-2x + 6)</div>
+            <div style="margin-left: 150px; border-top: 1px solid #475569; width: 130px;"></div>
+            <div style="margin-left: 240px; color: #fbbf24; font-weight: bold;">0</div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 7: The Trap -->
+<div class="slide-container" id="slide7">
+    <h2 class="slide-title" style="color:#f87171; border-color: rgba(248, 113, 113, 0.3);">Exam Trap: Missing Placeholders</h2>
+    <div class="content-area">
+        <div class="card" style="border-color: #f87171; background: rgba(248, 113, 113, 0.05); text-align: center;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 60px; color: #f87171; margin-bottom: 20px;"></i>
+            <p style="font-size: 26px;">Divide <span class="math-inline">(x<sup>3</sup> - 8)</span> by <span class="math-inline">(x - 2)</span></p>
+            
+            <div class="math-box" style="border-left: none; border-bottom: 4px solid #f87171; margin: 30px auto; max-width: 600px; padding: 20px;">
+                <div class="math-block" style="font-size: 36px; color: #f8fafc;">
+                    x<sup>3</sup> + <span style="color:#f87171; font-weight:bold; font-style: normal;">0x<sup>2</sup></span> + <span style="color:#f87171; font-weight:bold; font-style: normal;">0x</span> - 8
+                </div>
+            </div>
+            
+            <p style="font-size: 22px; color: #cbd5e1;">If a degree is skipped in the original polynomial, you <strong>MUST</strong> insert a zero as a placeholder.<br>Otherwise, your subtraction columns will not line up!</p>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 8: Synthetic Division Intro -->
+<div class="slide-container" id="slide8">
+    <h2 class="slide-title" style="color:#c084fc; border-color: rgba(192, 132, 252, 0.3);">Synthetic Division: The "Cheat Code"</h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>Long division works, but it takes up half a page. Enter <strong>Synthetic Division</strong>.</p>
+                <ul class="bullet-list" style="margin-top: 20px;">
+                    <li>It completely removes the variables (<span class="math-inline">x</span>) and only looks at the <strong>coefficients</strong>.</li>
+                    <li><strong style="color: #f87171;">Rule 1:</strong> Only use this when dividing by a linear factor like <span class="math-inline">(x - k)</span>.</li>
+                    <li><strong style="color: #f472b6;">Rule 2:</strong> Put the <strong>ROOT</strong> outside the bracket, not the factor.</li>
+                </ul>
+            </div>
+            <div class="card" style="border-color: #c084fc; text-align: center;">
+                <p style="font-size: 22px; color: #94a3b8; margin-bottom: 15px;">Example Setup</p>
+                <div class="math-block" style="font-size: 28px; color: #f8fafc; margin-bottom: 20px;">
+                    (x<sup>3</sup> + 2x<sup>2</sup> - 5x - 6) &divide; (x - 2)
+                </div>
+                <p style="font-size: 20px; color: #f472b6; font-weight: bold;">Root is +2</p>
+                <div class="synth-table" style="font-size: 24px; margin-top: 15px;">
+                    <div class="root">2</div>
+                    <div></div>
+                    <div>1</div>
+                    <div>2</div>
+                    <div>-5</div>
+                    <div>-6</div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 9: Synthetic Loop -->
+<div class="slide-container" id="slide9">
+    <h2 class="slide-title" style="color:#c084fc; border-color: rgba(192, 132, 252, 0.3);">The Loop: Drop, Multiply, Add</h2>
+    <div class="content-area text-center">
+        <p style="margin-bottom: 20px;">Let's divide <span class="math-inline">(x<sup>3</sup> + 2x<sup>2</sup> - 5x - 6)</span> by <span class="math-inline">(x - 2)</span></p>
+        
+        <div class="synth-table">
+            <div class="root">2</div>
+            <div></div>
+            <div>1</div>
+            <div>2</div>
+            <div>-5</div>
+            <div>-6</div>
+            
+            <div></div>
+            <div></div>
+            <div class="multiply"><i class="fas fa-arrow-down" style="color:#3b82f6;"></i></div>
+            <div class="multiply">2</div>
+            <div class="multiply">8</div>
+            <div class="multiply">6</div>
+            
+            <div class="line"></div>
+            
+            <div></div>
+            <div></div>
+            <div style="color:#22d3ee;">1</div>
+            <div style="color:#22d3ee;">4</div>
+            <div style="color:#22d3ee;">3</div>
+            <div class="rem">0</div>
+        </div>
+        
+        <div class="card mt-4" style="max-width: 600px; margin: 20px auto; border-color: #22d3ee; padding: 20px;">
+            <p style="font-size: 24px; color: #22d3ee; margin:0;"><strong>Quotient:</strong> <span class="math-inline" style="color:#f8fafc;">1x<sup>2</sup> + 4x + 3</span></p>
+            <p style="font-size: 18px; color: #94a3b8; margin: 10px 0 0 0;">(The answer is always exactly 1 degree lower than the dividend)</p>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 10: The Remainder Theorem -->
+<div class="slide-container" id="slide10">
+    <h2 class="slide-title" style="color:#4ade80; border-color: rgba(74, 222, 128, 0.3);">The Remainder Theorem</h2>
+    <div class="content-area">
+        <p style="text-align: center; margin-bottom: 20px; font-size: 26px;">What if a question asks for the remainder, but you don't need the quotient?</p>
+        
+        <div class="math-box green text-center" style="border-radius: 12px; border-left: none; border-bottom: 4px solid #4ade80; padding: 20px 30px;">
+            <p style="font-size: 24px; color: #f8fafc; margin-bottom: 10px;">When a polynomial <span class="math-inline" style="color:#22d3ee;">P(x)</span> is divided by <span class="math-inline" style="color:#f472b6;">(x - k)</span>,</p>
+            <p style="font-size: 24px; color: #f8fafc; margin: 0;">the remainder is exactly equal to <span class="math-inline" style="color:#4ade80; font-weight:bold;">P(k)</span>.</p>
+        </div>
+        
+        <div class="two-column mt-4">
+            <div class="card" style="border-color: #475569; padding: 25px;">
+                <h3 style="font-size: 20px; color:#cbd5e1;">Method 1: Division</h3>
+                <p style="font-size: 16px;">Divide <span class="math-inline">(x<sup>3</sup> - 4x<sup>2</sup> + 5x - 1)</span> by <span class="math-inline">(x - 2)</span></p>
+                <p style="font-size: 16px; color:#4ade80;">Remainder = 1</p>
+            </div>
+            <div class="card" style="border-color: #4ade80; padding: 25px;">
+                <h3 style="font-size: 20px; color:#4ade80;">Method 2: The Theorem (Faster)</h3>
+                <p style="font-size: 16px;">Evaluate <span class="math-inline">P(2)</span></p>
+                <div class="math-block" style="font-size: 20px; color: #f8fafc; margin: 10px 0;">P(2) = (2)<sup>3</sup> - 4(2)<sup>2</sup> + 5(2) - 1</div>
+                <div class="math-block" style="font-size: 20px; color: #f8fafc; margin: 10px 0;">P(2) = 8 - 16 + 10 - 1 = <span style="color:#4ade80; font-weight:bold; font-style:normal;">1</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 11: The Factor Theorem -->
+<div class="slide-container" id="slide11">
+    <h2 class="slide-title" style="color:#22d3ee; border-color: rgba(34, 211, 238, 0.3);">The Factor Theorem</h2>
+    <div class="content-area text-center">
+        <p style="font-size: 26px; margin-bottom: 20px;">Think about normal numbers. If <span class="math-inline">10 &divide; 5</span> has a remainder of 0, then 5 is a <strong>perfect factor</strong>.</p>
+        
+        <div class="card" style="border-color: #22d3ee; margin: 30px auto; max-width: 800px; padding: 40px;">
+            <div class="math-block" style="font-size: 42px; color: #f8fafc; font-style: normal;">
+                If <span class="math-inline">P(k) = <span style="color:#4ade80; font-weight:bold; font-style: normal;">0</span></span>,
+            </div>
+            <div class="math-block" style="font-size: 42px; color: #f8fafc; margin-top: 20px; font-style: normal;">
+                then <span class="math-inline">(x - k)</span> is a <span style="color:#22d3ee; font-weight:bold; font-style: normal;">FACTOR</span>.
+            </div>
+        </div>
+        
+        <p style="font-size: 22px; color: #cbd5e1; margin-top: 20px;">This is how we find the first piece of the puzzle when breaking down a standard form equation!</p>
+    </div>
+</div>
+
+<!-- SLIDE 12: Boss Fight -->
+<div class="slide-container" id="slide12">
+    <h2 class="slide-title" style="color:#f472b6; border-color: rgba(244, 114, 182, 0.3);">The Boss Fight: Connect it All</h2>
+    <div class="content-area">
+        <p style="text-align: center; font-size: 26px;">Fully factor the polynomial: <span class="math-inline" style="color:#f8fafc; font-weight:bold;">f(x) = x<sup>3</sup> - 7x - 6</span></p>
+        
+        <div class="two-column mt-4" style="align-items: stretch;">
+            <div class="card" style="border-color: #f472b6; padding: 25px;">
+                <h3 style="font-size: 20px; color:#f472b6;">Step 1: Guess &amp; Check (Factor Theorem)</h3>
+                <p style="font-size: 16px;">Test factors of the constant (-6): &plusmn;1, &plusmn;2, &plusmn;3, &plusmn;6</p>
+                <p style="font-size: 16px;">f(-1) = (-1)<sup>3</sup> - 7(-1) - 6 = 0</p>
+                <p style="font-size: 16px; color: #4ade80; font-weight: bold;">&rarr; (x+1) is a factor!</p>
+            </div>
+            <div class="card" style="border-color: #f472b6; padding: 25px;">
+                <h3 style="font-size: 20px; color:#f472b6;">Step 2: Synthetic Division</h3>
+                <p style="font-size: 16px;">Divide f(x) by (x+1) to find the remaining quadratic.</p>
+                <p style="font-size: 16px; color: #94a3b8; font-style: italic;">(Hint: Remember the 0x<sup>2</sup> placeholder!)</p>
+                <p style="font-size: 16px; color: #22d3ee; margin-top: 10px;">Quotient = x<sup>2</sup> - x - 6</p>
+            </div>
+        </div>
+        
+        <div class="card mt-4" style="border-color: #f472b6; text-align: center; padding: 20px;">
+            <h3 style="font-size: 20px; color:#f472b6; margin-bottom: 5px;">Step 3: Factor the Quadratic</h3>
+            <div class="math-block" style="font-size: 28px; color: #f8fafc;">f(x) = (x + 1)(x<sup>2</sup> - x - 6)</div>
+            <div class="math-block" style="font-size: 28px; color: #4ade80; margin-top: 10px;">f(x) = (x + 1)(x - 3)(x + 2)</div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 13: Summary -->
+<div class="slide-container" id="slide13">
+    <h2 class="slide-title">Session Wrap-Up &amp; Exit Ticket</h2>
+    <div class="content-area">
+        <div class="two-column" style="align-items: start;">
+            <div class="card" style="border-color: #f87171;">
+                <h3 style="color: #f87171; text-align: center;"><i class="fas fa-exclamation-triangle"></i> Ontario Exam Traps</h3>
+                <ul class="bullet-list" style="font-size: 18px;">
+                    <li>Forgetting placeholder zeros (e.g., 0x<sup>2</sup>) when dividing.</li>
+                    <li>Forgetting to CHANGE SIGNS during Long Division subtraction.</li>
+                    <li>Putting the <i>factor</i> instead of the <i>root</i> outside the synthetic bracket.</li>
+                </ul>
+            </div>
+            
+            <div class="card" style="border-color: #22d3ee;">
+                <h3 style="color: #22d3ee; text-align: center;"><i class="fas fa-ticket-alt"></i> Exit Ticket</h3>
+                <ol style="padding-left: 20px; font-size: 18px; color: #f8fafc; line-height: 1.8;">
+                    <li>If <span class="math-inline">P(4) = 7</span>, what is the remainder when divided by <span class="math-inline">(x - 4)</span>?</li>
+                    <li>If <span class="math-inline">P(-2) = 0</span>, what is a factor of <span class="math-inline">P(x)</span>?</li>
+                    <li>What number goes outside the synthetic bracket for <span class="math-inline">(x + 5)</span>?</li>
+                </ol>
+            </div>
+        </div>
+        
+        <p style="text-align: center; margin-top: 30px; font-size: 24px; color: #4ade80; font-weight: bold;">Homework: Jensen Math Unit 2 Worksheets 1 &amp; 2</p>
+    </div>
+</div>
+
+<div class="slide-container slide-attributions" id="slide-attributions-1"><h2 class="slide-title">Image Sources</h2><div class="content-area"><ul class="attribution-list"><li class="attribution-list__item"><div class="attribution__thumbnail"><img class="attribution__thumbnail__image" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8-1L7SnpR5RjIeR1QU9UhG7MLP56tKUDqpFcjPy5fU_ihrr9LavaUVMuJC4KK" alt="Thumbnail for www.vecteezy.com"></div><div class="attribution__details"><p class="attribution__raw-url">https://static.vecteezy.com/system/resources/thumbnails/070/604/447/small/dynamic-mathematical-formulas-and-geometric-shapes-on-a-black-background-an-abstract-scientific-visualization-a-complex-and-organized-pattern-of-mathematical-schematics-a-technical-blueprint-like-ba-free-video.jpg</p><p class="attribution__title">Source: <a href="https://www.vecteezy.com/video/70604447-dynamic-mathematical-formulas-and-geometric-shapes-on-a-black-background-an-abstract-scientific-visualization-a-complex-and-organized-pattern-of-mathematical-schematics-a-technical-blueprint-like-ba" target="_blank" class="attribution__link">www.vecteezy.com</a></p></div></li></ul></div></div></body></html>
