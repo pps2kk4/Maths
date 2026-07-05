@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 2 - Factoring Polynomials</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Base styles */
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow: hidden; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        
+        /* Container */
+        #presentation-container { width: 1280px; height: 720px; background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%); border-radius: 16px; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Slide Management */
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 70px); padding: 50px 70px; display: none; flex-direction: column; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+        
+        /* Navigation Bar */
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; z-index: 20; backdrop-filter: blur(10px); }
+        .nav-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid #22d3ee; color: #22d3ee; padding: 10px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+        .nav-btn:hover { background: #22d3ee; color: #020617; }
+        .nav-btn:disabled { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #64748b; cursor: not-allowed; }
+        .progress-text { color: #94a3b8; font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 2px; font-size: 14px; }
+        
+        /* Typography & Custom Elements */
+        .slide-title { font-size: 42px; color: #4ade80; border-bottom: 2px solid rgba(74, 222, 128, 0.3); padding-bottom: 12px; margin-bottom: 30px; font-weight: 700; width: 100%; }
+        .math-inline { font-family: 'Times New Roman', Times, serif; font-style: italic; white-space: nowrap; font-size: 110%; }
+        .math-box { background: rgba(34, 211, 238, 0.05); border: 1px solid rgba(34, 211, 238, 0.2); border-left: 4px solid #22d3ee; padding: 20px 25px; border-radius: 0 12px 12px 0; margin: 15px 0; font-size: 26px; }
+        .card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 25px; backdrop-filter: blur(8px); }
+        .card h3 { color: #22d3ee; margin-bottom: 15px; font-size: 24px; font-weight: 600; }
+        
+        /* Synthetic Table */
+        .synth-table { display: inline-grid; grid-template-columns: 50px 20px repeat(4, 60px); gap: 10px; font-size: 24px; font-weight: 600; text-align: center; margin: 20px 0; }
+        .synth-table .root { color: #f472b6; border-right: 2px solid #475569; padding-right: 15px; }
+        .synth-table .line { grid-column: 1 / -1; height: 2px; background: #475569; width: 100%; margin: 5px 0; }
+        .synth-table .rem { border-left: 2px dashed #475569; padding-left: 10px; color: #4ade80; }
+        
+        /* Helpers */
+        .text-cyan { color: #22d3ee; }
+        .text-pink { color: #f472b6; }
+        .text-green { color: #4ade80; }
+        .text-yellow { color: #fbbf24; }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+
+    
+    <!-- Slide 1: Title -->
+    <div class="slide active" id="slide-1" style="justify-content: center; align-items: center; text-align: center;">
+        <span class="inline-block px-4 py-1 rounded-full bg-cyan-500 text-slate-900 font-bold tracking-widest text-sm mb-6 uppercase">Unit 2</span>
+        <h1 class="text-6xl font-extrabold mb-4 leading-tight">Factoring Higher-Degree <br><span class="text-cyan">Polynomials</span></h1>
+        <h3 class="text-2xl text-slate-400 font-light tracking-widest mt-4">MHF4U | ONTARIO CURRICULUM</h3>
+        <div class="w-24 h-1 bg-purple-400 mx-auto my-10"></div>
+        <p class="text-xl text-green-400 font-medium">Prepared for: Rigden</p>
+    </div>
+
+    <!-- Slide 2: Roadmap -->
+    <div class="slide" id="slide-2">
+        <h2 class="slide-title">Today's Roadmap</h2>
+        <div class="flex flex-col justify-center h-full gap-8 max-w-4xl mx-auto w-full">
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-yellow-400 flex items-center justify-center text-2xl font-bold text-yellow-400">1</div>
+                <div><h3 class="text-2xl font-bold text-slate-200">Unit 1 Quick Check</h3><p class="text-slate-400 text-lg">Reviewing End Behaviour & Factored Form</p></div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-cyan-400 flex items-center justify-center text-2xl font-bold text-cyan-400">2</div>
+                <div><h3 class="text-2xl font-bold text-slate-200">Polynomial Division</h3><p class="text-slate-400 text-lg">The manual way to break down equations</p></div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-pink-400 flex items-center justify-center text-2xl font-bold text-pink-400">3</div>
+                <div><h3 class="text-2xl font-bold text-slate-200">The "Cheat Code"</h3><p class="text-slate-400 text-lg">Synthetic Division for maximum speed</p></div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-slate-800 border-2 border-green-400 flex items-center justify-center text-2xl font-bold text-green-400">4</div>
+                <div><h3 class="text-2xl font-bold text-slate-200">Graphing the Impossible</h3><p class="text-slate-400 text-lg">Remainder & Factor Theorems</p></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Warm-Up Quiz -->
+    <div class="slide" id="slide-3">
+        <h2 class="slide-title" style="color:#fbbf24; border-color: rgba(251,191,36,0.3);">Warm-Up Quiz: End Behaviour</h2>
+        <p class="text-xl text-slate-300 text-center mb-8">Without calculating anything, tell me which quadrants the graph starts and ends in, and why.</p>
+        <div class="grid grid-cols-2 gap-10">
+            <div class="card border-yellow-400/50 text-center">
+                <h3 class="text-yellow-400">Equation A</h3>
+                <div class="math-box text-center border-l-0 border-b-4 border-yellow-400 text-3xl my-6">
+                    <span class="math-inline">f(x) = -4x<sup>5</sup> + 2x<sup>2</sup> - 1</span>
+                </div>
+                <div class="w-full h-32 border-2 border-slate-700 relative mt-4 grid grid-cols-2 grid-rows-2 text-slate-600 font-bold text-xl">
+                    <div class="flex items-center justify-center border-b border-r border-slate-700">Q2</div><div class="flex items-center justify-center border-b border-slate-700">Q1</div>
+                    <div class="flex items-center justify-center border-r border-slate-700">Q3</div><div class="flex items-center justify-center">Q4</div>
+                </div>
+            </div>
+            <div class="card border-yellow-400/50 text-center">
+                <h3 class="text-yellow-400">Equation B</h3>
+                <div class="math-box text-center border-l-0 border-b-4 border-yellow-400 text-3xl my-6">
+                    <span class="math-inline">g(x) = 3x<sup>4</sup> - x<sup>3</sup></span>
+                </div>
+                <div class="w-full h-32 border-2 border-slate-700 relative mt-4 grid grid-cols-2 grid-rows-2 text-slate-600 font-bold text-xl">
+                    <div class="flex items-center justify-center border-b border-r border-slate-700">Q2</div><div class="flex items-center justify-center border-b border-slate-700">Q1</div>
+                    <div class="flex items-center justify-center border-r border-slate-700">Q3</div><div class="flex items-center justify-center">Q4</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Factored Form Review -->
+    <div class="slide" id="slide-4">
+        <h2 class="slide-title" style="color:#fbbf24; border-color: rgba(251,191,36,0.3);">Factored Form Review</h2>
+        <div class="flex flex-col justify-center items-center h-full w-full">
+            <p class="text-2xl text-slate-300 mb-8">In this equation, what happens at the x-intercepts <span class="math-inline">x = 3</span> and <span class="math-inline">x = -1</span>?</p>
+            <div class="text-5xl font-bold tracking-wider bg-slate-800/80 py-8 px-12 rounded-xl border border-slate-700 mb-12">
+                <span class="math-inline text-white">h(x) = -2(x - 3)<sup class="text-green-400">2</sup>(x + 1)<sup class="text-pink-400">3</sup></span>
+            </div>
+            <div class="grid grid-cols-2 gap-12 w-full max-w-4xl">
+                <div class="card border-green-400/50 text-center">
+                    <h3 class="text-green-400 text-3xl mb-2">Order 2</h3>
+                    <p class="text-xl text-slate-300">Does it Cross, Bounce, or Inflect?</p>
+                </div>
+                <div class="card border-pink-400/50 text-center">
+                    <h3 class="text-pink-400 text-3xl mb-2">Order 3</h3>
+                    <p class="text-xl text-slate-300">Does it Cross, Bounce, or Inflect?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Graph Interpretation -->
+    <div class="slide" id="slide-5">
+        <h2 class="slide-title" style="color:#fbbf24; border-color: rgba(251,191,36,0.3);">Graph Interpretation Challenge</h2>
+        <div class="grid grid-cols-2 gap-10 items-center h-full">
+            <div>
+                <p class="text-2xl text-slate-200 mb-6 leading-relaxed">Let's work backwards. Look at this graph and build the skeleton equation.</p>
+                <ul class="space-y-4 text-xl text-slate-300 list-disc ml-6">
+                    <li>Starts in Q3, ends in Q1.</li>
+                    <li>Crosses the axis at <span class="math-inline">x = -2</span>.</li>
+                    <li>Bounces on the axis at <span class="math-inline">x = 1</span>.</li>
+                </ul>
+                <div class="mt-8 p-6 bg-slate-800/80 rounded-xl border border-slate-600">
+                    <p class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-2">Your Answer:</p>
+                    <p class="text-3xl font-mono text-white">y = a ( ? )( ? )</p>
+                </div>
+            </div>
+            <div class="bg-slate-900 border-2 border-slate-700 rounded-xl h-96 relative overflow-hidden flex items-center justify-center">
+                <!-- CSS drawing of the graph -->
+                <div class="absolute w-full h-[2px] bg-slate-600"></div>
+                <div class="absolute h-full w-[2px] bg-slate-600"></div>
+                <svg viewBox="-4 -4 8 8" class="absolute w-full h-full" preserveAspectRatio="none">
+                    <path d="M -4 8 Q -3 2 -2 0 C -1 -2 0 -2 1 0 C 1.5 1 2.5 -4 4 -8" fill="none" stroke="#22d3ee" stroke-width="0.1"></path>
+                    <circle cx="-2" cy="0" r="0.15" fill="#f8fafc"></circle>
+                    <circle cx="1" cy="0" r="0.15" fill="#f8fafc"></circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: The Monster -->
+    <div class="slide" id="slide-6">
+        <h2 class="slide-title text-red-400 border-red-400/30">The Transition: The "Monster"</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-2xl text-slate-300 mb-4">You just proved you can graph anything in factored form.</p>
+            <p class="text-2xl text-slate-300 mb-10">But what if a test gives you THIS?</p>
+            
+            <div class="math-box text-center border-l-0 border-b-4 border-red-500 text-5xl py-8 px-16 mb-10 max-w-4xl rounded-xl shadow-[0_0_30px_rgba(239,68,68,0.2)]">
+                <span class="math-inline text-white font-bold">f(x) = 2x<sup>3</sup> - 3x<sup>2</sup> - 3x + 2</span>
+            </div>
+            
+            <div class="flex gap-6 items-center">
+                <i class="fas fa-question-circle text-5xl text-red-500"></i>
+                <p class="text-2xl font-bold text-red-400">How do we break this monster apart?</p>
+            </div>
+            <p class="text-xl text-slate-400 mt-6">We have to learn how to literally divide polynomials. Let's enter Unit 2.</p>
+        </div>
+    </div>
+
+
+    <!-- Slide 7: Old School Connection -->
+    <div class="slide" id="slide-7">
+        <h2 class="slide-title">The "Old School" Connection</h2>
+        <div class="grid grid-cols-2 gap-12 items-center h-full">
+            <div class="card text-center border-slate-600">
+                <h3 class="text-slate-200 text-2xl mb-6">Elementary Math</h3>
+                <div class="text-5xl font-mono text-white leading-loose tracking-widest">
+                    <div class="border-b-2 border-white inline-block pb-2 px-4 mb-2"> 2 5</div><br>
+                    5 <span class="border-l-2 border-white pl-4">1 2 5</span>
+                </div>
+            </div>
+            <div>
+                <p class="text-2xl text-slate-200 mb-6">How do you solve 125 divided by 5?</p>
+                <p class="text-xl text-slate-400 mb-6">You use a 4-step loop:</p>
+                <ul class="text-2xl space-y-4 font-bold text-slate-300">
+                    <li><span class="text-cyan text-3xl">D</span>ivide</li>
+                    <li><span class="text-cyan text-3xl">M</span>ultiply</li>
+                    <li><span class="text-cyan text-3xl">S</span>ubtract</li>
+                    <li><span class="text-cyan text-3xl">B</span>ring Down</li>
+                </ul>
+                <p class="mt-8 text-lg italic text-slate-500">(Does McDonald's Sell Burgers?)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Setup & Vocabulary -->
+    <div class="slide" id="slide-8">
+        <h2 class="slide-title">Setup & Vocabulary</h2>
+        <div class="flex flex-col items-center justify-center h-full w-full">
+            <p class="text-2xl text-slate-300 mb-12">Polynomial division uses the exact same setup.</p>
+            <div class="text-4xl font-mono text-center">
+                <div class="text-cyan font-bold mb-4 uppercase text-lg tracking-widest">Quotient</div>
+                <div class="flex items-center justify-center gap-4">
+                    <span class="text-pink-400">x + 2</span>
+                    <span class="text-slate-500 text-5xl">)</span>
+                    <span class="text-green-400 border-t-2 border-green-400 pt-2 px-4">x<sup>2</sup> + 5x + 6</span>
+                </div>
+            </div>
+            <div class="flex gap-16 mt-16">
+                <div class="flex items-center gap-3"><div class="w-4 h-4 bg-pink-400 rounded"></div><span class="text-xl">Divisor (Outside)</span></div>
+                <div class="flex items-center gap-3"><div class="w-4 h-4 bg-green-400 rounded"></div><span class="text-xl">Dividend (Inside)</span></div>
+                <div class="flex items-center gap-3"><div class="w-4 h-4 bg-cyan-400 rounded"></div><span class="text-xl">Quotient (Top)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: The Loop Example -->
+    <div class="slide" id="slide-9">
+        <h2 class="slide-title">The D-M-S-B Loop (Guided Example)</h2>
+        <div class="flex h-full w-full justify-between items-center px-10">
+            <div class="font-mono text-3xl leading-[2.5]">
+                <div class="text-cyan ml-28">x<sup>2</sup> + x - 2</div>
+                <div class="flex border-t-2 border-slate-500 pt-2">
+                    <span class="text-pink-400 mr-4">x - 3 )</span>
+                    <span class="text-green-400">x<sup>3</sup> - 2x<sup>2</sup> - 5x + 6</span>
+                </div>
+                <div class="text-slate-400 ml-24">-(x<sup>3</sup> - 3x<sup>2</sup>)</div>
+                <div class="border-t border-slate-700 ml-24 w-40"></div>
+                <div class="ml-36">x<sup>2</sup> - 5x</div>
+                <div class="text-slate-400 ml-32">-(x<sup>2</sup> - 3x)</div>
+                <div class="border-t border-slate-700 ml-32 w-32"></div>
+                <div class="ml-40">-2x + 6</div>
+                <div class="text-slate-400 ml-36">-(-2x + 6)</div>
+                <div class="border-t border-slate-700 ml-36 w-32"></div>
+                <div class="ml-56 text-yellow-400 font-bold">0</div>
+            </div>
+            <div class="card border-slate-600 bg-slate-800/90 w-80">
+                <h3 class="text-xl text-white mb-4 border-b border-slate-700 pb-2">The Loop</h3>
+                <ul class="space-y-3 text-lg text-slate-300 font-bold">
+                    <li>1. <span class="text-cyan">Divide</span> front by front</li>
+                    <li>2. <span class="text-cyan">Multiply</span> back outside</li>
+                    <li class="bg-red-500/20 text-red-300 p-2 rounded">3. <span class="text-red-400">Subtract</span> (Change signs!)</li>
+                    <li>4. <span class="text-cyan">Bring Down</span> next term</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 10: Division Statement -->
+    <div class="slide" id="slide-10">
+        <h2 class="slide-title">The Division Statement</h2>
+        <div class="flex flex-col justify-center items-center h-full w-full text-center">
+            <p class="text-2xl text-slate-300 mb-8">Once you finish dividing, you write the result as an equation.</p>
+            <div class="card border-cyan-400/50 p-10 max-w-4xl w-full">
+                <p class="text-4xl font-bold mb-6"><span class="text-green-400">P(x)</span> = <span class="text-pink-400">D(x)</span> &times; <span class="text-cyan">Q(x)</span> + <span class="text-yellow-400">R(x)</span></p>
+                <div class="text-2xl text-slate-300 space-y-4">
+                    <p><span class="text-green-400 font-bold">Dividend</span> = (<span class="text-pink-400 font-bold">Divisor</span> &times; <span class="text-cyan font-bold">Quotient</span>) + <span class="text-yellow-400 font-bold">Remainder</span></p>
+                </div>
+            </div>
+            <p class="mt-10 text-xl text-slate-400 italic">Just like saying: 13 = (5 &times; 2) + 3</p>
+        </div>
+    </div>
+
+    <!-- Slide 11: Your Turn (Long Div) -->
+    <div class="slide" id="slide-11">
+        <h2 class="slide-title text-purple-400 border-purple-400/30">Your Turn! (Long Division)</h2>
+        <div class="flex flex-col justify-center items-center h-full w-full">
+            <p class="text-2xl text-slate-200 mb-12">Grab your paper. Run the D-M-S-B loop.</p>
+            <div class="text-4xl font-mono text-center bg-slate-800/80 p-12 rounded-xl border border-slate-700 shadow-2xl">
+                <div class="flex border-t-2 border-slate-500 pt-4 px-6">
+                    <span class="text-pink-400 mr-6">x + 3 )</span>
+                    <span class="text-green-400">2x<sup>3</sup> + 7x<sup>2</sup> + 2x - 3</span>
+                </div>
+            </div>
+            <p class="mt-12 text-xl text-slate-400 font-bold">Talk me through your very first "Divide" step.</p>
+        </div>
+    </div>
+
+    <!-- Slide 12: Placeholders -->
+    <div class="slide" id="slide-12">
+        <h2 class="slide-title text-red-500 border-red-500/30">Exam Trap: The Hidden Placeholders</h2>
+        <div class="flex flex-col items-center justify-center h-full">
+            <i class="fas fa-exclamation-triangle text-7xl text-red-500 mb-8 animate-pulse"></i>
+            <p class="text-3xl text-white mb-6">Divide <span class="font-mono text-cyan">(x<sup>3</sup> - 8)</span> by <span class="font-mono text-pink-400">(x - 2)</span></p>
+            
+            <div class="card border-red-500 bg-red-500/10 mt-6 max-w-3xl w-full text-center p-8">
+                <p class="text-xl text-slate-300 mb-6">If you just write <span class="font-mono">x<sup>3</sup> - 8</span> inside the bracket, your columns will crash.</p>
+                <p class="text-4xl font-mono font-bold text-white">
+                    x<sup>3</sup> + <span class="text-red-500">0x<sup>2</sup></span> + <span class="text-red-500">0x</span> - 8
+                </p>
+                <p class="text-lg text-slate-400 mt-6">Always insert zero for any missing degree in the dividend!</p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Slide 13: Synthetic Intro -->
+    <div class="slide" id="slide-13">
+        <h2 class="slide-title text-cyan border-cyan-400/30">Synthetic Division: The Cheat Code</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-3xl text-slate-200 mb-8">Long division takes too much space.</p>
+            <div class="flex items-center gap-10">
+                <div class="text-2xl font-mono text-slate-600 relative opacity-50">
+                    <div class="absolute inset-0 flex items-center justify-center"><i class="fas fa-times text-9xl text-red-500 opacity-80"></i></div>
+                    x-3 ) x^3 - 2x^2 - 5x + 6<br>-(x^3 - 3x^2)<br>...
+                </div>
+                <i class="fas fa-arrow-right text-4xl text-slate-500"></i>
+                <div class="synth-table text-3xl">
+                    <div class="root text-cyan">3</div>
+                    <div></div><div>1</div><div>-2</div><div>-5</div><div>6</div>
+                    <div class="line"></div>
+                </div>
+            </div>
+            <p class="text-2xl text-cyan font-bold mt-12">Removes all the variables. Only uses the numbers.</p>
+        </div>
+    </div>
+
+    <!-- Slide 14: Setup & K Value -->
+    <div class="slide" id="slide-14">
+        <h2 class="slide-title">Synthetic Setup & The <span class="text-pink-400 italic">k</span>-value</h2>
+        <div class="grid grid-cols-2 gap-12 items-center h-full">
+            <div>
+                <ul class="space-y-6 text-2xl text-slate-300">
+                    <li><strong class="text-white">Rule 1:</strong> Only use when dividing by a linear factor like <span class="font-mono text-pink-400">(x - k)</span>.</li>
+                    <li><strong class="text-white">Rule 2:</strong> Put the <strong class="text-pink-400 border-b-2 border-pink-400">ROOT</strong> outside the bracket, not the factor.</li>
+                </ul>
+            </div>
+            <div class="card border-slate-500 text-center">
+                <p class="text-2xl font-mono text-white mb-6">(x<sup>3</sup> + 2x<sup>2</sup> - 5x - 6) &divide; <span class="text-pink-400 font-bold">(x - 2)</span></p>
+                <div class="flex justify-center mb-4"><i class="fas fa-arrow-down text-3xl text-pink-400"></i></div>
+                <div class="synth-table">
+                    <div class="root text-pink-400 font-bold text-4xl">2</div>
+                    <div></div><div>1</div><div>2</div><div>-5</div><div>-6</div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Drop Multiply Add -->
+    <div class="slide" id="slide-15">
+        <h2 class="slide-title">The Loop: Drop, Multiply, Add</h2>
+        <div class="flex flex-col items-center justify-center h-full w-full">
+            <div class="synth-table text-3xl mt-8">
+                <div class="root font-bold">3</div>
+                <div></div><div>1</div><div>-2</div><div>-5</div><div>6</div>
+                <div></div><div></div><div class="text-slate-500 text-xl"><i class="fas fa-arrow-down text-cyan"></i></div><div class="text-slate-400">3</div><div class="text-slate-400">3</div><div class="text-slate-400">-6</div>
+                <div class="line"></div>
+                <div></div><div></div><div class="text-cyan font-bold">1</div><div class="text-cyan font-bold">1</div><div class="text-cyan font-bold">-2</div><div class="rem font-bold">0</div>
+            </div>
+            <div class="flex gap-10 mt-12">
+                <div class="card border-cyan-400/30 text-center"><h3 class="text-cyan text-xl m-0">1. Drop</h3></div>
+                <div class="card border-cyan-400/30 text-center"><h3 class="text-cyan text-xl m-0">2. Multiply (by 3)</h3></div>
+                <div class="card border-cyan-400/30 text-center"><h3 class="text-cyan text-xl m-0">3. Add column</h3></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 16: Reading the Answer -->
+    <div class="slide" id="slide-16">
+        <h2 class="slide-title">Reading the Answer</h2>
+        <div class="flex flex-col items-center justify-center h-full">
+            <div class="synth-table text-4xl mb-12">
+                <div class="root text-slate-500">3</div>
+                <div></div><div class="text-slate-500">1</div><div class="text-slate-500">-2</div><div class="text-slate-500">-5</div><div class="text-slate-500">6</div>
+                <div></div><div></div><div class="text-slate-600">3</div><div class="text-slate-600">3</div><div class="text-slate-600">-6</div>
+                <div class="line"></div>
+                <div></div><div></div><div class="text-cyan font-bold">1</div><div class="text-cyan font-bold">1</div><div class="text-cyan font-bold">-2</div><div class="rem font-bold text-yellow-400">0</div>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-4 text-center max-w-3xl w-full">
+                <div></div>
+                <div></div>
+                <div class="text-xl text-cyan border-t border-cyan-400 pt-2"><span class="math-inline">1x<sup>2</sup></span></div>
+                <div class="text-xl text-cyan border-t border-cyan-400 pt-2"><span class="math-inline">+ 1x</span></div>
+                <div class="text-xl text-cyan border-t border-cyan-400 pt-2"><span class="math-inline">- 2</span></div>
+                <div class="text-xl text-yellow-400 border-t border-yellow-400 pt-2 font-bold">Remainder</div>
+            </div>
+            <p class="text-xl text-slate-400 mt-10">The quotient is always exactly <strong>one degree lower</strong> than the dividend.</p>
+        </div>
+    </div>
+
+    <!-- Slide 17: Your Turn (Synth) -->
+    <div class="slide" id="slide-17">
+        <h2 class="slide-title text-purple-400 border-purple-400/30">Your Turn! (Synthetic)</h2>
+        <div class="flex flex-col items-center justify-center h-full">
+            <p class="text-2xl text-slate-200 mb-10">Set up the synthetic division bracket.</p>
+            <div class="text-4xl font-mono text-center bg-slate-800/80 py-8 px-12 rounded-xl border border-slate-700 mb-10">
+                (2x<sup>3</sup> + x<sup>2</sup> - 3x + 5) &divide; <span class="text-pink-400 font-bold">(x + 1)</span>
+            </div>
+            <div class="synth-table text-4xl opacity-50">
+                <div class="root text-pink-400 font-bold">?</div>
+                <div></div><div>2</div><div>1</div><div>-3</div><div>5</div>
+                <div class="line"></div>
+            </div>
+            <p class="text-2xl font-bold text-purple-400 mt-8">What number goes on the outside?</p>
+        </div>
+    </div>
+
+    <!-- Slide 18: The Trap -->
+    <div class="slide" id="slide-18">
+        <h2 class="slide-title text-red-500 border-red-500/30">Exam Trap: The (ax - b) Divisor</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center px-10">
+            <p class="text-2xl text-white mb-6">Divide <span class="font-mono text-cyan">(4x<sup>3</sup> - 6x<sup>2</sup> + 2x - 1)</span> by <span class="font-mono text-pink-400 font-bold">(2x - 1)</span></p>
+            <div class="card border-red-500 w-full max-w-4xl">
+                <ul class="text-xl text-slate-300 space-y-4 text-left ml-6 list-disc">
+                    <li>The root is <span class="font-bold text-pink-400">1/2</span>. Put 1/2 outside the synthetic bracket.</li>
+                    <li>Run Drop, Multiply, Add normally.</li>
+                    <li class="text-red-400 font-bold text-2xl mt-4">TRAP: Because the divisor had a '2' in front of the x, you MUST divide your final quotient numbers by 2!</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Slide 19: Remainder Theorem -->
+    <div class="slide" id="slide-19">
+        <h2 class="slide-title text-green-400 border-green-400/30">The Remainder Theorem</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-4xl font-bold text-white mb-10">What if we ONLY care about the remainder?</p>
+            <p class="text-2xl text-slate-300 mb-8">Running a full division is a waste of time.</p>
+            
+            <div class="card border-green-400 bg-green-400/10 p-10 max-w-3xl">
+                <p class="text-2xl text-slate-200 leading-relaxed">When a polynomial <span class="text-cyan font-bold font-mono">P(x)</span> is divided by <span class="text-pink-400 font-bold font-mono">(x - k)</span>, the remainder is exactly equal to...</p>
+                <p class="text-6xl font-mono text-green-400 font-bold mt-8">P(k)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 20: Visual Proof -->
+    <div class="slide" id="slide-20">
+        <h2 class="slide-title">Visual Proof</h2>
+        <div class="grid grid-cols-2 gap-10 items-center h-full">
+            <div class="card border-slate-600 text-center">
+                <h3 class="text-slate-300 text-xl mb-4">Method 1: Division</h3>
+                <p class="font-mono text-sm mb-4">(x<sup>3</sup> - 4x<sup>2</sup> + 5x - 1) &divide; (x - 2)</p>
+                <div class="synth-table text-xl">
+                    <div class="root text-pink-400">2</div>
+                    <div></div><div>1</div><div>-4</div><div>5</div><div>-1</div>
+                    <div></div><div></div><div>2</div><div>-4</div><div>2</div>
+                    <div class="line"></div>
+                    <div></div><div></div><div>1</div><div>-2</div><div>1</div><div class="rem font-bold text-4xl text-green-400">1</div>
+                </div>
+            </div>
+            <div class="card border-green-400 bg-green-400/5 text-center">
+                <h3 class="text-green-400 text-xl mb-4">Method 2: The Theorem</h3>
+                <p class="font-mono text-sm mb-6">Evaluate P(2)</p>
+                <div class="text-2xl font-mono text-white space-y-4">
+                    <p>P(2) = (2)<sup>3</sup> - 4(2)<sup>2</sup> + 5(2) - 1</p>
+                    <p>P(2) = 8 - 16 + 10 - 1</p>
+                    <p>P(2) = <span class="text-4xl text-green-400 font-bold">1</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 21: Factor Theorem -->
+    <div class="slide" id="slide-21">
+        <h2 class="slide-title text-cyan border-cyan-400/30">The Factor Theorem</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-2xl text-slate-300 mb-10 max-w-4xl">If 10 &divide; 5 has a remainder of 0, then 5 is a perfect factor. <br><br>The exact same logic applies to polynomials.</p>
+            
+            <div class="card border-cyan-400 p-12 max-w-3xl shadow-[0_0_40px_rgba(34,211,238,0.15)]">
+                <p class="text-4xl text-white mb-6">If <span class="font-mono text-green-400 font-bold">P(k) = 0</span></p>
+                <p class="text-4xl text-white">then <span class="font-mono text-pink-400 font-bold">(x - k)</span> is a <span class="text-cyan font-bold uppercase tracking-widest">Factor</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 22: Finding the First Root -->
+    <div class="slide" id="slide-22">
+        <h2 class="slide-title">Finding the First Root</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-3xl font-mono text-white mb-8">P(x) = x<sup>3</sup> - 7x - 6</p>
+            <p class="text-xl text-slate-300 mb-8">Test factors of the constant (-6): &plusmn;1, &plusmn;2, &plusmn;3, &plusmn;6</p>
+            
+            <div class="grid grid-cols-2 gap-8 w-full max-w-3xl">
+                <div class="card border-slate-600 opacity-50">
+                    <p class="text-xl font-mono text-white mb-4">P(1)</p>
+                    <p class="text-lg text-slate-400">(1)<sup>3</sup> - 7(1) - 6 = -12</p>
+                    <p class="text-red-400 font-bold mt-2">Not a factor</p>
+                </div>
+                <div class="card border-green-400 bg-green-400/10">
+                    <p class="text-xl font-mono text-white mb-4">P(-1)</p>
+                    <p class="text-lg text-slate-200">(-1)<sup>3</sup> - 7(-1) - 6 = <span class="text-green-400 font-bold text-2xl">0</span></p>
+                    <p class="text-green-400 font-bold mt-2">Bingo! (x + 1) is a factor.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 23: Boss Fight -->
+    <div class="slide" id="slide-23">
+        <h2 class="slide-title text-purple-400 border-purple-400/30">The Ultimate Boss Fight</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-2xl text-slate-300 mb-10">Fully factor and sketch this standard form polynomial:</p>
+            
+            <div class="math-box text-center border-l-0 border-b-4 border-purple-500 text-5xl py-8 px-16 mb-12 shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+                <span class="math-inline text-white font-bold">f(x) = x<sup>3</sup> - 7x - 6</span>
+            </div>
+            <p class="text-xl text-slate-400">We have to break it apart completely.</p>
+        </div>
+    </div>
+
+    <!-- Slide 24: Boss Step 1 -->
+    <div class="slide" id="slide-24">
+        <h2 class="slide-title text-purple-400 border-purple-400/30">Step 1: The Factor Theorem</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-3xl font-mono text-slate-400 mb-8">f(x) = x<sup>3</sup> - 7x - 6</p>
+            <div class="card border-green-400 p-10">
+                <p class="text-3xl text-white mb-4">We found that <span class="font-mono text-green-400 font-bold">f(-1) = 0</span></p>
+                <p class="text-2xl text-slate-300 mt-6">Therefore, our first piece of the puzzle is:</p>
+                <p class="text-5xl font-mono text-pink-400 font-bold mt-4">(x + 1)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 25: Boss Step 2 -->
+    <div class="slide" id="slide-25">
+        <h2 class="slide-title text-purple-400 border-purple-400/30">Step 2: Divide & Conquer</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-2xl text-slate-300 mb-8">Use Synthetic Division to rip (x+1) out of the main polynomial.</p>
+            <div class="card border-cyan-400 text-center px-16 py-8">
+                <div class="synth-table text-4xl">
+                    <div class="root text-pink-400 font-bold">-1</div>
+                    <div></div><div>1</div><div class="text-yellow-400 relative">0<span class="absolute -top-6 left-0 text-xs w-20 text-yellow-400 font-normal">Placeholder!</span></div><div>-7</div><div>-6</div>
+                    <div></div><div></div><div>-1</div><div>1</div><div>6</div>
+                    <div class="line"></div>
+                    <div></div><div></div><div class="text-cyan font-bold">1</div><div class="text-cyan font-bold">-1</div><div class="text-cyan font-bold">-6</div><div class="rem font-bold text-green-400">0</div>
+                </div>
+            </div>
+            <p class="text-3xl font-mono text-cyan mt-8">Quotient = x<sup>2</sup> - x - 6</p>
+        </div>
+    </div>
+
+    <!-- Slide 26: Boss Step 3 -->
+    <div class="slide" id="slide-26">
+        <h2 class="slide-title text-purple-400 border-purple-400/30">Step 3: Factor the Rest</h2>
+        <div class="flex flex-col items-center justify-center h-full text-center">
+            <p class="text-2xl text-slate-300 mb-10">We took a cubic and turned it into a linear factor times a quadratic.</p>
+            
+            <p class="text-4xl font-mono text-white mb-8">f(x) = <span class="text-pink-400">(x + 1)</span><span class="text-cyan">(x<sup>2</sup> - x - 6)</span></p>
+            
+            <i class="fas fa-arrow-down text-3xl text-slate-500 mb-8"></i>
+            
+            <p class="text-2xl text-slate-300 mb-4">Factor the quadratic normally:</p>
+            <p class="text-5xl font-mono text-green-400 font-bold">f(x) = (x + 1)(x - 3)(x + 2)</p>
+        </div>
+    </div>
+
+    <!-- Slide 27: Boss Step 4 -->
+    <div class="slide" id="slide-27">
+        <h2 class="slide-title text-purple-400 border-purple-400/30">Step 4: Sketch!</h2>
+        <div class="grid grid-cols-2 gap-10 items-center h-full">
+            <div>
+                <p class="text-3xl font-mono text-green-400 font-bold mb-8">f(x) = (x+1)(x-3)(x+2)</p>
+                <ul class="text-xl text-slate-300 space-y-4 list-disc ml-6">
+                    <li>Degree 3 (Odd), LC Positive &rarr; Q3 to Q1</li>
+                    <li>Roots at -2, -1, 3 (All cross)</li>
+                    <li>y-intercept at -6</li>
+                </ul>
+            </div>
+            <div class="bg-slate-900 border-2 border-slate-700 rounded-xl h-96 relative overflow-hidden flex items-center justify-center">
+                <!-- CSS drawing of the graph -->
+                <div class="absolute w-full h-[2px] bg-slate-600"></div>
+                <div class="absolute h-full w-[2px] bg-slate-600"></div>
+                <svg viewBox="-4 -15 8 30" class="absolute w-full h-full" preserveAspectRatio="none">
+                    <!-- y is inverted in SVG -->
+                    <path d="M -4 30 C -2.5 -5 -1.5 -5 -1 0 C -0.5 5 2 20 3 0 C 3.5 -10 4 -30 4 -30" fill="none" stroke="#4ade80" stroke-width="0.2"></path>
+                    <circle cx="-2" cy="0" r="0.25" fill="#f8fafc"></circle>
+                    <circle cx="-1" cy="0" r="0.25" fill="#f8fafc"></circle>
+                    <circle cx="3" cy="0" r="0.25" fill="#f8fafc"></circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Slide 28: Exam Tricks -->
+    <div class="slide" id="slide-28">
+        <h2 class="slide-title text-yellow-400 border-yellow-400/30">Ontario Exam Traps</h2>
+        <div class="flex flex-col justify-center h-full gap-6 max-w-4xl mx-auto w-full">
+            <div class="card border-red-500/50 flex items-center gap-6">
+                <i class="fas fa-bomb text-4xl text-red-500 w-12"></i>
+                <div>
+                    <h3 class="text-white text-xl mb-1 m-0">1. Forgetting Placeholders</h3>
+                    <p class="text-slate-400 text-md m-0">Always insert <span class="font-mono text-cyan">0x<sup>2</sup></span> if a degree is skipped!</p>
+                </div>
+            </div>
+            <div class="card border-red-500/50 flex items-center gap-6">
+                <i class="fas fa-minus-circle text-4xl text-red-500 w-12"></i>
+                <div>
+                    <h3 class="text-white text-xl mb-1 m-0">2. Subtraction Signs</h3>
+                    <p class="text-slate-400 text-md m-0">In Long Division, draw the line and physically change the signs before adding.</p>
+                </div>
+            </div>
+            <div class="card border-red-500/50 flex items-center gap-6">
+                <i class="fas fa-divide text-4xl text-red-500 w-12"></i>
+                <div>
+                    <h3 class="text-white text-xl mb-1 m-0">3. The (ax - b) Trap</h3>
+                    <p class="text-slate-400 text-md m-0">If divisor is <span class="font-mono text-pink-400">2x-1</span>, you MUST divide final synthetic quotient by 2.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 29: Summary Map -->
+    <div class="slide" id="slide-29">
+        <h2 class="slide-title">Summary Map: The Master Toolkit</h2>
+        <div class="flex flex-col items-center justify-center h-full">
+            <div class="flex items-center gap-4 text-center">
+                <div class="card border-slate-500 w-48"><h3 class="text-white text-lg m-0">Standard Form</h3></div>
+                <i class="fas fa-arrow-right text-2xl text-green-400"></i>
+                <div class="card border-green-400 bg-green-400/10 w-48"><h3 class="text-green-400 text-lg m-0">Factor Theorem</h3><p class="text-xs text-slate-400">(Find 1st Root)</p></div>
+                <i class="fas fa-arrow-right text-2xl text-cyan"></i>
+                <div class="card border-cyan-400 bg-cyan-400/10 w-48"><h3 class="text-cyan text-lg m-0">Synthetic Div</h3><p class="text-xs text-slate-400">(Break Down)</p></div>
+                <i class="fas fa-arrow-right text-2xl text-pink-400"></i>
+                <div class="card border-pink-400 bg-pink-400/10 w-48"><h3 class="text-pink-400 text-lg m-0">Factor Quad</h3><p class="text-xs text-slate-400">(Get rest of roots)</p></div>
+            </div>
+            <div class="mt-12 text-3xl font-bold text-white bg-slate-800 py-6 px-12 rounded-xl border border-slate-600">
+                Ready to Sketch! <i class="fas fa-pencil-alt text-yellow-400 ml-4"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 30: Exit Ticket -->
+    <div class="slide" id="slide-30">
+        <h2 class="slide-title">Exit Ticket</h2>
+        <div class="flex flex-col justify-center h-full w-full max-w-4xl mx-auto">
+            <p class="text-2xl text-cyan mb-8 font-bold">Rapid Fire!</p>
+            <ol class="space-y-8 text-2xl text-slate-200 list-decimal ml-8">
+                <li>If <span class="font-mono text-green-400">P(4) = 7</span>, what is the remainder when P(x) is divided by <span class="font-mono">(x-4)</span>?</li>
+                <li>If <span class="font-mono text-green-400">P(-2) = 0</span>, what is a factor of P(x)?</li>
+                <li>What number goes outside the synthetic bracket for <span class="font-mono">(x+5)</span>?</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- Slide 31: Homework -->
+    <div class="slide" id="slide-31">
+        <h2 class="slide-title">Homework & Next Steps</h2>
+        <div class="grid grid-cols-2 gap-12 items-center h-full">
+            <div class="card border-green-400 text-left h-full flex flex-col justify-center">
+                <h3 class="text-green-400 text-2xl mb-6"><i class="fas fa-book mr-3"></i>Jensen Math Worksheets</h3>
+                <ul class="text-xl text-slate-300 space-y-4 list-disc ml-6">
+                    <li><strong class="text-white">WS 1 (Division):</strong> Q1, Q3</li>
+                    <li><strong class="text-white">WS 2 (Factor Thm):</strong> Q2, Q4</li>
+                    <li><strong class="text-yellow-400">Challenge:</strong> Try to fully sketch Q4c from scratch!</li>
+                </ul>
+            </div>
+            <div class="flex flex-col items-center justify-center text-center">
+                <i class="fas fa-trophy text-7xl text-yellow-400 mb-6"></i>
+                <p class="text-4xl font-bold text-white">Great Job Today!</p>
+                <p class="text-xl text-slate-400 mt-4">See you next session.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+        <span class="progress-text" id="slideCounter">1 / 31</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 31;
+
+    function changeSlide(direction) {
+        // Hide current
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        
+        // Update index
+        currentSlide += direction;
+        
+        // Show new
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        
+        // Update UI
+        document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 1;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+</script>
+
+</body>
+</html>
