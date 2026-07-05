@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 2 Practice Mastery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --bg-panel: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --primary: #22d3ee;
+            --primary-glow: rgba(34, 211, 238, 0.3);
+            --secondary: #c084fc;
+            --secondary-glow: rgba(192, 132, 252, 0.3);
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --danger: #f87171;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-dark); 
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        #presentation-container {
+            width: 1280px; 
+            height: 720px;
+            background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%);
+            border-radius: 16px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative; 
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 50px 60px;
+            display: none;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease;
+        }
+        .slide.active { display: flex; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        .slide-title {
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary-glow);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+        .slide-title .level-badge {
+            font-size: 16px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--text-muted);
+            color: var(--text-muted);
+        }
+
+        .interactive-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            flex-grow: 1;
+            height: calc(100% - 120px);
+        }
+
+        .question-panel {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+        .question-text { font-size: 24px; line-height: 1.5; font-weight: 600; margin-bottom: 20px; color: #fff;}
+        .math-block { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; text-align: center; font-size: 26px; font-family: 'MathJax_Math', italic, serif; letter-spacing: 1px; margin: 15px 0; border-left: 4px solid var(--secondary);}
+        
+        .nav-buttons { margin-top: auto; display: flex; gap: 10px; }
+        .nav-btn { flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 8px; cursor: pointer; transition: 0.2s; font-family: 'Poppins'; font-weight: 600;}
+        .nav-btn:hover { background: rgba(255,255,255,0.1); }
+
+        .content-panel {
+            display: flex;
+            flex-direction: column;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: var(--bg-panel);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins';
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .tab-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+        .tab-btn:hover:not(.active) { color: white; border-color: rgba(255,255,255,0.3); }
+
+        .tab-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 30px;
+            flex-grow: 1;
+            display: none;
+            font-size: 20px;
+            line-height: 1.6;
+            overflow-y: auto;
+        }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+        /* Content Specific Styles */
+        .think-box { border-left: 4px solid var(--warning); background: rgba(251, 191, 36, 0.05); padding: 20px; border-radius: 0 8px 8px 0; }
+        .hint-box { border-left: 4px solid var(--secondary); background: rgba(192, 132, 252, 0.05); padding: 20px; border-radius: 0 8px 8px 0; }
+        .sol-step { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .sol-step:last-child { border-bottom: none; }
+        .exam-tip { display: flex; align-items: center; gap: 20px; background: rgba(248, 113, 113, 0.1); border: 1px solid var(--danger); padding: 25px; border-radius: 12px; }
+        .exam-tip i { font-size: 40px; color: var(--danger); }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide active" id="slide-1" style="justify-content: center; align-items: center; text-align: center;">
+        <div style="font-size: 80px; color: var(--primary); margin-bottom: 20px;"><i class="fas fa-dumbbell"></i></div>
+        <h1 style="font-size: 64px; color: #fff; line-height: 1.2;">MHF4U Unit 2: Factoring<br><span style="color: var(--primary);">Practice & Mastery</span></h1>
+        <p style="font-size: 24px; color: var(--text-muted); margin-top: 20px;">Ontario Curriculum | Problem-Solving Intensive</p>
+        <div style="margin-top: 50px;">
+            <button class="nav-btn" style="padding: 15px 40px; font-size: 20px; background: var(--primary); color: #000; border: none;" onclick="nextSlide()">Begin Challenge Session <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+        <h2 class="slide-title">Q1: The Efficiency Test <span class="level-badge" style="color: #4ade80; border-color: #4ade80;">Level 1 - Warm Up</span></h2>
+        
+        <div class="interactive-layout">
+            <div class="question-panel">
+                <div class="question-text">
+                    Find the remainder when the polynomial is divided by the binomial:
+                </div>
+                <div class="math-block">
+                    P(x) = x<sup>3</sup> - 2x<sup>2</sup> + 4x - 5<br>
+                    <span style="font-size: 18px; color: var(--text-muted);">divided by (x - 2)</span>
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <button class="nav-btn" onclick="nextSlide()">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="content-panel">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab(this, 's2-think')"><i class="fas fa-brain"></i> Think</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's2-hint')"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's2-sol')"><i class="fas fa-check-circle"></i> Solution</button>
+                    <button class="tab-btn" style="margin-left: auto; border-color: var(--danger); color: var(--danger);" onclick="switchTab(this, 's2-exam')"><i class="fas fa-exclamation-triangle"></i> Exam Tip</button>
+                </div>
+
+                <div id="s2-think" class="tab-content active">
+                    <div class="think-box">
+                        <strong>Before calculating:</strong> You have three methods available. Long division, synthetic division, or the Remainder Theorem. Which one is the fastest when you <em>only</em> need the remainder?
+                    </div>
+                </div>
+                <div id="s2-hint" class="tab-content">
+                    <div class="hint-box">
+                        <strong>Hint:</strong> The Remainder Theorem states that the remainder of P(x) ÷ (x - k) is exactly equal to <strong>P(k)</strong>. What is your 'k' value here?
+                    </div>
+                </div>
+                <div id="s2-sol" class="tab-content">
+                    <div class="sol-step">
+                        <strong>Step 1: Identify k</strong><br>
+                        The divisor is (x - 2), so k = 2.
+                    </div>
+                    <div class="sol-step">
+                        <strong>Step 2: Evaluate P(2)</strong><br>
+                        P(2) = (2)<sup>3</sup> - 2(2)<sup>2</sup> + 4(2) - 5<br>
+                        P(2) = 8 - 2(4) + 8 - 5<br>
+                        P(2) = 8 - 8 + 8 - 5
+                    </div>
+                    <div class="sol-step" style="color: var(--primary); font-weight: bold;">
+                        <strong>Final Answer:</strong> The remainder is 3.
+                    </div>
+                </div>
+                <div id="s2-exam" class="tab-content">
+                    <div class="exam-tip">
+                        <i class="fas fa-stopwatch"></i>
+                        <div>
+                            <strong>Ontario Exam Trap:</strong> Many students waste 3-4 minutes doing full long division for this 1-mark question. Time management is key. If a question only asks for the remainder, <em>always</em> use the Remainder Theorem!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+        <h2 class="slide-title">Q2: Working Backwards <span class="level-badge" style="color: var(--warning); border-color: var(--warning);">Level 2 - Moderate</span></h2>
+        
+        <div class="interactive-layout">
+            <div class="question-panel">
+                <div class="question-text">
+                    Determine the value of <em>k</em> so that the polynomial leaves a remainder of 7 when divided by (x + 1).
+                </div>
+                <div class="math-block">
+                    P(x) = kx<sup>3</sup> + 5x<sup>2</sup> - 2x + 3
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <button class="nav-btn" onclick="nextSlide()">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="content-panel">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab(this, 's3-think')"><i class="fas fa-brain"></i> Think</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's3-hint1')"><i class="fas fa-lightbulb"></i> Hint 1</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's3-sol')"><i class="fas fa-check-circle"></i> Solution</button>
+                    <button class="tab-btn" style="margin-left: auto; border-color: var(--primary); color: var(--primary);" onclick="switchTab(this, 's3-ext')"><i class="fas fa-plus-circle"></i> Extension</button>
+                </div>
+
+                <div id="s3-think" class="tab-content active">
+                    <div class="think-box">
+                        <strong>Logic Check:</strong> We know the remainder is 7. How can we set up an algebraic equation using the Remainder Theorem to isolate <em>k</em>?
+                    </div>
+                </div>
+                <div id="s3-hint1" class="tab-content">
+                    <div class="hint-box">
+                        <strong>Hint 1:</strong> The divisor is (x + 1), which means you need to evaluate P(-1). Set the entire equation equal to the known remainder: P(-1) = 7.
+                    </div>
+                </div>
+                <div id="s3-sol" class="tab-content">
+                    <div class="sol-step">
+                        <strong>Step 1: Set up the equation</strong><br>
+                        P(-1) = 7<br>
+                        k(-1)<sup>3</sup> + 5(-1)<sup>2</sup> - 2(-1) + 3 = 7
+                    </div>
+                    <div class="sol-step">
+                        <strong>Step 2: Simplify and isolate k</strong><br>
+                        k(-1) + 5(1) + 2 + 3 = 7<br>
+                        -k + 5 + 5 = 7<br>
+                        -k + 10 = 7<br>
+                        -k = -3
+                    </div>
+                    <div class="sol-step" style="color: var(--primary); font-weight: bold;">
+                        <strong>Final Answer:</strong> k = 3.
+                    </div>
+                </div>
+                <div id="s3-ext" class="tab-content">
+                    <div class="think-box" style="border-color: var(--primary); background: rgba(34, 211, 238, 0.05);">
+                        <strong>Extension Question:</strong> Now that you know k = 3, is (x - 1) a factor of this polynomial? 
+                        <br><br><em>(Mentally calculate P(1) with k=3 to check if remainder is 0!)</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+        <h2 class="slide-title">Q3: The Disguised Polynomial <span class="level-badge" style="color: #f97316; border-color: #f97316;">Level 3 - Advanced</span></h2>
+        
+        <div class="interactive-layout">
+            <div class="question-panel">
+                <div class="question-text">
+                    Fully factor the following polynomial over the real numbers:
+                </div>
+                <div class="math-block" style="border-color: #f97316;">
+                    f(x) = x<sup>4</sup> - 5x<sup>2</sup> + 4
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <button class="nav-btn" onclick="nextSlide()">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="content-panel">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab(this, 's4-think')"><i class="fas fa-brain"></i> Think</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's4-hint1')"><i class="fas fa-lightbulb"></i> Hint 1</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's4-sol')"><i class="fas fa-check-circle"></i> Solution</button>
+                </div>
+
+                <div id="s4-think" class="tab-content active">
+                    <div class="think-box">
+                        <strong>Strategic Choice:</strong> This is a degree 4 polynomial. You <em>could</em> use the Factor Theorem to find P(1)=0, then do synthetic division twice. BUT, look closely at the exponents (4 and 2). Is there a faster Grade 10 method hiding here?
+                    </div>
+                </div>
+                <div id="s4-hint1" class="tab-content">
+                    <div class="hint-box">
+                        <strong>Hint 1:</strong> This is a "Quadratic in Disguise". Let m = x<sup>2</sup>. Then m<sup>2</sup> = x<sup>4</sup>. Rewrite the equation in terms of m.
+                    </div>
+                </div>
+                <div id="s4-sol" class="tab-content">
+                    <div class="sol-step">
+                        <strong>Step 1: Substitution (Quadratic form)</strong><br>
+                        Let m = x<sup>2</sup>. The expression becomes:<br>
+                        m<sup>2</sup> - 5m + 4
+                    </div>
+                    <div class="sol-step">
+                        <strong>Step 2: Factor the simple quadratic</strong><br>
+                        Find two numbers that multiply to 4 and add to -5. (-4 and -1).<br>
+                        (m - 4)(m - 1)
+                    </div>
+                    <div class="sol-step">
+                        <strong>Step 3: Substitute back and factor fully</strong><br>
+                        Replace m with x<sup>2</sup>:<br>
+                        (x<sup>2</sup> - 4)(x<sup>2</sup> - 1)<br><br>
+                        Both are Difference of Squares!<br>
+                        <span style="color: var(--primary); font-weight: bold;">f(x) = (x - 2)(x + 2)(x - 1)(x + 1)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+        <h2 class="slide-title">Q4: Spot the Mistake <span class="level-badge" style="color: var(--danger); border-color: var(--danger);">Error Analysis</span></h2>
+        
+        <div class="interactive-layout">
+            <div class="question-panel">
+                <div class="question-text">
+                    A student used synthetic division to divide:<br><br>
+                    (x<sup>3</sup> - 27) ÷ (x - 3)
+                </div>
+                <div style="background: rgba(248, 113, 113, 0.1); padding: 20px; border: 1px solid var(--danger); border-radius: 8px; font-family: monospace; font-size: 22px;">
+                    3 |  1   -27<br>
+                      |      3<br>
+                      --------<br>
+                         1   -24<br><br>
+                    <span style="color: var(--text-muted);">Quotient: x - 24, Remainder: 0</span>
+                </div>
+                <div class="nav-buttons" style="margin-top: 20px;">
+                    <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <button class="nav-btn" onclick="nextSlide()">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="content-panel">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab(this, 's5-think')"><i class="fas fa-search"></i> Investigate</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's5-sol')"><i class="fas fa-wrench"></i> The Fix</button>
+                </div>
+
+                <div id="s5-think" class="tab-content active">
+                    <div class="think-box">
+                        <strong>Analyze the setup:</strong> The student put a '3' outside the bracket, which is correct for (x-3). They wrote '1' for the x<sup>3</sup> term and '-27' for the constant. What critical rule of polynomial division did they break?
+                    </div>
+                </div>
+                <div id="s5-sol" class="tab-content">
+                    <div class="sol-step" style="color: var(--danger); font-weight: bold;">
+                        <strong>The Mistake:</strong><br>
+                        They forgot the placeholder zeros for missing degrees! The polynomial is actually x<sup>3</sup> + 0x<sup>2</sup> + 0x - 27.
+                    </div>
+                    <div class="sol-step">
+                        <strong>Correct Setup & Solution:</strong><br><br>
+                        <span style="font-family: monospace; font-size: 22px; white-space: pre;">
+3 |  1   0   0  -27
+  |      3   9   27
+  -----------------
+     1   3   9 |  0
+                        </span><br><br>
+                        <strong>Quotient:</strong> x<sup>2</sup> + 3x + 9
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+        <h2 class="slide-title">Q5: The Systems Challenge <span class="level-badge" style="color: #ef4444; border-color: #ef4444;">Level 4 - Challenge</span></h2>
+        
+        <div class="interactive-layout">
+            <div class="question-panel">
+                <div class="question-text" style="font-size: 20px;">
+                    When P(x) = ax<sup>3</sup> - x<sup>2</sup> + 2x + b is divided by (x - 1), the remainder is 10. <br><br>
+                    When it is divided by (x - 2), the remainder is 51. <br><br>
+                    Determine the values of <em>a</em> and <em>b</em>.
+                </div>
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <button class="nav-btn" onclick="nextSlide()">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="content-panel">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab(this, 's6-think')"><i class="fas fa-brain"></i> Think</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's6-hint1')"><i class="fas fa-lightbulb"></i> Hint 1</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's6-hint2')"><i class="fas fa-lightbulb"></i> Hint 2</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's6-sol')"><i class="fas fa-check-circle"></i> Solution</button>
+                </div>
+
+                <div id="s6-think" class="tab-content active">
+                    <div class="think-box">
+                        <strong>Logic Check:</strong> We have TWO unknown variables (a and b). In algebra, to solve for two unknowns, you need a system of TWO equations. How can the Remainder Theorem give you two distinct equations?
+                    </div>
+                </div>
+                <div id="s6-hint1" class="tab-content">
+                    <div class="hint-box">
+                        <strong>Hint 1: Create Equation 1</strong><br>
+                        Using the first condition: P(1) = 10.<br>
+                        a(1)<sup>3</sup> - (1)<sup>2</sup> + 2(1) + b = 10<br>
+                        Simplify this to get an equation in terms of a and b.
+                    </div>
+                </div>
+                <div id="s6-hint2" class="tab-content">
+                    <div class="hint-box">
+                        <strong>Hint 2: Create Equation 2</strong><br>
+                        Using the second condition: P(2) = 51.<br>
+                        a(2)<sup>3</sup> - (2)<sup>2</sup> + 2(2) + b = 51<br>
+                        Simplify this. Then use substitution or elimination with Equation 1!
+                    </div>
+                </div>
+                <div id="s6-sol" class="tab-content">
+                    <div class="sol-step">
+                        <strong>Eq 1:</strong> a(1) - 1 + 2 + b = 10 &nbsp;&Rightarrow;&nbsp; <strong>a + b = 9</strong> (Eq 1)<br>
+                        <strong>Eq 2:</strong> a(8) - 4 + 4 + b = 51 &nbsp;&Rightarrow;&nbsp; <strong>8a + b = 51</strong> (Eq 2)
+                    </div>
+                    <div class="sol-step">
+                        <strong>Step 3: Elimination</strong><br>
+                        Subtract Eq 1 from Eq 2:<br>
+                        (8a + b) - (a + b) = 51 - 9<br>
+                        7a = 42<br>
+                        <strong>a = 6</strong>
+                    </div>
+                    <div class="sol-step">
+                        <strong>Step 4: Solve for b</strong><br>
+                        Sub 'a' into Eq 1: 6 + b = 9 &nbsp;&Rightarrow;&nbsp; <strong>b = 3</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+        <h2 class="slide-title">Q6: The Ultimate Test <span class="level-badge" style="color: #9333ea; border-color: #9333ea;">Level 5 - Master Challenge</span></h2>
+        
+        <div class="interactive-layout">
+            <div class="question-panel" style="font-size: 18px;">
+                <div class="question-text" style="font-size: 20px;">
+                    Analyze the function: <strong>f(x) = -x<sup>3</sup> + 3x<sup>2</sup> - 4</strong>
+                </div>
+                <ul style="margin-left: 20px; line-height: 1.8; color: var(--text-muted); margin-bottom: 20px;">
+                    <li>a) Use Factor Theorem to fully factor.</li>
+                    <li>b) State zeros and multiplicity.</li>
+                    <li>c) State end behaviour.</li>
+                    <li>d) Sketch the graph.</li>
+                </ul>
+                <div class="nav-buttons">
+                    <button class="nav-btn" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Prev</button>
+                    <button class="nav-btn" onclick="nextSlide()">Next <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="content-panel">
+                <div class="tab-bar">
+                    <button class="tab-btn active" onclick="switchTab(this, 's7-a')">Part a) Factor</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's7-b')">Part b) Zeros</button>
+                    <button class="tab-btn" onclick="switchTab(this, 's7-cd')">Part c & d) Graph</button>
+                </div>
+
+                <div id="s7-a" class="tab-content active">
+                    <div class="sol-step">
+                        <strong>Test factors of -4: (±1, ±2, ±4)</strong><br>
+                        f(-1) = -(-1)<sup>3</sup> + 3(-1)<sup>2</sup> - 4 = 1 + 3 - 4 = 0. <br>
+                        Therefore, <strong>(x + 1)</strong> is a factor.
+                    </div>
+                    <div class="sol-step">
+                        <strong>Synthetic Division by (x+1):</strong><br>
+                        Use root -1. Note the missing 'x' term! (0x).<br>
+                        Quotient is: -x<sup>2</sup> + 4x - 4
+                    </div>
+                    <div class="sol-step">
+                        <strong>Factor the quadratic:</strong><br>
+                        -(x<sup>2</sup> - 4x + 4) &nbsp;&Rightarrow;&nbsp; -(x - 2)(x - 2)<br>
+                        <strong>f(x) = -(x + 1)(x - 2)<sup>2</sup></strong>
+                    </div>
+                </div>
+                
+                <div id="s7-b" class="tab-content">
+                    <div class="sol-step">
+                        Based on f(x) = -(x + 1)(x - 2)<sup>2</sup>:
+                    </div>
+                    <ul style="margin-left: 20px; line-height: 2;">
+                        <li><strong>x = -1</strong> (Multiplicity 1) &nbsp;&Rightarrow;&nbsp; <em>Crosses</em> the axis.</li>
+                        <li><strong>x = 2</strong> (Multiplicity 2) &nbsp;&Rightarrow;&nbsp; <em>Bounces</em> off the axis.</li>
+                        <li><strong>y-intercept:</strong> f(0) = -4.</li>
+                    </ul>
+                </div>
+
+                <div id="s7-cd" class="tab-content">
+                    <div class="sol-step">
+                        <strong>End Behaviour:</strong> Degree 3 (Odd), Leading Coeff is Negative. Trend is down. Starts <strong>Q2</strong>, Ends <strong>Q4</strong>.
+                    </div>
+                    <div style="background: rgba(0,0,0,0.4); border-radius: 8px; padding: 10px; height: 200px; position: relative;">
+                        <!-- Pure CSS approximate graph representation for strict HTML constraints -->
+                        <div style="position: absolute; bottom: 50%; width: 100%; height: 2px; background: #475569;"></div>
+                        <div style="position: absolute; left: 30%; height: 100%; width: 2px; background: #475569;"></div>
+                        
+                        <!-- Intercept dots -->
+                        <div style="position: absolute; bottom: 48%; left: 20%; width: 10px; height: 10px; background: #fff; border-radius: 50%;"></div> <!-- x = -1 -->
+                        <div style="position: absolute; bottom: 48%; left: 60%; width: 10px; height: 10px; background: #fff; border-radius: 50%;"></div> <!-- x = 2 -->
+                        <div style="position: absolute; bottom: 20%; left: 29%; width: 10px; height: 10px; background: var(--warning); border-radius: 50%;"></div> <!-- y = -4 -->
+
+                        <svg width="100%" height="100%" viewBox="0 0 100 100" style="position:absolute; top:0; left:0;">
+                            <!-- Curve starts top left (Q2), crosses at x=-1, goes through y=-4, bounces at x=2, goes down to Q4 -->
+                            <path d="M 0 10 C 10 40, 15 50, 20 50 C 25 50, 28 80, 30 80 C 45 80, 50 50, 60 50 C 70 50, 80 90, 100 100" fill="none" stroke="#22d3ee" stroke-width="2"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+        <h2 class="slide-title">Mission Accomplished <i class="fas fa-flag-checkered"></i></h2>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
+            <div class="question-panel" style="border-color: var(--primary);">
+                <h3 style="color: var(--primary); margin-bottom: 15px;"><i class="fas fa-clipboard-check"></i> Key Takeaways</h3>
+                <ul style="line-height: 1.8; margin-left: 20px; color: var(--text-muted);">
+                    <li><strong>Remainder Theorem</strong> is faster than division for finding remainders.</li>
+                    <li>Always check for <strong>missing placeholders</strong> ($0x^2$) in synthetic division.</li>
+                    <li>For multi-variable problems ($a$ and $b$), set up a <strong>linear system</strong>.</li>
+                    <li>Don't forget to common factor before using complex theorems!</li>
+                </ul>
+            </div>
+            
+            <div class="question-panel" style="border-color: var(--success);">
+                <h3 style="color: var(--success); margin-bottom: 15px;"><i class="fas fa-home"></i> Mastery Homework</h3>
+                <p style="color: #fff; margin-bottom: 15px;">Complete these from Jensen Math Unit 2 Review:</p>
+                <ul style="line-height: 1.8; margin-left: 20px; color: var(--text-muted);">
+                    <li>Section 1: Q4, Q6 (Systems)</li>
+                    <li>Section 2: Q8 (Error Analysis)</li>
+                    <li>Section 3: Q11, Q12 (Full sketching)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center;">
+            <button class="nav-btn" style="padding: 15px 40px; font-size: 20px; width: auto;" onclick="prevSlide()"><i class="fas fa-chevron-left"></i> Review Previous</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 8;
+
+    function showSlide(n) {
+        // Hide all slides
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.classList.remove('active');
+        });
+        // Show target slide
+        document.getElementById(`slide-${n}`).classList.add('active');
+    }
+
+    function nextSlide() {
+        if (currentSlide < totalSlides) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 1) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+    }
+
+    function switchTab(btn, targetId) {
+        // Find the parent content panel
+        const panel = btn.closest('.content-panel');
+        
+        // Remove active class from all buttons in this panel
+        panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        // Remove active class from all content tabs in this panel
+        panel.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked button and target content
+        btn.classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+    }
+</script>
+
+</body>
+</html>
