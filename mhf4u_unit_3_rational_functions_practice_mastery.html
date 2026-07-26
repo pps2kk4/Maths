@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 3 - Rational Functions Mastery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-main: #020617;
+            --bg-panel: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --cyan: #22d3ee;
+            --purple: #c084fc;
+            --green: #4ade80;
+            --yellow: #fbbf24;
+            --red: #f87171;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); height: 100vh; margin: 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        
+        #presentation-container {
+            width: 1280px; height: 720px;
+            background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%);
+            border-radius: 16px; position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 70px); padding: 40px 60px; display: none; flex-direction: column; opacity: 0; transition: opacity 0.3s ease; }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+        
+        /* Navigation Bar */
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; z-index: 20; backdrop-filter: blur(10px); }
+        .nav-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--cyan); color: var(--cyan); padding: 10px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-family: 'Poppins'; }
+        .nav-btn:hover { background: var(--cyan); color: #020617; }
+        .nav-btn:disabled { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #64748b; cursor: not-allowed; }
+        .progress-text { color: var(--text-muted); font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 2px; font-size: 16px; }
+
+        /* Typography & Layouts */
+        .slide-title { font-size: 36px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 12px; margin-bottom: 20px; font-weight: 700; display: flex; justify-content: space-between; align-items: flex-end; }
+        .level-badge { font-size: 16px; padding: 6px 16px; border-radius: 20px; background: var(--card-bg); border: 1px solid currentColor; }
+        
+        .split-layout { display: grid; grid-template-columns: 450px 1fr; gap: 30px; height: 100%; flex-grow: 1; }
+        .question-panel { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 25px; display: flex; flex-direction: column; }
+        
+        /* robust formatting to replace math tags */
+        .math-block { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; text-align: center; font-size: 26px; font-family: 'Times New Roman', serif; font-style: italic; margin: 15px 0; border-left: 4px solid var(--purple); line-height: 1.5; white-space: pre-wrap;}
+        .math-inline { font-family: 'Times New Roman', serif; font-style: italic; font-size: 110%; }
+        
+        /* Tabs */
+        .tab-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+        .tab-btn { padding: 10px 15px; background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.1); color: var(--text-muted); border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        .tab-btn.active { background: var(--cyan); color: #000; border-color: var(--cyan); }
+        .tab-content { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 25px; flex-grow: 1; display: none; font-size: 20px; line-height: 1.6; overflow-y: auto; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .sol-step { margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+        .sol-step:last-child { border-bottom: none; }
+        
+        /* Helpers */
+        .text-cyan { color: var(--cyan); } .text-purple { color: var(--purple); }
+        .text-green { color: var(--green); } .text-yellow { color: var(--yellow); }
+        .text-red { color: var(--red); }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    <!-- Slides injected dynamically via JS -->
+    
+    <div class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+        <span class="progress-text" id="slideCounter">1 / 40</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<script>
+    const slideData = [
+        {
+            type: "title",
+            title: "MHF4U Unit 3: Rational Functions",
+            subtitle: "Practice Mastery & Exam Prep",
+            desc: "40 Interactive Problems | Level 1 to Level 5"
+        },
+        // LEVEL 1
+        {
+            title: "Q1: Domain Restrictions", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Determine the domain of the function:<br><br>f(x) = 3x / (x<sup>2</sup> - 9)",
+            think: "What is the absolute #1 rule of math regarding fractions?",
+            hint: "The denominator can never equal zero. Set x<sup>2</sup> - 9 = 0 and solve.",
+            sol: "Step 1: Factor the denominator.<br>x<sup>2</sup> - 9 = (x - 3)(x + 3)<br><br>Step 2: Set restrictions.<br>x - 3 &ne; 0 &rArr; x &ne; 3<br>x + 3 &ne; 0 &rArr; x &ne; -3<br><br><span class='text-green font-bold'>Domain: {x &isin; R | x &ne; &plusmn;3}</span>"
+        },
+        {
+            title: "Q2: VA vs. Hole", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Does g(x) = (x<sup>2</sup> - 16) / (x + 4) have a Vertical Asymptote or a Point Discontinuity (Hole) at x = -4?",
+            think: "Don't just assume the denominator creates an asymptote. Factor the numerator first!",
+            hint: "(x<sup>2</sup> - 16) is a difference of squares. Do any factors cancel?",
+            sol: "Factor top: (x - 4)(x + 4)<br>Equation: g(x) = (x - 4)(x + 4) / (x + 4)<br><br>The (x + 4) factors cancel out.<br><span class='text-green font-bold'>Because it cancels, x = -4 produces a HOLE, not a vertical asymptote.</span>"
+        },
+        {
+            title: "Q3: Horizontal Asymptote (Case 1)", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Find the Horizontal Asymptote of:<br><br>h(x) = (2x + 1) / (x<sup>2</sup> + 5x + 6)",
+            think: "Compare the highest degree of the numerator to the highest degree of the denominator.",
+            hint: "Numerator degree is 1. Denominator degree is 2. The bottom grows much faster than the top as x &rarr; &infin;.",
+            sol: "Degree of Numerator < Degree of Denominator.<br>Therefore, the limit as x approaches infinity is 0.<br><br><span class='text-green font-bold'>Horizontal Asymptote: y = 0</span>"
+        },
+        {
+            title: "Q4: Horizontal Asymptote (Case 2)", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Find the Horizontal Asymptote of:<br><br>k(x) = (5x<sup>2</sup> - 2) / (3x<sup>2</sup> + x)",
+            think: "The degrees are tied (both are x<sup>2</sup>). Who wins the tug of war at infinity?",
+            hint: "When degrees are equal, the HA is the ratio of the leading coefficients.",
+            sol: "Numerator degree = 2. Denominator degree = 2.<br>Leading coefficient top: 5<br>Leading coefficient bottom: 3<br><br><span class='text-green font-bold'>Horizontal Asymptote: y = 5/3</span>"
+        },
+        {
+            title: "Q5: The Extraneous Root Trap", level: "Level 1 - Warm Up", color: "var(--green)",
+            q: "Solve for x:<br><br>x / (x - 2) = 2 / (x - 2)",
+            think: "Since the denominators are exactly the same, you can just set the numerators equal... but wait! Is there a trap?",
+            hint: "If x = 2, what happens to the original denominator?",
+            sol: "Setting numerators equal gives x = 2.<br><br>Check restrictions: Original denominator (x - 2) &ne; 0 &rArr; x &ne; 2.<br><br>Since our answer is the restricted value, it is an <strong>extraneous root</strong>.<br><span class='text-green font-bold'>Final Answer: No Solution.</span>"
+        },
+        // LEVEL 2
+        {
+            title: "Q6: Graph Intercepts", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Find the x-intercept and y-intercept for:<br><br>f(x) = (2x - 6) / (x + 1)",
+            think: "x-intercept means y=0 (just set numerator = 0).<br>y-intercept means x=0.",
+            hint: "For x-int: 2x - 6 = 0.<br>For y-int: Evaluate f(0).",
+            sol: "<strong>x-intercept:</strong> Set numerator to 0.<br>2x - 6 = 0 &rArr; 2x = 6 &rArr; x = 3. <strong>(3, 0)</strong><br><br><strong>y-intercept:</strong> Sub x = 0.<br>f(0) = (0 - 6) / (0 + 1) = -6. <strong>(0, -6)</strong>"
+        },
+        {
+            title: "Q7: Hole Coordinates", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Determine the exact (x, y) coordinates of the hole for:<br><br>f(x) = (x<sup>2</sup> - x - 6) / (x - 3)",
+            think: "Factor and cancel to find the x-value. But how do you find the y-value of a point that technically doesn't exist?",
+            hint: "Substitute the restricted x-value into the SIMPLIFIED equation.",
+            sol: "1. Factor: f(x) = (x - 3)(x + 2) / (x - 3)<br>2. Cancel: f(x) = x + 2 (with hole at x = 3)<br>3. Find y: Sub x = 3 into simplified f(x).<br>y = (3) + 2 = 5.<br><br><span class='text-yellow font-bold'>Hole coordinate: (3, 5)</span>"
+        },
+        {
+            title: "Q8: End Behaviour Near VA", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Evaluate the limit behavior as x approaches the vertical asymptote from the right:<br><br>As x &rarr; 2<sup>+</sup>, 1 / (x - 2) &rarr; ?",
+            think: "x approaches 2 from the positive side means numbers slightly larger than 2 (e.g., 2.01, 2.001).",
+            hint: "Plug 2.01 into the denominator. Is the result a tiny positive fraction or tiny negative fraction? What happens to 1 divided by a tiny positive?",
+            sol: "Test x = 2.01:<br>1 / (2.01 - 2) = 1 / 0.01 = +100.<br><br>The smaller the denominator, the larger the overall value.<br><span class='text-yellow font-bold'>As x &rarr; 2<sup>+</sup>, f(x) &rarr; +&infin;</span>"
+        },
+        {
+            title: "Q9: Slant (Oblique) Asymptotes", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Concept Check: When does a rational function have a Slant (Oblique) Asymptote instead of a Horizontal Asymptote?",
+            think: "Look at the relationship between the degree of the numerator and the denominator.",
+            hint: "It happens when the top is 'heavier', but only by a specific amount.",
+            sol: "A slant asymptote occurs when the degree of the numerator is <strong class='text-yellow'>EXACTLY ONE greater</strong> than the degree of the denominator.<br><br>Example: Quadratic / Linear, or Cubic / Quadratic."
+        },
+        {
+            title: "Q10: Finding the Slant Asymptote", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Determine the equation of the slant asymptote for:<br><br>y = (x<sup>2</sup> + 3x + 5) / (x - 2)",
+            think: "Use Polynomial Long Division or Synthetic Division. What do you do with the remainder?",
+            hint: "Root is 2. Synthetic division row: 1, 3, 5. Ignore the remainder!",
+            sol: "Synthetic Div: Root 2<br>2 | 1 &nbsp; 3 &nbsp; 5<br>&nbsp;&nbsp;| &nbsp; 2 &nbsp; 10<br>--------------<br>&nbsp;&nbsp;&nbsp; 1 &nbsp; 5 | 15<br><br>Quotient is x + 5. Remainder is 15.<br><span class='text-yellow font-bold'>Slant Asymptote: y = x + 5</span>"
+        },
+        {
+            title: "Q11: Basic Rational Inequality", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Solve algebraically: (x - 4) / (x + 2) > 0",
+            think: "Find the critical values (roots and vertical asymptotes). Then use an interval chart or number line.",
+            hint: "Critical values: x = 4 (root), x = -2 (VA). Test regions: (-&infin;, -2), (-2, 4), (4, &infin;).",
+            sol: "Test x = -3: (-)/(-) = + (True)<br>Test x = 0: (-)/(+) = - (False)<br>Test x = 5: (+)/(+) = + (True)<br><br><span class='text-yellow font-bold'>Solution: x < -2 OR x > 4</span><br>Interval notation: (-&infin;, -2) &cup; (4, &infin;)"
+        },
+        {
+            title: "Q12: The Bounce Inequality", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Solve: (x - 3)<sup>2</sup> / (x + 1) &le; 0",
+            think: "The numerator is squared! How does that affect your number line signs around x=3?",
+            hint: "The (x-3)<sup>2</sup> term is always positive, so the sign 'bounces' at 3. The inequality is driven entirely by (x+1).",
+            sol: "Critical values: x = 3 (root), x = -1 (VA).<br>Since numerator is always &ge; 0, for the fraction to be &le; 0, denominator must be < 0.<br>x + 1 < 0 &rArr; x < -1.<br>Also check if it equals 0: at x = 3, fraction is 0, which is allowed.<br><span class='text-yellow font-bold'>Solution: x < -1 OR x = 3</span>"
+        },
+        {
+            title: "Q13: Common Denominators", level: "Level 2 - Moderate", color: "var(--yellow)",
+            q: "Solve: 2/(x - 1) + 3/(x + 1) = 4/(x<sup>2</sup> - 1)",
+            think: "Notice a relationship between the denominators? x<sup>2</sup> - 1 factors into the other two!",
+            hint: "Multiply every single term by the LCD: (x - 1)(x + 1) to clear all fractions instantly.",
+            sol: "Multiply by LCD:<br>2(x + 1) + 3(x - 1) = 4<br>2x + 2 + 3x - 3 = 4<br>5x - 1 = 4<br>5x = 5 &rArr; x = 1<br><br><strong>Check Restrictions:</strong> x &ne; &plusmn;1.<br><span class='text-red font-bold'>x=1 is extraneous. No Solution.</span>"
+        },
+        // LEVEL 3
+        {
+            title: "Q14: Error Analysis: Inequalities", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "A student solved (x - 2)/(x + 3) > 1 by cross-multiplying the (x + 3). Identify the fatal flaw.",
+            think: "What rule of inequalities is broken when you multiply by a variable?",
+            hint: "If you multiply an inequality by a negative number, the sign must flip. Do you know if (x+3) is positive or negative?",
+            sol: "We don't know the value of x, so we don't know if (x + 3) is positive or negative.<br>If it's negative, the inequality sign was supposed to flip!<br><br><span class='text-red font-bold'>Rule: NEVER cross-multiply variables across an inequality sign.</span> Bring the 1 over and find a common denominator."
+        },
+        {
+            title: "Q15: Subtracting over Inequalities", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Solve properly: (x - 2)/(x + 3) > 1",
+            think: "Bring the 1 to the left side so it's > 0. Then get a common denominator.",
+            hint: "(x - 2)/(x + 3) - (x + 3)/(x + 3) > 0. Combine the numerators carefully (distribute the negative).",
+            sol: "[(x - 2) - (x + 3)] / (x + 3) > 0<br>(-5) / (x + 3) > 0<br><br>Numerator is always negative. For the fraction to be > 0 (positive), the denominator must also be negative!<br>x + 3 < 0 &rArr; <span class='text-red font-bold'>x < -3</span>"
+        },
+        {
+            title: "Q16: Crossing the HA", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Determine the point where f(x) crosses its Horizontal Asymptote:<br><br>f(x) = (2x<sup>2</sup> + 3x) / (x<sup>2</sup> + 1)",
+            think: "A graph can NEVER cross a Vertical Asymptote, but it CAN cross a Horizontal Asymptote. First, find the HA.",
+            hint: "Degrees are equal (2). HA is y = 2/1 = 2. Set the whole function equal to 2 and solve for x.",
+            sol: "HA is y = 2.<br>Set 2 = (2x<sup>2</sup> + 3x) / (x<sup>2</sup> + 1)<br>2(x<sup>2</sup> + 1) = 2x<sup>2</sup> + 3x<br>2x<sup>2</sup> + 2 = 2x<sup>2</sup> + 3x<br>2 = 3x &rArr; x = 2/3<br><br><span class='text-red font-bold'>Crosses at (2/3, 2)</span>"
+        },
+        {
+            title: "Q17: Word Problem: Work Rate", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Person A can paint a room in 4 hours. Person B can paint it in 6 hours. How long does it take if they work together?",
+            think: "This is a rational equation problem. Rate A + Rate B = Combined Rate.",
+            hint: "Rate A = 1/4 of the room per hour. Rate B = 1/6. Set up: 1/4 + 1/6 = 1/t",
+            sol: "1/4 + 1/6 = 1/t<br>Common denominator for 4 and 6 is 12.<br>3/12 + 2/12 = 1/t<br>5/12 = 1/t<br>Cross multiply: 5t = 12<br>t = 12/5 = <span class='text-red font-bold'>2.4 hours.</span>"
+        },
+        {
+            title: "Q18: Word Problem: Mixtures", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "You have 5 Liters of 20% juice. How many Liters of 100% pure juice must you add to create a 50% mixture?",
+            think: "Concentration = (Pure Juice Amount) / (Total Volume).",
+            hint: "Current pure juice = 0.20(5) = 1L. <br>Equation: (1 + x) / (5 + x) = 0.50",
+            sol: "(1 + x) / (5 + x) = 0.5<br>1 + x = 0.5(5 + x)<br>1 + x = 2.5 + 0.5x<br>0.5x = 1.5<br>x = 1.5 / 0.5 = 3<br><span class='text-red font-bold'>Add 3 Liters of pure juice.</span>"
+        },
+        {
+            title: "Q19: Working Backwards (a and b)", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "A function f(x) = (ax + 5) / (x - b) has a Horizontal Asymptote at y = 3 and a Vertical Asymptote at x = -2. Find a and b.",
+            think: "Use the rules for HA (ratio of leading coefficients) and VA (denominator equals 0).",
+            hint: "For HA: ratio of ax/x = a. So a = 3. <br>For VA: x - b = 0 when x = -2.",
+            sol: "HA: a/1 = 3 &rArr; <strong class='text-red'>a = 3</strong><br><br>VA: Sub x = -2 into denominator.<br>(-2) - b = 0 &rArr; <strong class='text-red'>b = -2</strong>"
+        },
+        {
+            title: "Q20: Finding 'k' for a single VA", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Find all values of k so that f(x) = (x + 5) / (x<sup>2</sup> - kx + 9) has exactly ONE vertical asymptote.",
+            think: "A quadratic denominator usually has TWO vertical asymptotes. How can a quadratic only have ONE root?",
+            hint: "The denominator must be a perfect square. Use the discriminant rule from Grade 10: b<sup>2</sup> - 4ac = 0.",
+            sol: "Denominator: x<sup>2</sup> - kx + 9<br>For one root, Discriminant = 0<br>(-k)<sup>2</sup> - 4(1)(9) = 0<br>k<sup>2</sup> - 36 = 0<br>k<sup>2</sup> = 36<br><span class='text-red font-bold'>k = 6 OR k = -6</span>"
+        },
+        {
+            title: "Q21: Even vs Odd VA Multiplicity", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Concept: At x=2, the graph shoots up to +&infin; on both the left and right side (like a volcano). At x=-3, it goes down to -&infin; on the left and up to +&infin; on the right. What does this tell you about the denominator?",
+            think: "How do squared factors vs linear factors behave at asymptotes?",
+            hint: "Same direction = squared (even). Opposite directions = linear (odd).",
+            sol: "At x=2 (same direction): The factor is squared.<br>At x=-3 (opposite direction): The factor is linear.<br><br><span class='text-red font-bold'>Denominator skeleton: (x - 2)<sup>2</sup>(x + 3)</span>"
+        },
+        {
+            title: "Q22: Word Problem: Average Cost", level: "Level 3 - Advanced", color: "var(--red)",
+            q: "Average cost to produce x shirts is C(x) = (5000 + 20x) / x. What happens to the average cost as you produce millions of shirts (x &rarr; &infin;)?",
+            think: "As x approaches infinity, we are looking for the Horizontal Asymptote.",
+            hint: "Degrees are equal (x on top, x on bottom). Divide leading coefficients.",
+            sol: "Leading coefficient of numerator: 20.<br>Leading coefficient of denominator: 1.<br>HA is y = 20 / 1 = 20.<br><br><span class='text-red font-bold'>As production increases, average cost approaches $20 per shirt (the marginal variable cost).</span>"
+        },
+        // LEVEL 4
+        {
+            title: "Q23: Factoring Cubics for Holes", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Identify the coordinates of any holes in:<br>f(x) = (x<sup>3</sup> - 8) / (x - 2)",
+            think: "Factor the difference of cubes in the numerator to see if (x-2) cancels.",
+            hint: "Formula: a<sup>3</sup> - b<sup>3</sup> = (a - b)(a<sup>2</sup> + ab + b<sup>2</sup>). Here a=x, b=2.",
+            sol: "Numerator factors to: (x - 2)(x<sup>2</sup> + 2x + 4).<br>Cancel (x-2) from top and bottom. Hole at x = 2.<br>Find y-coord by subbing 2 into remaining quadratic: (2)<sup>2</sup> + 2(2) + 4 = 12.<br><span class='text-purple font-bold'>Hole at (2, 12)</span>"
+        },
+        {
+            title: "Q24: Double VA Graphing Logic", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "A graph has VAs at x=-2 and x=2. HA at y=0. y-int is (0, -3). No x-intercepts. Does the middle section open UP like a 'U' or DOWN like an 'n'?",
+            think: "The middle section is bounded between x=-2 and x=2. It passes through (0, -3) and CANNOT cross the x-axis.",
+            hint: "If it's at -3 and can't go up past 0 (no x-ints), where must the arms go?",
+            sol: "Since it passes through y=-3 and cannot cross the x-axis to go up, both sides must plunge downwards towards the vertical asymptotes.<br><span class='text-purple font-bold'>It forms an upside-down 'U' opening downwards.</span>"
+        },
+        {
+            title: "Q25: Tricky Rational Equation", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Solve: 1 / (x - 1) = 1 / (x + 1)",
+            think: "Cross multiply. What happens to the x's?",
+            hint: "x + 1 = x - 1. Subtract x from both sides...",
+            sol: "Cross multiplying gives:<br>x + 1 = x - 1<br>Subtract x from both sides:<br>1 = -1<br><br>This is a false statement. <span class='text-purple font-bold'>No Solution. The two curves never intersect.</span>"
+        },
+        {
+            title: "Q26: SA Remainder Interpretation", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "After long division, a function is rewritten as f(x) = (x + 2) + 5/(x-1). Does the curve approach the Slant Asymptote (y=x+2) from ABOVE or BELOW as x &rarr; +&infin;?",
+            think: "As x gets huge, 5/(x-1) becomes a very tiny positive fraction. Are we adding or subtracting from the line y=x+2?",
+            hint: "If we add a tiny positive amount to the line, we are slightly higher than the line.",
+            sol: "As x &rarr; +&infin;, 5/(x-1) is a small POSITIVE number.<br>f(x) = (x+2) + (small positive amount).<br><span class='text-purple font-bold'>Therefore, the curve approaches the slant asymptote from ABOVE.</span>"
+        },
+        {
+            title: "Q27: Complex LCD Equation", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Solve: x/(x - 3) - 2/(x + 3) = 18/(x<sup>2</sup> - 9)",
+            think: "The LCD is (x-3)(x+3). Multiply every term by this to clear the denominators.",
+            hint: "Term 1 gets (x+3). Term 2 gets (x-3). Term 3 gets nothing (it already has the LCD).",
+            sol: "x(x + 3) - 2(x - 3) = 18<br>x<sup>2</sup> + 3x - 2x + 6 = 18<br>x<sup>2</sup> + x - 12 = 0<br>(x + 4)(x - 3) = 0<br>x = -4 or x = 3.<br><br>Check restrictions: x &ne; &plusmn;3. Reject x=3.<br><span class='text-purple font-bold'>Solution: x = -4</span>"
+        },
+        {
+            title: "Q28: Working Backwards (Holes & VAs)", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Build equation: Hole at x=2, VA at x=-1, x-int at x=3, y-int at (0, 6).",
+            think: "Hole means (x-2) is on top AND bottom. VA means (x+1) is on bottom. x-int means (x-3) is on top.",
+            hint: "Skeleton: y = a(x - 3)(x - 2) / [ (x + 1)(x - 2) ]. Sub (0, 6).",
+            sol: "6 = a(0 - 3)(0 - 2) / [ (0 + 1)(0 - 2) ]<br>6 = a(6) / (-2)<br>6 = -3a &rArr; a = -2<br><br><span class='text-purple font-bold'>y = -2(x - 3)(x - 2) / (x + 1)(x - 2)</span>"
+        },
+        {
+            title: "Q29: Error Analysis: Cancellation", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Student simplifies f(x) = (x<sup>2</sup> + 1) / x by cancelling the x's to get f(x) = x + 1. Fatal flaw?",
+            think: "Can you cancel parts of an addition statement?",
+            hint: "You can only cancel FACTORS (multiplication), never TERMS (addition/subtraction).",
+            sol: "The '+ 1' on top prevents cancellation. You cannot divide just one term of a binomial.<br><span class='text-purple font-bold'>Fatal Flaw: Cancelling terms instead of factors. The expression (x<sup>2</sup> + 1)/x cannot be simplified further.</span>"
+        },
+        {
+            title: "Q30: Graphing Analysis (Domain/Range)", level: "Level 4 - Challenge", color: "var(--purple)",
+            q: "Find the Range of f(x) = (2x<sup>2</sup> - 8) / (x - 2)",
+            think: "Factor and simplify first. It's a line with a hole. What y-value does the hole exclude?",
+            hint: "f(x) = 2(x-2)(x+2) / (x-2) = 2(x+2). Hole at x=2. What is y when x=2?",
+            sol: "Hole at x = 2. Sub into simplified equation: y = 2(2+2) = 8.<br>The graph is a straight line that covers all y-values EXCEPT the hole.<br><span class='text-purple font-bold'>Range: {y &isin; R | y &ne; 8}</span>"
+        },
+        // LEVEL 5
+        {
+            title: "Q31: Advanced Inequalities", level: "Level 5 - Master", color: "#f472b6",
+            q: "Solve: (x - 2)(x + 1) / (x - 4)<sup>2</sup> &le; 0",
+            think: "The (x-4)<sup>2</sup> is always positive, so it doesn't flip signs. But can x = 4?",
+            hint: "No, x=4 is a VA. Draw number line with roots 2, -1 (solid dots) and VA 4 (open dot).",
+            sol: "Critical points: -1, 2, 4(VA).<br>Test (-&infin;, -1): (-)(-)/(+) = +<br>Test (-1, 2): (-)(+)/(+) = - (True!)<br>Test (2, 4): (+)(+)/(+) = +<br>Test (4, &infin;): (+)(+)/(+) = +<br><span style='color:#f472b6;' class='font-bold'>Solution: -1 &le; x &le; 2</span>"
+        },
+        {
+            title: "Q32: Slant Asymptote (Cubic / Quad)", level: "Level 5 - Master", color: "#f472b6",
+            q: "Find the Slant Asymptote: y = (x<sup>3</sup> - 2x<sup>2</sup> + 4) / (x<sup>2</sup> + 1)",
+            think: "Can you use synthetic division here?",
+            hint: "No! Divisor is degree 2. You MUST use polynomial long division.",
+            sol: "Divide x<sup>3</sup> - 2x<sup>2</sup> + 0x + 4 by x<sup>2</sup> + 0x + 1.<br>x<sup>2</sup> goes into x<sup>3</sup> ... x times. Multiply: x<sup>3</sup> + x. Subtract.<br>Next term is -2x<sup>2</sup>. Divide by x<sup>2</sup> ... -2 times.<br>Ignore remainder.<br><span style='color:#f472b6;' class='font-bold'>Slant Asymptote: y = x - 2</span>"
+        },
+        {
+            title: "Q33: Turning Points via Discriminant", level: "Level 5 - Master", color: "#f472b6",
+            q: "Find the exact max and min y-values (range) of y = x / (x<sup>2</sup> + 1) without calculus.",
+            think: "Rearrange into a quadratic in terms of x. Then use b<sup>2</sup> - 4ac &ge; 0 for real roots.",
+            hint: "yx<sup>2</sup> - x + y = 0. Here, a=y, b=-1, c=y.",
+            sol: "For x to exist, discriminant &ge; 0.<br>(-1)<sup>2</sup> - 4(y)(y) &ge; 0<br>1 - 4y<sup>2</sup> &ge; 0<br>4y<sup>2</sup> &le; 1 &rArr; y<sup>2</sup> &le; 1/4<br><span style='color:#f472b6;' class='font-bold'>Range: -1/2 &le; y &le; 1/2</span>"
+        },
+        {
+            title: "Q34: Absolute Value in Rational", level: "Level 5 - Master", color: "#f472b6",
+            q: "Sketch f(x) = |x - 2| / (x - 2)",
+            think: "Split into piece-wise. What happens if x > 2? What if x < 2?",
+            hint: "If x=5, 3/3 = 1. If x=0, |-2|/-2 = 2/-2 = -1.",
+            sol: "If x > 2, f(x) = 1.<br>If x < 2, f(x) = -1.<br>At x = 2, undefined.<br><span style='color:#f472b6;' class='font-bold'>Graph is a horizontal line at y=1 (right of 2) and y=-1 (left of 2) with open circles on the y-axis. (Jump Discontinuity).</span>"
+        },
+        {
+            title: "Q35: Oblique Asymptote Limits", level: "Level 5 - Master", color: "#f472b6",
+            q: "f(x) = (x<sup>2</sup> + x) / (x - 1). SA is y = x + 2. Remainder is 2. Does the curve approach the SA from above or below as x &rarr; -&infin;?",
+            think: "f(x) = (x + 2) + 2/(x - 1). Evaluate the remainder fraction at a massive negative number.",
+            hint: "Plug in x = -1000 into 2/(x-1). Is it a tiny positive or tiny negative?",
+            sol: "2 / (-1000 - 1) = 2 / -1001.<br>This is a tiny NEGATIVE number.<br>Since we are adding a negative (subtracting) from the line y = x + 2, we are slightly lower than the line.<br><span style='color:#f472b6;' class='font-bold'>Approaches from BELOW.</span>"
+        },
+        {
+            title: "Q36: The Hidden Extraneous Root", level: "Level 5 - Master", color: "#f472b6",
+            q: "Solve: x / (x - 3) = (x + 6) / (x<sup>2</sup> - 9)",
+            think: "Factor x<sup>2</sup> - 9 to (x-3)(x+3). Multiply both sides by LCD.",
+            hint: "x(x+3) = x + 6. Solve quadratic.",
+            sol: "x<sup>2</sup> + 3x = x + 6<br>x<sup>2</sup> + 2x - 6 = 0<br>Roots by Quad Formula: x = -1 &plusmn; &radic;7.<br>Check restrictions: x &ne; &plusmn;3.<br><span style='color:#f472b6;' class='font-bold'>Both roots are valid! No extraneous roots this time.</span>"
+        },
+        {
+            title: "Q37: The Ultimate Boss Graph", level: "Level 5 - Master", color: "#f472b6",
+            q: "Find VA, HA, Holes, x-ints, y-int for:<br>f(x) = (x<sup>3</sup> - 2x<sup>2</sup> - 8x) / (x<sup>3</sup> - 4x)",
+            think: "Factor EVERYTHING fully before doing any analysis.",
+            hint: "Top: x(x<sup>2</sup> - 2x - 8) = x(x-4)(x+2).<br>Bottom: x(x<sup>2</sup> - 4) = x(x-2)(x+2).",
+            sol: "f(x) = x(x-4)(x+2) / [x(x-2)(x+2)].<br>Cancel x and (x+2).<br>Holes at: x=0 and x=-2.<br>Simplified: (x-4)/(x-2).<br><span style='color:#f472b6;' class='font-bold'>VA: x=2. HA: y=1. x-int: 4.</span>"
+        },
+        // OUTRO
+        {
+            type: "outro",
+            title: "Mission Accomplished",
+            subtitle: "You survived 38 intense MHF4U problems.",
+            desc: "Review these strategies before your Unit 3 Exam!"
+        }
+    ];
+
+    let currentSlide = 0;
+    const totalSlides = slideData.length;
+
+    function createSlideHTML(data, index) {
+        if (data.type === "title") {
+            return `
+            <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}" style="justify-content: center; align-items: center; text-align: center;">
+                <i class="fas fa-divide text-cyan text-6xl mb-6"></i>
+                <h1 class="text-6xl font-bold mb-4 text-white">${data.title}</h1>
+                <h2 class="text-3xl text-cyan mb-8">${data.subtitle}</h2>
+                <p class="text-xl text-slate-400">${data.desc}</p>
+            </div>`;
+        }
+        
+        if (data.type === "outro") {
+            return `
+            <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}" style="justify-content: center; align-items: center; text-align: center;">
+                <i class="fas fa-trophy text-yellow text-7xl mb-6"></i>
+                <h1 class="text-5xl font-bold mb-4 text-white">${data.title}</h1>
+                <h2 class="text-2xl text-green mb-8">${data.subtitle}</h2>
+                <p class="text-xl text-slate-400">${data.desc}</p>
+            </div>`;
+        }
+
+        return `
+        <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}">
+            <h2 class="slide-title" style="color: ${data.color}; border-color: ${data.color};">
+                ${data.title}
+                <span class="level-badge" style="color: ${data.color};">${data.level}</span>
+            </h2>
+            
+            <div class="split-layout">
+                <div class="question-panel">
+                    <h3 class="text-2xl font-bold text-white mb-6">Question:</h3>
+                    <div class="math-block" style="border-color: ${data.color};">${data.q}</div>
+                </div>
+                
+                <div class="flex flex-col">
+                    <div class="tab-bar">
+                        <button class="tab-btn active" onclick="switchTab(this, 'think-${index}')"><i class="fas fa-brain"></i> Think</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'hint-${index}')"><i class="fas fa-lightbulb"></i> Hint</button>
+                        <button class="tab-btn" onclick="switchTab(this, 'sol-${index}')"><i class="fas fa-check-circle"></i> Solution</button>
+                    </div>
+                    
+                    <div id="think-${index}" class="tab-content active" style="border-left: 4px solid var(--yellow); background: rgba(251, 191, 36, 0.05);">
+                        <strong class="text-yellow">Logic Check:</strong><br><br>${data.think}
+                    </div>
+                    
+                    <div id="hint-${index}" class="tab-content" style="border-left: 4px solid var(--purple); background: rgba(192, 132, 252, 0.05);">
+                        <strong class="text-purple">Hint:</strong><br><br>${data.hint}
+                    </div>
+                    
+                    <div id="sol-${index}" class="tab-content">
+                        ${data.sol}
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function init() {
+        let allSlidesHTML = "";
+        slideData.forEach((slide, i) => {
+            allSlidesHTML += createSlideHTML(slide, i);
+        });
+        
+        document.querySelector('.nav-bar').insertAdjacentHTML('beforebegin', allSlidesHTML);
+        updateNav();
+    }
+
+    function changeSlide(direction) {
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide += direction;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('slideCounter').innerText = `${currentSlide + 1} / ${totalSlides}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 0;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    }
+
+    function switchTab(btn, targetId) {
+        const panel = btn.closest('.flex-col');
+        panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        panel.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        btn.classList.add('active');
+        document.getElementById(targetId).classList.add('active');
+    }
+
+    init();
+</script>
+
+</body>
+</html>

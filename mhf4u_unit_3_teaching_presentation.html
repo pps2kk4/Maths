@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 3 - Rational Functions (Teaching)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-main: #020617;
+            --bg-panel: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --cyan: #22d3ee;
+            --purple: #c084fc;
+            --green: #4ade80;
+            --yellow: #fbbf24;
+            --red: #f87171;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-main); color: var(--text-main); height: 100vh; margin: 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; }
+        
+        #presentation-container {
+            width: 1280px; height: 720px;
+            background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%);
+            border-radius: 16px; position: relative; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 70px); padding: 50px 70px; display: none; flex-direction: column; opacity: 0; transition: opacity 0.3s ease; }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+        
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; z-index: 20; backdrop-filter: blur(10px); }
+        .nav-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid var(--cyan); color: var(--cyan); padding: 10px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; font-family: 'Poppins'; }
+        .nav-btn:hover { background: var(--cyan); color: #020617; }
+        .nav-btn:disabled { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #64748b; cursor: not-allowed; }
+        .progress-text { color: var(--text-muted); font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 2px; font-size: 16px; }
+
+        .slide-title { font-size: 42px; color: var(--green); border-bottom: 2px solid rgba(74, 222, 128, 0.3); padding-bottom: 12px; margin-bottom: 30px; font-weight: 700; width: 100%; }
+        
+        .card { background: var(--card-bg); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; backdrop-filter: blur(8px); }
+        .math-box { background: rgba(34, 211, 238, 0.05); border-left: 4px solid var(--cyan); padding: 25px; border-radius: 0 12px 12px 0; margin: 20px 0; font-size: 28px; font-family: 'Times New Roman', serif; font-style: italic; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; height: 100%; }
+        .text-cyan { color: var(--cyan); } .text-purple { color: var(--purple); }
+        .text-green { color: var(--green); } .text-yellow { color: var(--yellow); }
+        .text-red { color: var(--red); }
+        
+        .bullet-list { list-style: none; margin: 0; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 35px; margin-bottom: 20px; font-size: 22px; color: #cbd5e1; line-height: 1.6; }
+        .bullet-list li::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 2px; color: var(--cyan); font-size: 24px; }
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    <!-- Slides injected dynamically via JS -->
+    
+    <div class="nav-bar">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+        <span class="progress-text" id="slideCounter">1 / 28</span>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+</div>
+
+<script>
+    const slideData = [
+        // PART A: INTRO
+        {
+            type: "title", title: "Unit 3: Rational Functions", subtitle: "Equations, Inequalities, & Asymptotes", desc: "MHF4U | Ontario Curriculum"
+        },
+        {
+            type: "content", title: "Today's Roadmap",
+            content: `<div class="grid-2 items-center">
+                        <ul class="bullet-list">
+                            <li><strong class="text-white">1. Anatomy of Rationals:</strong> What are they?</li>
+                            <li><strong class="text-white">2. The Two Breaks:</strong> Holes vs. Vertical Asymptotes</li>
+                            <li><strong class="text-white">3. End Behaviour:</strong> Horizontal & Slant Asymptotes</li>
+                            <li><strong class="text-white">4. Solving:</strong> Equations & The Danger of Inequalities</li>
+                        </ul>
+                        <div class="card text-center border-cyan">
+                            <i class="fas fa-map-signs text-6xl text-cyan mb-4"></i>
+                            <h3 class="text-2xl text-white">Goal</h3>
+                            <p class="text-lg text-slate-400">To visualize how dividing polynomials forces graphs to break and bend.</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Warm-up: The Grandfather Function",
+            content: `<div class="grid-2 items-center">
+                        <div>
+                            <p class="text-2xl text-slate-200 mb-6">Think back to Grade 11. Remember the reciprocal function?</p>
+                            <div class="math-box text-center">y = 1 / x</div>
+                            <p class="text-xl text-yellow font-bold mt-6"><i class="fas fa-exclamation-triangle"></i> What happens when x = 0?</p>
+                            <p class="text-xl text-slate-300 mt-2">You cannot divide by zero. It breaks the universe. This creates a <span class="text-cyan font-bold">Vertical Asymptote</span>.</p>
+                        </div>
+                        <div class="card flex justify-center items-center h-80 relative overflow-hidden">
+                            <!-- Simple CSS representation of 1/x graph -->
+                            <div class="absolute w-full h-[2px] bg-slate-600 top-1/2"></div>
+                            <div class="absolute h-full w-[2px] bg-cyan border-l border-dashed border-cyan left-1/2"></div>
+                            <svg viewBox="-10 -10 20 20" class="w-full h-full">
+                                <path d="M 0.5 10 Q 1 1 10 0.5" fill="none" stroke="#4ade80" stroke-width="0.5"></path>
+                                <path d="M -0.5 -10 Q -1 -1 -10 -0.5" fill="none" stroke="#4ade80" stroke-width="0.5"></path>
+                            </svg>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "What is a Rational Function?",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-3xl text-slate-200 mb-8">A rational function is simply a fraction where the numerator and denominator are both polynomials.</p>
+                        <div class="math-box text-5xl py-8 px-16 border-l-0 border-b-4 border-cyan">
+                            f(x) = P(x) / <span class="text-red">Q(x)</span>
+                        </div>
+                        <p class="text-2xl text-slate-300 mt-8">The most important part is <span class="text-red font-bold">Q(x)</span>.</p>
+                        <p class="text-xl text-slate-400 mt-4">Whatever x-values make the bottom equal zero dictate where the graph breaks.</p>
+                      </div>`
+        },
+        
+        // PART B: HOLES VS VA
+        {
+            type: "content", title: "The Two Types of Breaks",
+            content: `<div class="grid-2 gap-10 h-full">
+                        <div class="card border-red text-center">
+                            <h3 class="text-3xl text-red mb-6">Vertical Asymptote (VA)</h3>
+                            <i class="fas fa-arrows-alt-v text-6xl text-red mb-6 opacity-50"></i>
+                            <p class="text-xl text-slate-300">An invisible vertical wall. The graph shoots off to +&infin; or -&infin; and can NEVER cross it.</p>
+                        </div>
+                        <div class="card border-yellow text-center">
+                            <h3 class="text-3xl text-yellow mb-6">Point Discontinuity (Hole)</h3>
+                            <i class="far fa-circle text-6xl text-yellow mb-6 opacity-50"></i>
+                            <p class="text-xl text-slate-300">A single missing pixel on an otherwise smooth curve. The graph acts normal, just skips one point.</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "How to tell the difference?",
+            content: `<div class="flex flex-col items-center justify-center h-full">
+                        <p class="text-3xl font-bold text-white mb-10">Step 1: Always factor EVERYTHING first!</p>
+                        <div class="card border-cyan p-10 max-w-4xl text-center">
+                            <p class="text-2xl text-slate-200 mb-6">If a factor in the denominator <span class="text-yellow font-bold">CANCELS OUT</span> with the top...</p>
+                            <p class="text-4xl text-yellow font-bold mb-10">&rarr; It creates a HOLE.</p>
+                            
+                            <p class="text-2xl text-slate-200 mb-6">If a factor in the denominator is <span class="text-red font-bold">TRAPPED</span> (cannot cancel)...</p>
+                            <p class="text-4xl text-red font-bold">&rarr; It creates a VERTICAL ASYMPTOTE.</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Worked Example: Hole vs VA",
+            content: `<div class="grid-2 h-full items-center">
+                        <div>
+                            <div class="math-box mb-8">f(x) = (x<sup>2</sup> - 4) / (x - 2)</div>
+                            <ul class="bullet-list">
+                                <li><strong>Factor Top:</strong> (x - 2)(x + 2)</li>
+                                <li><strong>Equation:</strong> f(x) = <span class="line-through text-slate-500">(x - 2)</span>(x + 2) / <span class="line-through text-slate-500">(x - 2)</span></li>
+                                <li class="text-yellow font-bold mt-6">Because (x - 2) cancels, there is a HOLE at x = 2.</li>
+                            </ul>
+                        </div>
+                        <div class="card border-slate-600 bg-slate-800 text-center">
+                            <h3 class="text-xl text-slate-300 mb-4">Simplified Function</h3>
+                            <p class="text-3xl text-white font-mono mb-4">f(x) = x + 2</p>
+                            <p class="text-md text-slate-400 italic">(The graph looks exactly like this line, just missing one dot!)</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Finding the Hole's Coordinates",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-2xl text-slate-200 mb-8">We know there is a hole at x = 2. But what is its y-value?</p>
+                        <div class="card border-purple p-10 max-w-3xl">
+                            <p class="text-xl text-slate-300 mb-6">You CANNOT plug 2 into the original equation (you get 0/0).</p>
+                            <p class="text-xl text-white font-bold mb-6">Plug it into the SIMPLIFIED equation!</p>
+                            <div class="math-box text-center border-l-0 border-b-2 border-purple">
+                                y = x + 2<br>y = (2) + 2<br>y = 4
+                            </div>
+                            <p class="text-3xl text-purple font-bold mt-6">The hole is at (2, 4)</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Your Turn!",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-2xl text-slate-200 mb-10">Determine the locations of any Vertical Asymptotes or Holes for:</p>
+                        <div class="math-box text-5xl py-10 px-20 border-l-0 border-b-4 border-cyan shadow-2xl">
+                            g(x) = (x<sup>2</sup> + 3x) / (x<sup>2</sup> - 9)
+                        </div>
+                        <p class="text-xl text-slate-400 mt-10"><i class="fas fa-pencil-alt text-yellow mr-2"></i> Factor top. Factor bottom. Cancel what you can.</p>
+                      </div>`
+        },
+        {
+            type: "content", title: "Solution",
+            content: `<div class="grid-2 h-full items-center">
+                        <div class="card border-cyan">
+                            <h3 class="text-2xl text-cyan mb-4">1. Factor</h3>
+                            <p class="text-xl text-white font-mono mb-4">g(x) = x(x + 3) / [ (x - 3)(x + 3) ]</p>
+                            <h3 class="text-2xl text-cyan mb-4 mt-8">2. Cancel</h3>
+                            <p class="text-xl text-white font-mono mb-2">The (x + 3) cancels.</p>
+                            <p class="text-xl text-white font-mono mb-4">The (x - 3) is trapped on bottom.</p>
+                        </div>
+                        <div class="card border-green bg-green-900/20 text-center">
+                            <h3 class="text-3xl text-green mb-6">Conclusions</h3>
+                            <p class="text-2xl text-white mb-6">Canceled (x+3) &rarr; <span class="text-yellow font-bold">Hole at x = -3</span></p>
+                            <p class="text-2xl text-white">Trapped (x-3) &rarr; <span class="text-red font-bold">VA at x = 3</span></p>
+                        </div>
+                      </div>`
+        },
+
+        // PART C: HA & SA
+        {
+            type: "content", title: "End Behaviour (Horizontal Asymptotes)",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-3xl text-white mb-8">What happens when x gets massively huge (x &rarr; &plusmn;&infin;)?</p>
+                        <p class="text-2xl text-slate-300 mb-10 max-w-4xl">Instead of factoring, we look at a "Tug-of-War" between the <strong class="text-cyan">Highest Degree</strong> of the top and the bottom.</p>
+                        <div class="grid grid-cols-3 gap-6 w-full mt-6">
+                            <div class="card border-slate-600"><h3 class="text-lg text-slate-200">Rule 1: Bottom Heavy</h3></div>
+                            <div class="card border-slate-600"><h3 class="text-lg text-slate-200">Rule 2: Equal Degrees</h3></div>
+                            <div class="card border-slate-600"><h3 class="text-lg text-slate-200">Rule 3: Top Heavy by 1</h3></div>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Rule 1: Bottom Heavy",
+            content: `<div class="grid-2 h-full items-center">
+                        <div>
+                            <p class="text-2xl text-slate-200 mb-6">If the degree of the denominator is <strong class="text-red">LARGER</strong> than the numerator...</p>
+                            <p class="text-xl text-slate-400 mb-8">Think: 5 slices of pizza divided by 1 billion people. Everyone basically gets zero.</p>
+                            <p class="text-3xl text-cyan font-bold p-6 bg-slate-800 rounded-xl border border-cyan text-center">HA is ALWAYS y = 0</p>
+                        </div>
+                        <div class="card border-slate-600 text-center">
+                            <h3 class="text-xl text-slate-300 mb-4">Example</h3>
+                            <div class="math-box text-2xl border-l-0">y = (3x + 2) / (x<sup>2</sup> + x - 6)</div>
+                            <p class="text-lg text-slate-400 mt-4">Top Degree = 1. Bottom = 2.</p>
+                            <p class="text-xl text-green font-bold mt-2">y = 0</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Rule 2: Equal Degrees",
+            content: `<div class="grid-2 h-full items-center">
+                        <div>
+                            <p class="text-2xl text-slate-200 mb-6">If the degrees are <strong class="text-yellow">EXACTLY TIED</strong>...</p>
+                            <p class="text-xl text-slate-400 mb-8">It's a stalemate at infinity. We just divide their leading coefficients!</p>
+                            <p class="text-3xl text-cyan font-bold p-6 bg-slate-800 rounded-xl border border-cyan text-center">HA is y = a / b</p>
+                        </div>
+                        <div class="card border-slate-600 text-center">
+                            <h3 class="text-xl text-slate-300 mb-4">Example</h3>
+                            <div class="math-box text-2xl border-l-0">y = (<span class="text-cyan font-bold">6</span>x<sup>2</sup> - 1) / (<span class="text-cyan font-bold">2</span>x<sup>2</sup> + 3)</div>
+                            <p class="text-lg text-slate-400 mt-4">Degrees are tied at 2.</p>
+                            <p class="text-xl text-green font-bold mt-2">y = 6 / 2 &rarr; y = 3</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Rule 3: Top Heavy by 1",
+            content: `<div class="grid-2 h-full items-center">
+                        <div>
+                            <p class="text-2xl text-slate-200 mb-6">If the degree of the numerator is <strong class="text-purple">EXACTLY ONE HIGHER</strong> than the denominator...</p>
+                            <p class="text-xl text-slate-400 mb-8">The top wins, so there is NO horizontal asymptote. Instead, it forms an angled line.</p>
+                            <p class="text-2xl text-cyan font-bold p-6 bg-slate-800 rounded-xl border border-cyan text-center">Creates a Slant (Oblique) Asymptote</p>
+                        </div>
+                        <div class="card border-slate-600 text-center">
+                            <h3 class="text-xl text-slate-300 mb-4">Example</h3>
+                            <div class="math-box text-2xl border-l-0">y = (x<sup>2</sup> + 5x) / (x - 2)</div>
+                            <p class="text-lg text-slate-400 mt-4">Top = 2. Bottom = 1.</p>
+                            <p class="text-xl text-yellow font-bold mt-2"><i class="fas fa-exclamation-triangle"></i> Requires Division to find!</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Finding the Slant Asymptote",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-2xl text-slate-200 mb-6">To find the equation of the slant line, we divide the polynomials!</p>
+                        <div class="card border-purple p-8 max-w-3xl inline-block text-left">
+                            <p class="text-xl text-white font-mono mb-4 text-center">y = (x<sup>2</sup> + 5x + 4) / (x - 2)</p>
+                            <p class="text-lg text-slate-400 mb-2">Synthetic Division (Root = 2):</p>
+                            <pre class="text-xl text-cyan font-mono bg-slate-900 p-4 rounded">
+ 2 |  1   5   4
+   |      2  14
+ ----------------
+      1   7 | 18 (Remainder)
+                            </pre>
+                        </div>
+                        <p class="text-2xl text-white mt-6">Quotient is <strong class="text-green">x + 7</strong>. Ignore the remainder!</p>
+                        <p class="text-3xl text-cyan font-bold mt-4">Slant Asymptote: y = x + 7</p>
+                      </div>`
+        },
+        {
+            type: "content", title: "Asymptote Rapid Fire",
+            content: `<div class="flex flex-col items-center justify-center h-full w-full">
+                        <p class="text-2xl text-slate-300 mb-10">Identify the type of asymptote (HA or Slant) and its equation.</p>
+                        <div class="grid grid-cols-3 gap-8 w-full max-w-5xl">
+                            <div class="card border-slate-600 text-center">
+                                <h3 class="text-cyan mb-4">Function A</h3>
+                                <div class="math-box text-xl p-4 border-none bg-slate-900">f(x) = (3x) / (x<sup>2</sup> + 1)</div>
+                                <p class="text-slate-400 text-sm mt-4">Think: Bottom Heavy</p>
+                            </div>
+                            <div class="card border-slate-600 text-center">
+                                <h3 class="text-cyan mb-4">Function B</h3>
+                                <div class="math-box text-xl p-4 border-none bg-slate-900">g(x) = (8x<sup>2</sup>) / (4x<sup>2</sup> - x)</div>
+                                <p class="text-slate-400 text-sm mt-4">Think: Tied Degrees</p>
+                            </div>
+                            <div class="card border-slate-600 text-center">
+                                <h3 class="text-cyan mb-4">Function C</h3>
+                                <div class="math-box text-xl p-4 border-none bg-slate-900">h(x) = (x<sup>3</sup>) / (x<sup>2</sup> + 1)</div>
+                                <p class="text-slate-400 text-sm mt-4">Think: Top Heavy by 1</p>
+                            </div>
+                        </div>
+                      </div>`
+        },
+
+        // PART D: EQUATIONS & INEQUALITIES
+        {
+            type: "content", title: "Solving Rational Equations",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-2xl text-slate-200 mb-8">When solving equations, if the denominators are exactly the same, the math is easy.</p>
+                        <div class="math-box text-4xl py-8 px-16 border-l-0 border-b-4 border-cyan inline-block">
+                            x / (x - 2) = 5 / (x - 2)
+                        </div>
+                        <p class="text-2xl text-white mt-8">Just set the numerators equal! &rarr; <strong class="text-green text-4xl">x = 5</strong></p>
+                        <p class="text-xl text-yellow mt-8"><i class="fas fa-exclamation-triangle"></i> Always check restrictions: Does x=5 make the bottom zero? No. So it's a valid answer.</p>
+                      </div>`
+        },
+        {
+            type: "content", title: "The Extraneous Root Trap",
+            content: `<div class="grid-2 h-full items-center">
+                        <div class="card border-red text-center">
+                            <h3 class="text-2xl text-white mb-6">Solve this:</h3>
+                            <div class="math-box text-3xl border-none bg-slate-900">x / (x - 3) = 3 / (x - 3)</div>
+                            <p class="text-xl text-slate-300 mt-6">Set numerators equal: <strong class="text-white">x = 3</strong></p>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl text-red mb-6 font-bold"><i class="fas fa-bomb"></i> IT'S A TRAP!</h3>
+                            <p class="text-2xl text-slate-200 mb-6">Look at the original denominator. If x = 3, we get <span class="font-mono text-yellow">3 - 3 = 0</span>.</p>
+                            <p class="text-xl text-slate-400 mb-6">This breaks the universe. The math gave us an answer that is literally impossible.</p>
+                            <p class="text-2xl text-red font-bold p-4 bg-red-900/30 rounded border border-red text-center">Extraneous Root. NO SOLUTION.</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Finding Common Denominators",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-2xl text-slate-200 mb-8">What if the denominators are different?</p>
+                        <div class="math-box text-3xl py-6 px-12 border-l-0 border-b-2 border-cyan inline-block">
+                            3 / (x + 2) = 4 / (x - 1)
+                        </div>
+                        <div class="card border-cyan p-8 mt-6 max-w-2xl text-left">
+                            <p class="text-xl text-slate-300 mb-4">1. Cross multiply (or find LCD).</p>
+                            <p class="text-xl text-white font-mono mb-2">3(x - 1) = 4(x + 2)</p>
+                            <p class="text-xl text-white font-mono mb-2">3x - 3 = 4x + 8</p>
+                            <p class="text-xl text-white font-mono mb-4">-11 = x</p>
+                            <p class="text-lg text-yellow italic">Check restrictions: x &ne; -2, x &ne; 1. Valid answer!</p>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Rational Inequalities (The Danger Zone)",
+            content: `<div class="grid-2 h-full items-center">
+                        <div>
+                            <p class="text-3xl text-white mb-6">Solve: (x - 2) / (x + 3) > 1</p>
+                            <p class="text-2xl text-slate-300 mb-6">Your brain wants to cross-multiply the (x+3) to the other side.</p>
+                            <div class="card border-red bg-red-900/20 p-6 mt-4">
+                                <h3 class="text-xl text-red font-bold mb-2"><i class="fas fa-times-circle"></i> FATAL ERROR</h3>
+                                <p class="text-lg text-slate-200">If you multiply an inequality by a negative, you MUST flip the sign. But 'x' is a variable—we have NO IDEA if (x+3) is positive or negative!</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <i class="fas fa-skull-crossbones text-9xl text-red opacity-80"></i>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "The Safe Method for Inequalities",
+            content: `<div class="flex flex-col justify-center h-full w-full max-w-4xl mx-auto">
+                        <h3 class="text-2xl text-cyan mb-8">Never cross-multiply variables across a > or < sign. Do this instead:</h3>
+                        <ul class="space-y-6">
+                            <li class="card border-slate-600 p-6 flex items-center gap-6"><div class="text-3xl text-cyan font-bold w-10">1</div><p class="text-xl text-white m-0">Bring EVERYTHING to one side so it is > 0 or < 0.</p></li>
+                            <li class="card border-slate-600 p-6 flex items-center gap-6"><div class="text-3xl text-cyan font-bold w-10">2</div><p class="text-xl text-white m-0">Get a common denominator to merge it into one giant fraction.</p></li>
+                            <li class="card border-slate-600 p-6 flex items-center gap-6"><div class="text-3xl text-cyan font-bold w-10">3</div><p class="text-xl text-white m-0">Find the critical values (roots and VAs) and use an <strong>Interval Testing Chart</strong>.</p></li>
+                        </ul>
+                      </div>`
+        },
+        {
+            type: "content", title: "Interval Testing",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-2xl text-slate-200 mb-6">Let's say we simplified an inequality to: <span class="font-mono text-cyan">(x - 4) / (x + 2) > 0</span></p>
+                        <p class="text-xl text-slate-400 mb-8">Critical values are x = 4 (root) and x = -2 (VA). Put them on a number line.</p>
+                        
+                        <div class="w-full max-w-3xl h-2 bg-slate-600 relative my-10 flex items-center">
+                            <!-- Number line visual -->
+                            <div class="absolute left-[20%] w-6 h-6 rounded-full border-4 border-cyan bg-slate-900 transform -translate-y-1/2 -translate-x-1/2"></div>
+                            <div class="absolute left-[20%] top-6 transform -translate-x-1/2 text-xl text-white">-2</div>
+                            
+                            <div class="absolute left-[80%] w-6 h-6 rounded-full border-4 border-cyan bg-slate-900 transform -translate-y-1/2 -translate-x-1/2"></div>
+                            <div class="absolute left-[80%] top-6 transform -translate-x-1/2 text-xl text-white">4</div>
+                            
+                            <div class="absolute w-full flex justify-between px-10 -top-12 text-yellow font-bold text-xl">
+                                <span>Zone 1</span><span>Zone 2</span><span>Zone 3</span>
+                            </div>
+                        </div>
+                        <p class="text-xl text-slate-300 mt-10">Pick a random test number in each zone. Plug it in. Is the fraction positive (+) or negative (-)? We want the zones that are positive (> 0).</p>
+                      </div>`
+        },
+        {
+            type: "content", title: "Your Turn! (Inequalities)",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-3xl text-white mb-8">Solve using an interval number line:</p>
+                        <div class="math-box text-4xl py-8 px-16 border-l-0 border-b-4 border-cyan inline-block">
+                            (x + 1) / (x - 3) < 0
+                        </div>
+                        <p class="text-xl text-slate-400 mt-8">1. What are your two critical values?</p>
+                        <p class="text-xl text-slate-400 mt-2">2. Set up 3 zones on a number line.</p>
+                        <p class="text-xl text-slate-400 mt-2">3. Test a number in each zone to find which one gives a negative result (< 0).</p>
+                      </div>`
+        },
+        {
+            type: "content", title: "Your Turn Solution",
+            content: `<div class="flex flex-col items-center justify-center h-full text-center">
+                        <p class="text-2xl text-slate-200 mb-6">Critical Values: x = -1, x = 3</p>
+                        
+                        <div class="w-full max-w-3xl h-2 bg-slate-600 relative my-10 flex items-center">
+                            <!-- Number line visual -->
+                            <div class="absolute left-[30%] w-6 h-6 rounded-full border-4 border-cyan bg-slate-900 transform -translate-y-1/2 -translate-x-1/2"></div>
+                            <div class="absolute left-[30%] top-6 transform -translate-x-1/2 text-xl text-white">-1</div>
+                            
+                            <div class="absolute left-[70%] w-6 h-6 rounded-full border-4 border-cyan bg-slate-900 transform -translate-y-1/2 -translate-x-1/2"></div>
+                            <div class="absolute left-[70%] top-6 transform -translate-x-1/2 text-xl text-white">3</div>
+                            
+                            <div class="absolute w-full flex justify-between px-16 -top-12 text-xl font-bold">
+                                <span class="text-slate-500">Positive (+)</span>
+                                <span class="text-red">Negative (-)</span>
+                                <span class="text-slate-500">Positive (+)</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-2xl text-white mt-10">We wanted < 0, so we take the middle zone.</p>
+                        <p class="text-4xl text-green font-bold mt-4">Answer: -1 < x < 3</p>
+                      </div>`
+        },
+
+        // PART E: CONSOLIDATION
+        {
+            type: "content", title: "Summary: Asymptotes",
+            content: `<div class="grid grid-cols-2 gap-8 h-full items-center">
+                        <div class="card border-purple">
+                            <h3 class="text-2xl text-purple mb-4 border-b border-purple/30 pb-2">Vertical Breaks</h3>
+                            <ul class="text-lg text-slate-300 space-y-4">
+                                <li><strong class="text-white">Factor everything first!</strong></li>
+                                <li>If a denominator factor <strong>cancels</strong> &rarr; HOLE.</li>
+                                <li>If it is <strong>trapped</strong> &rarr; Vertical Asymptote.</li>
+                            </ul>
+                        </div>
+                        <div class="card border-cyan">
+                            <h3 class="text-2xl text-cyan mb-4 border-b border-cyan/30 pb-2">End Behaviour</h3>
+                            <ul class="text-lg text-slate-300 space-y-4">
+                                <li><strong class="text-white">Bottom Heavy:</strong> HA is y = 0.</li>
+                                <li><strong class="text-white">Equal Degree:</strong> HA is ratio (a/b).</li>
+                                <li><strong class="text-white">Top Heavy by 1:</strong> Slant Asymptote (divide).</li>
+                            </ul>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Summary: Solving",
+            content: `<div class="grid grid-cols-2 gap-8 h-full items-center">
+                        <div class="card border-green">
+                            <h3 class="text-2xl text-green mb-4 border-b border-green/30 pb-2">Equations (=)</h3>
+                            <ul class="text-lg text-slate-300 space-y-4">
+                                <li>Get a common denominator or cross-multiply.</li>
+                                <li>Solve for x.</li>
+                                <li><strong class="text-red">Always check for extraneous roots!</strong> (Does the answer make the bottom zero?)</li>
+                            </ul>
+                        </div>
+                        <div class="card border-red">
+                            <h3 class="text-2xl text-red mb-4 border-b border-red/30 pb-2">Inequalities (<, >)</h3>
+                            <ul class="text-lg text-slate-300 space-y-4">
+                                <li><strong class="text-white">NEVER cross-multiply variables.</strong></li>
+                                <li>Bring everything to one side.</li>
+                                <li>Find critical values (roots & VAs).</li>
+                                <li>Use an interval testing number line.</li>
+                            </ul>
+                        </div>
+                      </div>`
+        },
+        {
+            type: "content", title: "Exit Ticket",
+            content: `<div class="flex flex-col justify-center h-full w-full max-w-4xl mx-auto">
+                        <p class="text-3xl text-cyan mb-8 font-bold">Rapid Fire!</p>
+                        <ol class="space-y-10 text-2xl text-slate-200 list-decimal ml-8">
+                            <li>True or False: A slant asymptote happens when the top degree is 2 and the bottom is 1.</li>
+                            <li>Does <span class="font-mono text-cyan">(x - 2) / (x - 2)</span> have a VA or a hole at x=2?</li>
+                            <li>Can you cross-multiply variables in an inequality?</li>
+                        </ol>
+                      </div>`
+        },
+        {
+            type: "title", title: "Great Job!", subtitle: "Unit 3 Foundations Mastered", desc: "For homework, use the Unit 3 Practice Mastery Deck!"
+        }
+    ];
+
+    let currentSlide = 0;
+    const totalSlides = slideData.length;
+    const container = document.getElementById('presentation-container');
+
+    function createSlideHTML(data, index) {
+        if (data.type === "title") {
+            return `
+            <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}" style="justify-content: center; align-items: center; text-align: center;">
+                <i class="fas fa-project-diagram text-cyan text-6xl mb-6"></i>
+                <h1 class="text-6xl font-bold mb-4 text-white">${data.title}</h1>
+                <h2 class="text-3xl text-cyan mb-8">${data.subtitle}</h2>
+                <p class="text-xl text-slate-400">${data.desc}</p>
+            </div>`;
+        }
+        
+        return `
+        <div class="slide ${index === 0 ? 'active' : ''}" id="slide-${index}">
+            <h2 class="slide-title">${data.title}</h2>
+            <div class="flex-grow w-full">${data.content}</div>
+        </div>`;
+    }
+
+    function init() {
+        let allSlidesHTML = "";
+        slideData.forEach((slide, i) => {
+            allSlidesHTML += createSlideHTML(slide, i);
+        });
+        
+        const navBar = document.querySelector('.nav-bar');
+        navBar.insertAdjacentHTML('beforebegin', allSlidesHTML);
+        updateNav();
+    }
+
+    function changeSlide(direction) {
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide += direction;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        updateNav();
+    }
+
+    function updateNav() {
+        document.getElementById('slideCounter').innerText = `${currentSlide + 1} / ${totalSlides}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 0;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+    }
+
+    init();
+</script>
+
+</body>
+</html>
