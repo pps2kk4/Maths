@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 4 - Trigonometry & Radians</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #020617; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Inter', sans-serif; overflow: hidden; }
+        
+        #presentation-container { width: 1280px; height: 720px; background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%); border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        #presentation-container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px; z-index: 0; pointer-events: none; }
+        
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 70px); padding: 40px 60px; display: none; flex-direction: column; opacity: 0; transition: opacity 0.3s ease; z-index: 1; }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; z-index: 20; backdrop-filter: blur(10px); }
+        .nav-btn { background: rgba(251, 146, 60, 0.1); border: 1px solid #fb923c; color: #fb923c; padding: 10px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Poppins'; }
+        .nav-btn:hover { background: #fb923c; color: #020617; }
+        .nav-btn:disabled { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #64748b; cursor: not-allowed; }
+        .progress-text { color: #94a3b8; font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 2px; }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: #f8fafc; margin: 0; }
+        .highlight { color: #fb923c; } 
+        .slide-title { font-size: 42px; color: #fb923c; border-bottom: 2px solid rgba(251, 146, 60, 0.3); padding-bottom: 12px; margin-bottom: 30px; font-weight: 600; width: 100%; }
+        
+        .math-box { background: rgba(251, 146, 60, 0.05); border-left: 4px solid #fb923c; padding: 20px; border-radius: 0 12px 12px 0; margin: 20px 0; font-size: 32px; font-family: 'Times New Roman', serif; font-style: italic; color: white; text-align: center; }
+        .card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; text-align: center; backdrop-filter: blur(8px); }
+        
+        .bullet-list { list-style: none; margin: 0; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 35px; margin-bottom: 15px; font-size: 22px; color: #cbd5e1; line-height: 1.6; }
+        .bullet-list li::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 2px; color: #fb923c; font-size: 24px; }
+
+        .svg-container { width: 100%; height: 350px; background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; display: flex; justify-content: center; align-items: center; position: relative;}
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    
+    <div class="slide active" id="slide-1" style="justify-content: center; align-items: center; text-align: center;">
+        <h1 style="font-size: 64px; font-weight: 700; line-height: 1.1;">Grade 12 <span class="highlight">Advanced Functions</span></h1>
+        <h3 style="font-size: 32px; color: #94a3b8; margin-top: 20px; font-weight: 400; letter-spacing: 2px;">MHF4U | ONTARIO CURRICULUM</h3>
+        <div style="width: 100px; height: 4px; background: #fb923c; margin: 40px auto;"></div>
+        <h2 style="font-size: 48px; color: #f8fafc;">Unit 4: Trigonometry & Radians</h2>
+        <p class="text-xl text-slate-400 mt-8 tracking-widest uppercase">Prepared for: Rigden</p>
+    </div>
+
+    <div class="slide" id="slide-2">
+        <h2 class="slide-title">Today's Roadmap</h2>
+        <div class="flex-grow flex flex-col justify-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <ul class="bullet-list">
+                    <li><strong class="text-white">1. Radian Measure:</strong> Degrees vs Reality</li>
+                    <li><strong class="text-white">2. The Unit Circle:</strong> CAST and Exact Values</li>
+                    <li><strong class="text-white">3. Graphing All 6 Waves:</strong> Including Reciprocals</li>
+                    <li><strong class="text-white">4. Transformations:</strong> Amplitude, Period, Phase</li>
+                    <li><strong class="text-white">5. Applications:</strong> Modeling real-world cycles</li>
+                </ul>
+                <div class="card border-orange-400/50">
+                    <i class="fas fa-wave-square text-6xl text-orange-400 mb-6"></i>
+                    <h3 class="text-3xl text-orange-400 mb-2">Goal</h3>
+                    <p class="text-lg text-slate-300">To master trigonometric functions both algebraically and graphically.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+        <h2 class="slide-title">Degrees vs. Reality</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-slate-200 mb-8">Since childhood, you were told a full circle has <strong class="text-yellow-400">360 degrees</strong>.</p>
+            <div class="card border-red-500/50 bg-red-500/10 max-w-4xl p-8 mb-8">
+                <h3 class="text-red-400 text-2xl mb-4"><i class="fas fa-exclamation-triangle mr-2"></i> The Truth</h3>
+                <p class="text-xl text-slate-300">Degrees are made up! The Babylonians based it on the ~360 days in their calendar year. It has <strong>no mathematical connection</strong> to the actual geometry of a circle.</p>
+            </div>
+            <p class="text-2xl text-white">To do high-level calculus and physics, we need a measurement based on the circle itself.</p>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+        <h2 class="slide-title">Enter the Radian</h2>
+        <div class="flex-grow flex flex-col justify-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">A <strong class="text-orange-400">Radian</strong> is a physical measurement.</p>
+                    <p class="text-xl text-slate-400 mb-6">It is the angle created when you take the radius (r) and wrap it around the curve of the circle.</p>
+                    <p class="text-xl text-cyan-400 font-bold mt-8">Circumference = 2&pi;r</p>
+                    <p class="text-xl text-slate-300 mt-2">Therefore, it takes exactly <strong class="text-white">2&pi; radians</strong> to wrap around a full circle.</p>
+                </div>
+                <div class="svg-container border-orange-400/50">
+                    <svg width="300" height="300" viewBox="-1.5 -1.5 3 3">
+                        <circle cx="0" cy="0" r="1" fill="none" stroke="#334155" stroke-width="0.05"></circle>
+                        <line x1="0" y1="0" x2="1" y2="0" stroke="#22d3ee" stroke-width="0.05"></line>
+                        <text x="0.5" y="-0.1" font-size="0.15" fill="#22d3ee">r</text>
+                        <path d="M 1 0 A 1 1 0 0 0 0.54 0.84" fill="none" stroke="#fb923c" stroke-width="0.08"></path>
+                        <text x="0.8" y="0.6" font-size="0.15" fill="#fb923c">r</text>
+                        <path d="M 0.2 0 A 0.2 0.2 0 0 0 0.1 0.17" fill="none" stroke="white" stroke-width="0.02"></path>
+                        <line x1="0" y1="0" x2="0.54" y2="0.84" stroke="#475569" stroke-width="0.03" stroke-dasharray="0.05 0.05"></line>
+                        <text x="0.25" y="0.12" font-size="0.1" fill="white">1 Radian</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+        <h2 class="slide-title">The Golden Conversion</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-slate-200 mb-10">If a full circle (360&deg;) is <span class="text-cyan-400 font-bold">2&pi; radians</span>, then a half-circle is:</p>
+            <div class="math-box text-6xl py-10 px-16 border-2 border-orange-400 rounded-xl bg-orange-400/10 mb-12 shadow-2xl">
+                180&deg; = &pi; radians
+            </div>
+            <div class="grid grid-cols-2 gap-10 w-full max-w-4xl">
+                <div class="card border-slate-600">
+                    <h3 class="text-white text-2xl border-b border-slate-600 pb-4 mb-6">Degrees to Radians</h3>
+                    <p class="font-mono text-3xl text-cyan-400">Multiply by (&pi; / 180&deg;)</p>
+                </div>
+                <div class="card border-slate-600">
+                    <h3 class="text-white text-2xl border-b border-slate-600 pb-4 mb-6">Radians to Degrees</h3>
+                    <p class="font-mono text-3xl text-green-400">Multiply by (180&deg; / &pi;)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+        <h2 class="slide-title">Practice: Degrees to Radians</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-8">Convert the following into exact radian measure (keep as a fraction with &pi;).</p>
+            <div class="grid grid-cols-2 gap-16 w-full max-w-4xl">
+                <div class="card border-cyan-400/50">
+                    <h3 class="text-cyan-400 text-3xl mb-6">120&deg;</h3>
+                    <div class="text-left text-xl text-slate-300 space-y-4">
+                        <p>= 120 * (&pi; / 180)</p>
+                        <p>= 120&pi; / 180</p>
+                        <p class="text-yellow-400 font-bold mt-4">Divide both by 60:</p>
+                        <p class="text-4xl text-white font-mono mt-2">= 2&pi; / 3</p>
+                    </div>
+                </div>
+                <div class="card border-cyan-400/50">
+                    <h3 class="text-cyan-400 text-3xl mb-6">330&deg;</h3>
+                    <div class="text-left text-xl text-slate-300 space-y-4">
+                        <p>= 330 * (&pi; / 180)</p>
+                        <p>= 330&pi; / 180</p>
+                        <p class="text-yellow-400 font-bold mt-4">Divide both by 30:</p>
+                        <p class="text-4xl text-white font-mono mt-2">= 11&pi; / 6</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+        <h2 class="slide-title">Practice: Radians to Degrees</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-8">Convert the following into degrees.</p>
+            <div class="grid grid-cols-2 gap-16 w-full max-w-4xl">
+                <div class="card border-green-400/50">
+                    <h3 class="text-green-400 text-3xl mb-6">3&pi; / 4</h3>
+                    <div class="text-left text-xl text-slate-300 space-y-4">
+                        <p>= (3&pi; / 4) * (180 / &pi;)</p>
+                        <p class="text-yellow-400 font-bold mt-2">The &pi; symbols cancel out!</p>
+                        <p>= (3 * 180) / 4</p>
+                        <p class="text-4xl text-white font-mono mt-2">= 135&deg;</p>
+                    </div>
+                </div>
+                <div class="card border-green-400/50">
+                    <h3 class="text-green-400 text-3xl mb-6">5&pi; / 6</h3>
+                    <div class="text-left text-xl text-slate-300 space-y-4">
+                        <p>= (5&pi; / 6) * (180 / &pi;)</p>
+                        <p class="text-yellow-400 font-bold mt-2">The &pi; symbols cancel out!</p>
+                        <p>= (5 * 180) / 6</p>
+                        <p class="text-4xl text-white font-mono mt-2">= 150&deg;</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+        <h2 class="slide-title">Arc Length Formula</h2>
+        <div class="flex-grow flex w-full items-center">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">Because radians physically wrap the radius around the curve, finding the arc length is simple.</p>
+                    <div class="math-box text-6xl border-none bg-slate-800 text-cyan-400 py-8">a = r &theta;</div>
+                    <ul class="bullet-list mt-8">
+                        <li><strong>a</strong> = Arc Length</li>
+                        <li><strong>r</strong> = Radius</li>
+                        <li><strong class="text-yellow-400">&theta;</strong> = Angle</li>
+                    </ul>
+                </div>
+                <div class="card border-red-500 bg-red-900/20 text-center p-10">
+                    <i class="fas fa-skull-crossbones text-7xl text-red-500 mb-6"></i>
+                    <h3 class="text-red-500 text-3xl mb-4">Fatal Exam Trap</h3>
+                    <p class="text-2xl text-white">The angle &theta; <strong>MUST BE IN RADIANS</strong>.</p>
+                    <p class="text-lg text-slate-400 mt-6">If you plug 60&deg; into this formula instead of &pi;/3, your answer will be completely wrong.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-9">
+        <h2 class="slide-title">Co-terminal Angles</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-6">Angles are <strong>co-terminal</strong> if they share the exact same terminal arm.</p>
+            <p class="text-xl text-slate-400 mb-8">You can find them by adding or subtracting a full circle (<span class="text-white font-bold">2&pi;</span> or 360&deg;).</p>
+            
+            <div class="grid grid-cols-2 gap-12 w-full max-w-4xl">
+                <div class="svg-container border-cyan-400/30">
+                    <svg width="250" height="250" viewBox="-1.5 -1.5 3 3">
+                        <line x1="-1.2" y1="0" x2="1.2" y2="0" stroke="#475569" stroke-width="0.02"></line>
+                        <line x1="0" y1="-1.2" x2="0" y2="1.2" stroke="#475569" stroke-width="0.02"></line>
+                        <!-- Ray -->
+                        <line x1="0" y1="0" x2="1" y2="-1" stroke="#22d3ee" stroke-width="0.05"></line>
+                        <!-- Main angle arc -->
+                        <path d="M 0.4 0 A 0.4 0.4 0 0 0 0.28 -0.28" fill="none" stroke="#22d3ee" stroke-width="0.05"></path>
+                        <!-- Spiral arc -->
+                        <path d="M 0.6 0 C 0.6 -0.6, -0.6 -0.6, -0.6 0 C -0.6 0.7, 0.7 0.7, 0.7 0 C 0.7 -0.5, 0.35 -0.5, 0.35 -0.35" fill="none" stroke="#fb923c" stroke-width="0.03"></path>
+                    </svg>
+                </div>
+                <div class="flex flex-col justify-center text-left">
+                    <p class="text-3xl text-cyan-400 mb-4">Original: <strong>&pi; / 4</strong></p>
+                    <p class="text-2xl text-slate-300 mb-2">Add one full spin:</p>
+                    <div class="bg-slate-800 p-4 rounded-lg font-mono text-xl mb-4 text-white">
+                        &pi;/4 + 2&pi; = &pi;/4 + 8&pi;/4
+                    </div>
+                    <p class="text-3xl text-orange-400">Co-terminal: <strong>9&pi; / 4</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+        <h2 class="slide-title">Special Triangles: &pi; / 4</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">To find exact values without a calculator, we use our Grade 11 triangles, updated for Grade 12.</p>
+                    <p class="text-xl text-slate-400 mb-8">The 45-45-90 triangle becomes the <strong class="text-cyan-400">&pi;/4 - &pi;/4 - &pi;/2</strong> triangle.</p>
+                    <ul class="bullet-list text-2xl">
+                        <li>sin(&pi;/4) = 1 / &radic;2</li>
+                        <li>cos(&pi;/4) = 1 / &radic;2</li>
+                        <li>tan(&pi;/4) = 1 / 1 = 1</li>
+                    </ul>
+                </div>
+                <div class="svg-container border-cyan-400/50 bg-slate-900 h-96">
+                    <svg width="300" height="300" viewBox="-10 -10 120 120">
+                        <polygon points="0,100 100,100 0,0" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="3"></polygon>
+                        <polyline points="0,90 10,90 10,100" fill="none" stroke="white" stroke-width="2"></polyline>
+                        <text x="-15" y="50" font-size="14" fill="white">1</text>
+                        <text x="50" y="115" font-size="14" fill="white">1</text>
+                        <text x="50" y="45" font-size="14" fill="#fbbf24" font-weight="bold">√2</text>
+                        <text x="65" y="95" font-size="14" fill="#22d3ee">π/4</text>
+                        <text x="5" y="25" font-size="14" fill="#22d3ee">π/4</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+        <h2 class="slide-title">Special Triangles: &pi; / 6 & &pi; / 3</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">The 30-60-90 triangle becomes the <strong class="text-green-400">&pi;/6 - &pi;/3 - &pi;/2</strong> triangle.</p>
+                    <p class="text-lg text-slate-400 mb-8 italic">Tip: The smallest angle (&pi;/6) is always opposite the smallest side (1).</p>
+                    <ul class="bullet-list text-2xl">
+                        <li>sin(&pi;/6) = 1 / 2</li>
+                        <li>cos(&pi;/6) = &radic;3 / 2</li>
+                        <li>tan(&pi;/3) = &radic;3 / 1 = &radic;3</li>
+                    </ul>
+                </div>
+                <div class="svg-container border-green-400/50 bg-slate-900 h-96">
+                    <svg width="250" height="350" viewBox="-10 -10 120 180">
+                        <polygon points="0,173 100,173 0,0" fill="rgba(74,222,128,0.1)" stroke="#4ade80" stroke-width="3"></polygon>
+                        <polyline points="0,163 10,163 10,173" fill="none" stroke="white" stroke-width="2"></polyline>
+                        <text x="-15" y="90" font-size="14" fill="#fbbf24" font-weight="bold">√3</text>
+                        <text x="50" y="188" font-size="14" fill="white">1</text>
+                        <text x="55" y="80" font-size="14" fill="white">2</text>
+                        <text x="70" y="165" font-size="14" fill="#4ade80">π/3</text>
+                        <text x="5" y="30" font-size="14" fill="#4ade80">π/6</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+        <h2 class="slide-title">The Unit Circle & CAST Rule</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">Any coordinate on the Unit Circle corresponds to <strong class="text-cyan-400 font-mono text-3xl bg-slate-800 px-2 rounded">(cos&theta;, sin&theta;)</strong>.</p>
+                    <p class="text-xl text-slate-400 mb-8">Because Cosine is 'x' and Sine is 'y', their signs (+ or -) change depending on the quadrant.</p>
+                    <ul class="bullet-list">
+                        <li><strong class="text-white">Q1:</strong> x(+), y(+) &rarr; <span class="text-green-400 font-bold">ALL positive</span></li>
+                        <li><strong class="text-white">Q2:</strong> x(-), y(+) &rarr; <span class="text-green-400 font-bold">SINE positive</span></li>
+                        <li><strong class="text-white">Q3:</strong> x(-), y(-) &rarr; <span class="text-green-400 font-bold">TAN positive</span> (neg/neg)</li>
+                        <li><strong class="text-white">Q4:</strong> x(+), y(-) &rarr; <span class="text-green-400 font-bold">COS positive</span></li>
+                    </ul>
+                </div>
+                <div class="h-96 w-full relative grid grid-cols-2 grid-rows-2 text-7xl font-bold text-center border-4 border-slate-600 rounded-2xl overflow-hidden bg-slate-900 shadow-2xl">
+                    <div class="flex items-center justify-center border-b-2 border-r-2 border-slate-600 text-orange-400 relative bg-slate-800/50 hover:bg-slate-700 transition"><span class="absolute top-4 left-4 text-lg text-slate-500 font-normal">Q2</span>S</div>
+                    <div class="flex items-center justify-center border-b-2 border-slate-600 text-orange-400 relative bg-slate-800/50 hover:bg-slate-700 transition"><span class="absolute top-4 right-4 text-lg text-slate-500 font-normal">Q1</span>A</div>
+                    <div class="flex items-center justify-center border-r-2 border-slate-600 text-orange-400 relative bg-slate-800/50 hover:bg-slate-700 transition"><span class="absolute bottom-4 left-4 text-lg text-slate-500 font-normal">Q3</span>T</div>
+                    <div class="flex items-center justify-center text-orange-400 relative bg-slate-800/50 hover:bg-slate-700 transition"><span class="absolute bottom-4 right-4 text-lg text-slate-500 font-normal">Q4</span>C</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-13">
+        <h2 class="slide-title">Evaluating Exact Values (The 3 Steps)</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-white mb-10">Find the exact value of: <span class="math-box inline-block border-none mx-4 bg-slate-800 shadow-xl">sin(5&pi;/6)</span></p>
+            
+            <div class="grid grid-cols-3 gap-8 w-full max-w-5xl mt-6">
+                <div class="card border-slate-600 p-8">
+                    <div class="w-12 h-12 rounded-full bg-cyan-400 text-slate-900 font-bold flex items-center justify-center text-2xl mx-auto mb-6">1</div>
+                    <h3 class="text-white text-2xl mb-4">Find Quadrant</h3>
+                    <p class="text-lg text-slate-300">5&pi;/6 is just before 6&pi;/6 (&pi;). It is in <strong class="text-cyan-400">Quadrant 2</strong>.</p>
+                </div>
+                <div class="card border-slate-600 p-8">
+                    <div class="w-12 h-12 rounded-full bg-orange-400 text-slate-900 font-bold flex items-center justify-center text-2xl mx-auto mb-6">2</div>
+                    <h3 class="text-white text-2xl mb-4">CAST Rule</h3>
+                    <p class="text-lg text-slate-300">In Q2, 'S' applies. Sine is <strong class="text-green-400 font-bold">Positive (+)</strong>.</p>
+                </div>
+                <div class="card border-slate-600 p-8">
+                    <div class="w-12 h-12 rounded-full bg-green-400 text-slate-900 font-bold flex items-center justify-center text-2xl mx-auto mb-6">3</div>
+                    <h3 class="text-white text-2xl mb-4">Special Triangle</h3>
+                    <p class="text-lg text-slate-300">Ref angle is &pi;/6.<br>Sin(&pi;/6) = Opp/Hyp = <strong class="text-yellow-400">1/2</strong>.</p>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-5xl font-bold text-white border-4 border-green-500 p-6 rounded-xl inline-block bg-green-900/30">
+                Answer = + 1/2
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-14">
+        <h2 class="slide-title">Practice: Evaluating Exact Values</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-white mb-10">Use the 3 steps to find the exact value of:</p>
+            <div class="math-box text-6xl py-12 px-24 border-2 border-cyan-400 bg-slate-900 shadow-2xl rounded-2xl mb-12">
+                cos(4&pi;/3)
+            </div>
+            <div class="grid grid-cols-3 gap-12 w-full max-w-4xl text-left">
+                <div><p class="text-cyan-400 font-bold text-xl mb-2">1. Quadrant:</p><p class="text-white text-2xl border-b border-slate-600 pb-2">________</p></div>
+                <div><p class="text-orange-400 font-bold text-xl mb-2">2. Sign (CAST):</p><p class="text-white text-2xl border-b border-slate-600 pb-2">________</p></div>
+                <div><p class="text-green-400 font-bold text-xl mb-2">3. Reference Angle:</p><p class="text-white text-2xl border-b border-slate-600 pb-2">________</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-15">
+        <h2 class="slide-title">Working Backwards (Finding &theta;)</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">Find all values of &theta; in the domain <strong class="text-white">0 &le; &theta; &le; 2&pi;</strong>.</p>
+                    <div class="math-box text-5xl border-none bg-slate-800 text-yellow-400 py-6">sin&theta; = -1/2</div>
+                    <ul class="bullet-list mt-8 space-y-4">
+                        <li><strong>Step 1:</strong> Ignore the sign. What angle gives sin = 1/2? (Ref angle = &pi;/6)</li>
+                        <li><strong>Step 2:</strong> Sine is NEGATIVE. Which quadrants? (Q3 and Q4)</li>
+                        <li><strong>Step 3:</strong> Draw the arms in Q3 and Q4 and calculate &theta;.</li>
+                    </ul>
+                </div>
+                <div class="svg-container border-yellow-400/50 bg-slate-900 h-96 relative">
+                    <svg width="300" height="300" viewBox="-1.5 -1.5 3 3">
+                        <line x1="-1.5" y1="0" x2="1.5" y2="0" stroke="#475569" stroke-width="0.02"></line>
+                        <line x1="0" y1="-1.5" x2="0" y2="1.5" stroke="#475569" stroke-width="0.02"></line>
+                        <circle cx="0" cy="0" r="1" fill="none" stroke="#334155" stroke-width="0.02"></circle>
+                        <!-- Q3 -->
+                        <line x1="0" y1="0" x2="-0.866" y2="0.5" stroke="#fbbf24" stroke-width="0.04"></line>
+                        <text x="-0.8" y="0.3" font-size="0.15" fill="#fbbf24">π/6</text>
+                        <!-- Q4 -->
+                        <line x1="0" y1="0" x2="0.866" y2="0.5" stroke="#fbbf24" stroke-width="0.04"></line>
+                        <text x="0.5" y="0.3" font-size="0.15" fill="#fbbf24">π/6</text>
+                    </svg>
+                    <div class="absolute bottom-4 w-full text-center text-xl text-white font-mono bg-slate-800/90 py-2">&theta; = 7&pi;/6 and &theta; = 11&pi;/6</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-16">
+        <h2 class="slide-title">Reciprocal Trig Ratios</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">Beyond SOH CAH TOA, what if we flip the fractions upside down?</p>
+                    <p class="text-2xl text-white mb-6">We get the <strong>Reciprocal Ratios</strong>:</p>
+                    <ul class="bullet-list text-3xl font-mono mt-8 space-y-6">
+                        <li><strong class="text-cyan-400">Cosecant (csc)</strong> = 1 / sin</li>
+                        <li><strong class="text-cyan-400">Secant (sec)</strong> = 1 / cos</li>
+                        <li><strong class="text-cyan-400">Cotangent (cot)</strong> = 1 / tan</li>
+                    </ul>
+                </div>
+                <div class="card border-red-500 bg-red-900/20 text-center p-12">
+                    <i class="fas fa-exclamation-triangle text-7xl text-red-500 mb-6"></i>
+                    <h3 class="text-red-500 text-3xl mb-4">Exam Tip</h3>
+                    <p class="text-2xl text-slate-200 mb-8">Don't mix up the letters! 'S' pairs with 'C'.</p>
+                    <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                        <p class="text-3xl font-mono text-white mb-4">Sine &harr; Csc</p>
+                        <p class="text-3xl font-mono text-white">Cosine &harr; Sec</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-17">
+        <h2 class="slide-title">The Base Waves (Sine & Cosine)</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full">
+            <p class="text-2xl text-slate-300 mb-8 text-center">Plotting the y-values (Sine) and x-values (Cosine) from the Unit Circle.</p>
+            <div class="grid grid-cols-2 gap-10 w-full">
+                <!-- Sine Wave SVG -->
+                <div class="card border-cyan-400 relative overflow-hidden p-0 h-72 flex flex-col bg-slate-900">
+                    <h3 class="text-cyan-400 text-2xl m-6 absolute z-10 bg-slate-900/90 px-4 py-2 rounded-lg border border-cyan-400/30">y = sin(x)</h3>
+                    <svg viewBox="-0.5 -1.5 7 3" class="w-full h-full mt-auto" preserveAspectRatio="none">
+                        <line x1="-0.5" y1="0" x2="6.5" y2="0" stroke="#475569" stroke-width="0.02"></line>
+                        <line x1="0" y1="-1.5" x2="0" y2="1.5" stroke="#475569" stroke-width="0.02"></line>
+                        <path d="M 0 0 C 1 -2, 2.14 -2, 3.14 0 C 4.14 2, 5.28 2, 6.28 0" fill="none" stroke="#22d3ee" stroke-width="0.08"></path>
+                        <text x="3.14" y="0.2" font-size="0.2" fill="#94a3b8">π</text>
+                        <text x="6.1" y="0.2" font-size="0.2" fill="#94a3b8">2π</text>
+                    </svg>
+                </div>
+                <!-- Cosine Wave SVG -->
+                <div class="card border-green-400 relative overflow-hidden p-0 h-72 flex flex-col bg-slate-900">
+                    <h3 class="text-green-400 text-2xl m-6 absolute z-10 bg-slate-900/90 px-4 py-2 rounded-lg border border-green-400/30">y = cos(x)</h3>
+                    <svg viewBox="-0.5 -1.5 7 3" class="w-full h-full mt-auto" preserveAspectRatio="none">
+                        <line x1="-0.5" y1="0" x2="6.5" y2="0" stroke="#475569" stroke-width="0.02"></line>
+                        <line x1="0" y1="-1.5" x2="0" y2="1.5" stroke="#475569" stroke-width="0.02"></line>
+                        <path d="M 0 -1 C 1 -1, 1.5 1, 3.14 1 C 4.7 1, 5.28 -1, 6.28 -1" fill="none" stroke="#4ade80" stroke-width="0.08"></path>
+                        <text x="3.14" y="0.2" font-size="0.2" fill="#94a3b8">π</text>
+                        <text x="6.1" y="0.2" font-size="0.2" fill="#94a3b8">2π</text>
+                    </svg>
+                </div>
+            </div>
+            <p class="text-center text-slate-400 mt-8 text-xl">Both have an amplitude of 1 and a period of 2&pi;.</p>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-18">
+        <h2 class="slide-title">Graphing Tangent</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-3xl text-white mb-6"><strong class="text-purple-400">y = tan(x)</strong> behaves very differently.</p>
+                    <p class="text-xl text-slate-300 mb-6">Because tan(x) = sin(x) / cos(x), whenever cos(x) is 0, we get an asymptote!</p>
+                    <ul class="bullet-list mt-8">
+                        <li>Vertical Asymptotes at <strong>&pi;/2</strong>, <strong>3&pi;/2</strong>...</li>
+                        <li>Period is only <strong>&pi;</strong> (not 2&pi;)</li>
+                        <li>No maximum or minimum amplitude.</li>
+                    </ul>
+                </div>
+                <div class="svg-container border-purple-400/50 bg-slate-900 h-96 relative">
+                    <svg viewBox="-0.5 -3 4 6" class="w-full h-full">
+                        <line x1="-0.5" y1="0" x2="4" y2="0" stroke="#475569" stroke-width="0.05"></line>
+                        <line x1="0" y1="-3" x2="0" y2="3" stroke="#475569" stroke-width="0.05"></line>
+                        <!-- Asymptotes at pi/2 (1.57) and 3pi/2 (4.71) -->
+                        <line x1="1.57" y1="-3" x2="1.57" y2="3" stroke="#f87171" stroke-width="0.05" stroke-dasharray="0.2 0.2"></line>
+                        <text x="1.6" y="2.8" font-size="0.2" fill="#f87171">π/2</text>
+                        <!-- Curves -->
+                        <path d="M 0 0 C 0.5 0, 1.2 -1, 1.4 -3" fill="none" stroke="#c084fc" stroke-width="0.08"></path>
+                        <path d="M 1.7 3 C 2 1, 2.5 0, 3.14 0 C 3.6 0, 4.5 -1, 4.7 -3" fill="none" stroke="#c084fc" stroke-width="0.08"></path>
+                        <text x="3.2" y="0.3" font-size="0.2" fill="#cbd5e1">π</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-19">
+        <h2 class="slide-title">Graphing Reciprocals (e.g., Cosecant)</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-3xl text-white mb-8">How do we graph <strong class="text-cyan-400 font-mono bg-slate-800 px-2 rounded">y = csc(x)</strong>?</p>
+                    <p class="text-xl text-slate-300 mb-6">Csc is 1/sin(x). The golden rule is simple:</p>
+                    <div class="card border-orange-400/50 bg-orange-400/10 p-8 mb-8">
+                        <p class="text-2xl text-white leading-relaxed">Wherever the original wave equals 0, the reciprocal has a <strong class="text-red-400">Vertical Asymptote</strong> (because 1/0 is undefined).</p>
+                    </div>
+                    <p class="text-lg text-slate-400">The reciprocal graphs "bounce" off the peaks and valleys of the original wave.</p>
+                </div>
+                
+                <div class="svg-container border-orange-400/50 bg-slate-900 h-96 relative">
+                    <!-- Combined Sine and Csc SVG -->
+                    <svg viewBox="-0.5 -3 7 6" class="w-full h-full">
+                        <line x1="-0.5" y1="0" x2="6.5" y2="0" stroke="#475569" stroke-width="0.05"></line>
+                        <!-- Asymptotes -->
+                        <line x1="0" y1="-3" x2="0" y2="3" stroke="#f87171" stroke-width="0.05" stroke-dasharray="0.2 0.2"></line>
+                        <line x1="3.14" y1="-3" x2="3.14" y2="3" stroke="#f87171" stroke-width="0.05" stroke-dasharray="0.2 0.2"></line>
+                        <line x1="6.28" y1="-3" x2="6.28" y2="3" stroke="#f87171" stroke-width="0.05" stroke-dasharray="0.2 0.2"></line>
+                        <!-- Sine Wave (Faded blue) -->
+                        <path d="M 0 0 C 1 -1.5, 2.14 -1.5, 3.14 0 C 4.14 1.5, 5.28 1.5, 6.28 0" fill="none" stroke="#22d3ee" stroke-width="0.05" opacity="0.4"></path>
+                        <!-- Csc Wave (Orange U shapes) -->
+                        <path d="M 0.2 -3 Q 1.57 -0.5 2.94 -3" fill="none" stroke="#fb923c" stroke-width="0.08"></path>
+                        <path d="M 3.34 3 Q 4.71 0.5 6.08 3" fill="none" stroke="#fb923c" stroke-width="0.08"></path>
+                    </svg>
+                    <div class="absolute bottom-4 left-4 text-md text-slate-300 bg-slate-800/90 px-4 py-2 rounded-lg border border-slate-600">Sine (blue) vs Csc (orange)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-20">
+        <h2 class="slide-title">Transformations & The 'k' Value</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <div class="math-box text-6xl py-10 px-20 border-none bg-slate-800 shadow-2xl rounded-2xl mb-16">
+                y = <span class="text-cyan-400">a</span> sin(<span class="text-green-400">k</span>(x - <span class="text-yellow-400">d</span>)) + <span class="text-purple-400">c</span>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-8 w-full max-w-5xl mb-12">
+                <div class="card border-cyan-400/50 p-6"><p class="font-bold text-cyan-400 text-2xl mb-2">a = Amplitude</p><p class="text-md text-slate-400">Height of wave</p></div>
+                <div class="card border-green-400/50 p-6"><p class="font-bold text-green-400 text-2xl mb-2">k = Horiz Stretch</p><p class="text-md text-slate-400">Affects Period</p></div>
+                <div class="card border-yellow-400/50 p-6"><p class="font-bold text-yellow-400 text-2xl mb-2">d = Phase Shift</p><p class="text-md text-slate-400">Move L/R</p></div>
+                <div class="card border-purple-400/50 p-6"><p class="font-bold text-purple-400 text-2xl mb-2">c = Eq. of Axis</p><p class="text-md text-slate-400">Move U/D</p></div>
+            </div>
+            
+            <div class="p-8 border-2 border-green-400 rounded-2xl bg-green-900/20 max-w-3xl mx-auto shadow-lg">
+                <h3 class="text-green-400 text-2xl mb-4 font-bold uppercase tracking-widest">The Period Formula</h3>
+                <p class="text-4xl font-mono text-white">Period = 2&pi; / |k|</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-21">
+        <h2 class="slide-title">The Mapping Rule</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-8">To graph complex transformations, take the key points of the base wave and apply the mapping rule:</p>
+            
+            <div class="math-box text-5xl py-12 px-20 border-2 border-purple-400 bg-purple-900/20 text-white mb-12 rounded-2xl">
+                (x, y) &rarr; ( x / <span class="text-green-400">k</span> + <span class="text-yellow-400">d</span>, <span class="text-cyan-400">a</span>y + <span class="text-purple-400">c</span> )
+            </div>
+            
+            <div class="card border-slate-600 w-full max-w-4xl p-8 text-left">
+                <p class="text-xl text-white mb-4">Example: y = 3 sin(2(x - &pi;/2)) - 1</p>
+                <p class="text-2xl text-slate-300 font-mono pl-8">&rarr; ( x / 2 + &pi;/2, 3y - 1 )</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-22">
+        <h2 class="slide-title">Your Turn! (Transformations)</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-slate-200 mb-12">Identify the 4 key features for this equation:</p>
+            
+            <div class="math-box text-6xl py-12 px-20 border-2 border-orange-400 bg-slate-900 shadow-2xl text-white mb-16 rounded-2xl">
+                y = -3 cos(0.5(x - &pi;)) + 1
+            </div>
+            
+            <div class="grid grid-cols-2 gap-x-32 gap-y-12 text-3xl text-slate-300 text-left">
+                <p><strong class="text-cyan-400">1. Amplitude:</strong> _______</p>
+                <p><strong class="text-purple-400">2. Eq of Axis:</strong> _______</p>
+                <p><strong class="text-yellow-400">3. Phase shift:</strong> _______</p>
+                <p><strong class="text-green-400">4. Period:</strong> _______</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-23">
+        <h2 class="slide-title">Modeling the Real World</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-3xl text-white mb-6">Why do we study sine and cosine? Because they perfectly model real-world cycles.</p>
+                    <p class="text-xl text-slate-400 mb-10">If a word problem gives you a <strong class="text-white">Maximum</strong> and <strong class="text-white">Minimum</strong> value, you can build the equation!</p>
+                    
+                    <ul class="bullet-list text-2xl space-y-8">
+                        <li><strong class="text-purple-400">Axis (c)</strong> = (Max + Min) / 2</li>
+                        <li><strong class="text-cyan-400">Amplitude (a)</strong> = (Max - Min) / 2</li>
+                        <li><strong class="text-green-400">k value</strong> = 2&pi; / Time for one full cycle</li>
+                    </ul>
+                </div>
+                
+                <div class="svg-container bg-slate-900 border-cyan-400/50 h-[400px]">
+                    <!-- Ferris Wheel SVG -->
+                    <svg width="100%" height="100%" viewBox="0 -10 100 120">
+                        <line x1="0" y1="100" x2="100" y2="100" stroke="#475569" stroke-width="2"></line>
+                        <polygon points="50,55 30,100 70,100" fill="none" stroke="#64748b" stroke-width="2"></polygon>
+                        <circle cx="50" cy="55" r="40" fill="none" stroke="#22d3ee" stroke-width="3" stroke-dasharray="10 5"></circle>
+                        <line x1="50" y1="55" x2="50" y2="15" stroke="#334155" stroke-width="1"></line>
+                        <line x1="50" y1="55" x2="50" y2="95" stroke="#334155" stroke-width="1"></line>
+                        <line x1="50" y1="55" x2="10" y2="55" stroke="#334155" stroke-width="1"></line>
+                        <line x1="50" y1="55" x2="90" y2="55" stroke="#334155" stroke-width="1"></line>
+                        
+                        <text x="80" y="20" font-size="6" fill="white">Max</text>
+                        <text x="80" y="57" font-size="6" fill="#c084fc">Axis (c)</text>
+                        <text x="80" y="95" font-size="6" fill="white">Min</text>
+                        
+                        <line x1="48" y1="55" x2="48" y2="15" stroke="#22d3ee" stroke-width="1"></line>
+                        <text x="40" y="35" font-size="6" fill="#22d3ee">a</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-24">
+        <h2 class="slide-title">Your Turn! (Ferris Wheel)</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-white mb-12 max-w-5xl leading-relaxed">A Ferris wheel has a minimum height of <strong class="text-yellow-400 bg-slate-800 px-2 rounded">2m</strong> and a maximum height of <strong class="text-yellow-400 bg-slate-800 px-2 rounded">20m</strong>. It takes <strong class="text-cyan-400 bg-slate-800 px-2 rounded">40 seconds</strong> for one revolution.</p>
+            
+            <div class="card border-orange-400/50 bg-orange-400/10 w-full max-w-4xl p-10 mb-12">
+                <p class="text-2xl text-slate-200">Build the <strong class="text-white font-bold">Cosine</strong> equation assuming you start boarding at the <strong class="text-white font-bold">bottom</strong>.</p>
+            </div>
+            
+            <div class="grid grid-cols-3 gap-8 w-full max-w-4xl text-left">
+                <div class="card border-slate-600 p-6"><p class="text-slate-400 font-bold mb-4 text-xl">1. Axis (c)</p><p class="text-lg">(20 + 2) / 2 = ?</p></div>
+                <div class="card border-slate-600 p-6"><p class="text-slate-400 font-bold mb-4 text-xl">2. Amp (a)</p><p class="text-lg">(20 - 2) / 2 = ?</p></div>
+                <div class="card border-slate-600 p-6"><p class="text-slate-400 font-bold mb-4 text-xl">3. 'k' value</p><p class="text-lg">2&pi; / 40 = ?</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-25">
+        <h2 class="slide-title">Applications: Ocean Tides</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">Tides perfectly model sinusoidal behavior.</p>
+                    <div class="card border-cyan-400/50 text-left mb-6">
+                        <p class="text-xl text-white mb-2">High tide: <strong class="text-cyan-400">12 meters</strong> at midnight (t=0).</p>
+                        <p class="text-xl text-white mb-4">Low tide: <strong class="text-cyan-400">2 meters</strong> at 6:00 AM.</p>
+                        <p class="text-lg text-slate-400">Find the equation for depth h(t).</p>
+                    </div>
+                    <p class="text-lg text-slate-400 italic">Hint: High tide to low tide is half a cycle! Total period is 12 hours.</p>
+                </div>
+                <div class="svg-container border-cyan-400/50 bg-slate-900 h-96 relative">
+                    <svg viewBox="-0.5 -1.5 7 3" class="w-full h-full mt-auto" preserveAspectRatio="none">
+                        <line x1="-0.5" y1="0" x2="6.5" y2="0" stroke="#475569" stroke-width="0.02"></line>
+                        <!-- Tide wave -->
+                        <path d="M 0 -1 C 1 -1, 1.5 1, 3.14 1 C 4.7 1, 5.28 -1, 6.28 -1" fill="none" stroke="#22d3ee" stroke-width="0.08"></path>
+                        <text x="0" y="-1.1" font-size="0.2" fill="#22d3ee">High (12m)</text>
+                        <text x="3" y="1.2" font-size="0.2" fill="#22d3ee">Low (2m)</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-26">
+        <h2 class="slide-title">Unit 4 Consolidation</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full">
+            <p class="text-5xl text-orange-400 mb-16 font-bold text-center tracking-wide"><i class="fas fa-bolt text-yellow-400 mr-6"></i>Rapid Fire Exit Ticket!</p>
+            <div class="card border-slate-600 w-full max-w-4xl p-12 text-left">
+                <ol class="space-y-12 text-3xl text-slate-200 list-decimal ml-10">
+                    <li>Convert 90&deg; to exact radians.</li>
+                    <li>What is the period of <span class="font-mono text-cyan-400 bg-slate-800 px-2 rounded">y = sin(4x)</span>?</li>
+                    <li>Where does Tangent (tan) have vertical asymptotes?</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- NAVIGATION BAR -->
+<div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+    <span class="progress-text" id="slideCounter">1 / 26</span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 26;
+
+    function changeSlide(direction) {
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide += direction;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        
+        document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 1;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+</script>
+
+</body>
+</html>
