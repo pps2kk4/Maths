@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MHF4U Unit 5 - Trig Identities & Equations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #020617; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: 'Inter', sans-serif; overflow: hidden; }
+        
+        #presentation-container { width: 1280px; height: 720px; background: radial-gradient(120% 120% at 50% -10%, #1e293b 0%, #020617 100%); border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1); position: relative; overflow: hidden; display: flex; flex-direction: column; }
+        #presentation-container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 40px 40px; z-index: 0; pointer-events: none; }
+        
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: calc(100% - 70px); padding: 40px 60px; display: none; flex-direction: column; opacity: 0; transition: opacity 0.3s ease; z-index: 1; }
+        .slide.active { display: flex; opacity: 1; z-index: 10; }
+
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; height: 70px; background: rgba(15, 23, 42, 0.95); border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; padding: 0 30px; z-index: 20; backdrop-filter: blur(10px); }
+        .nav-btn { background: rgba(34, 211, 238, 0.1); border: 1px solid #22d3ee; color: #22d3ee; padding: 10px 25px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Poppins'; }
+        .nav-btn:hover { background: #22d3ee; color: #020617; }
+        .nav-btn:disabled { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); color: #64748b; cursor: not-allowed; }
+        .progress-text { color: #94a3b8; font-family: 'Poppins', sans-serif; font-weight: 600; letter-spacing: 2px; }
+
+        h1, h2, h3, h4 { font-family: 'Poppins', sans-serif; color: #f8fafc; margin: 0; }
+        .highlight { color: #22d3ee; } 
+        .slide-title { font-size: 42px; color: #22d3ee; border-bottom: 2px solid rgba(34, 211, 238, 0.3); padding-bottom: 12px; margin-bottom: 30px; font-weight: 600; width: 100%; }
+        
+        .math-box { background: rgba(34, 211, 238, 0.05); border-left: 4px solid #22d3ee; padding: 20px; border-radius: 0 12px 12px 0; margin: 20px 0; font-size: 32px; font-family: 'Times New Roman', serif; font-style: italic; color: white; text-align: center; }
+        .math-box.purple { background: rgba(192, 132, 252, 0.05); border-left-color: #c084fc; }
+        .math-box.green { background: rgba(74, 222, 128, 0.05); border-left-color: #4ade80; }
+        .math-box.orange { background: rgba(251, 146, 60, 0.05); border-left-color: #fb923c; }
+
+        .card { background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 30px; text-align: center; backdrop-filter: blur(8px); }
+        
+        .bullet-list { list-style: none; margin: 0; padding: 0; }
+        .bullet-list li { position: relative; padding-left: 35px; margin-bottom: 15px; font-size: 22px; color: #cbd5e1; line-height: 1.6; }
+        .bullet-list li::before { content: '\f105'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; left: 0; top: 2px; color: #22d3ee; font-size: 24px; }
+
+        .svg-container { width: 100%; height: 350px; background: rgba(15, 23, 42, 0.8); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; display: flex; justify-content: center; align-items: center; position: relative;}
+    </style>
+</head>
+<body>
+
+<div id="presentation-container">
+    
+    <div class="slide active" id="slide-1" style="justify-content: center; align-items: center; text-align: center;">
+        <h1 style="font-size: 64px; font-weight: 700; line-height: 1.1;">Grade 12 <span class="highlight">Advanced Functions</span></h1>
+        <h3 style="font-size: 32px; color: #94a3b8; margin-top: 20px; font-weight: 400; letter-spacing: 2px;">MHF4U | ONTARIO CURRICULUM</h3>
+        <div style="width: 100px; height: 4px; background: #22d3ee; margin: 40px auto;"></div>
+        <h2 style="font-size: 48px; color: #f8fafc;">Unit 5: Trig Identities & Equations</h2>
+        <p class="text-xl text-slate-400 mt-8 tracking-widest uppercase">Prepared for: Rigden</p>
+    </div>
+
+    <div class="slide" id="slide-2">
+        <h2 class="slide-title">Today's Roadmap</h2>
+        <div class="flex-grow flex flex-col justify-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center">
+                <ul class="bullet-list">
+                    <li><strong class="text-white">1. Equations vs Identities:</strong> What's the difference?</li>
+                    <li><strong class="text-white">2. Compound Angles:</strong> Adding and subtracting inside trig functions.</li>
+                    <li><strong class="text-white">3. Double Angles:</strong> The 3 faces of Cosine.</li>
+                    <li><strong class="text-white">4. Proving Identities:</strong> The Golden Rules of LHS = RHS.</li>
+                    <li><strong class="text-white">5. Solving Trig Equations:</strong> Factoring sine and cosine.</li>
+                </ul>
+                <div class="card border-cyan-400/50">
+                    <i class="fas fa-balance-scale text-6xl text-cyan-400 mb-6"></i>
+                    <h3 class="text-3xl text-cyan-400 mb-2">Goal</h3>
+                    <p class="text-lg text-slate-300">To master the algebraic manipulation of trigonometric functions to prove identities and solve complex equations.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+        <h2 class="slide-title">Equation vs. Identity</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div class="card border-orange-400/50">
+                    <h3 class="text-orange-400 text-3xl mb-4">Equation</h3>
+                    <div class="math-box orange border-none bg-slate-900 my-6">
+                        <span class="font-mono">sin(x) = 1/2</span>
+                    </div>
+                    <ul class="text-left text-slate-300 space-y-4 text-xl list-disc ml-8">
+                        <li>Only true for <strong>specific values</strong> of x.</li>
+                        <li>Goal: <strong>Solve</strong> for x.</li>
+                        <li>(e.g., x = &pi;/6, 5&pi;/6)</li>
+                    </ul>
+                </div>
+                <div class="card border-cyan-400/50">
+                    <h3 class="text-cyan-400 text-3xl mb-4">Identity</h3>
+                    <div class="math-box border-none bg-slate-900 my-6">
+                        <span class="font-mono">sin<sup>2</sup>x + cos<sup>2</sup>x = 1</span>
+                    </div>
+                    <ul class="text-left text-slate-300 space-y-4 text-xl list-disc ml-8">
+                        <li>True for <strong>ALL values</strong> of x.</li>
+                        <li>Goal: <strong>Prove</strong> Left Side = Right Side.</li>
+                        <li>(Cannot solve for x, because x is infinite!)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+        <h2 class="slide-title">Warm-up: Grade 11 Foundations</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-8">Before proving Grade 12 identities, you must recall the Grade 11 basics.</p>
+            <div class="grid grid-cols-3 gap-8 w-full max-w-5xl">
+                <div class="card border-slate-600 bg-slate-800">
+                    <h3 class="text-cyan-400 text-xl mb-4">Quotient Identity</h3>
+                    <p class="font-mono text-2xl text-white mb-2">tan(x) = sin(x) / cos(x)</p>
+                </div>
+                <div class="card border-slate-600 bg-slate-800">
+                    <h3 class="text-purple-400 text-xl mb-4">Reciprocal Identities</h3>
+                    <p class="font-mono text-xl text-white mb-2">csc(x) = 1 / sin(x)</p>
+                    <p class="font-mono text-xl text-white mb-2">sec(x) = 1 / cos(x)</p>
+                    <p class="font-mono text-xl text-white">cot(x) = cos(x) / sin(x)</p>
+                </div>
+                <div class="card border-slate-600 bg-slate-800">
+                    <h3 class="text-green-400 text-xl mb-4">Pythagorean Identity</h3>
+                    <p class="font-mono text-2xl text-white mb-4">sin<sup>2</sup>x + cos<sup>2</sup>x = 1</p>
+                    <p class="text-sm text-slate-400 italic">Also: sin<sup>2</sup>x = 1 - cos<sup>2</sup>x</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+        <h2 class="slide-title">Equivalent Trig Expressions</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-3xl text-white mb-6">Trig functions are <strong class="text-cyan-400">Periodic</strong>.</p>
+                    <p class="text-xl text-slate-300 mb-6">Because they repeat forever, shifting the graph by a full cycle (<span class="font-bold text-white">2&pi;</span>) lands you back on the exact same value.</p>
+                    <div class="card border-cyan-400/50 bg-cyan-900/20 text-left p-6">
+                        <p class="font-mono text-2xl text-cyan-400 mb-3">sin(x) = sin(x &plusmn; 2&pi;)</p>
+                        <p class="font-mono text-2xl text-cyan-400 mb-3">cos(x) = cos(x &plusmn; 2&pi;)</p>
+                        <p class="font-mono text-2xl text-cyan-400">tan(x) = tan(x &plusmn; &pi;)</p>
+                        <p class="text-sm text-slate-400 mt-4 italic">*Tangent repeats every &pi;, not 2&pi;.</p>
+                    </div>
+                </div>
+                <div class="svg-container border-cyan-400/50 bg-slate-900 relative">
+                    <svg viewBox="-1 -2 8 4" class="w-full h-full">
+                        <line x1="-1" y1="0" x2="8" y2="0" stroke="#475569" stroke-width="0.05"></line>
+                        <line x1="0" y1="-2" x2="0" y2="2" stroke="#475569" stroke-width="0.05"></line>
+                        <path d="M 0 0 C 1 -2.5, 2.14 -2.5, 3.14 0 C 4.14 2.5, 5.28 2.5, 6.28 0" fill="none" stroke="#22d3ee" stroke-width="0.08"></path>
+                        <circle cx="0.5" cy="-0.75" r="0.1" fill="#f8fafc"></circle>
+                        <circle cx="6.78" cy="-0.75" r="0.1" fill="#f8fafc"></circle>
+                        <path d="M 0.5 -1.2 Q 3.64 -2.5 6.78 -1.2" fill="none" stroke="#fcd34d" stroke-width="0.05" stroke-dasharray="0.1 0.1"></path>
+                        <text x="3.2" y="-1.6" font-size="0.3" fill="#fcd34d">+ 2π Shift</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+        <h2 class="slide-title">Co-function Identities</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">What is the relationship between Sine and Cosine?</p>
+                    <p class="text-xl text-slate-400 mb-8">They are the exact same wave, just shifted left or right by <strong class="text-white">&pi;/2</strong> (90&deg;).</p>
+                    <ul class="bullet-list text-2xl font-mono space-y-4">
+                        <li>sin(x) = cos(x - &pi;/2)</li>
+                        <li>cos(x) = sin(x + &pi;/2)</li>
+                    </ul>
+                </div>
+                <div class="svg-container border-purple-400/50 bg-slate-900 relative">
+                    <svg viewBox="-1 -2 8 4" class="w-full h-full">
+                        <line x1="-1" y1="0" x2="8" y2="0" stroke="#475569" stroke-width="0.05"></line>
+                        <!-- Sine -->
+                        <path d="M 0 0 C 1 -2.5, 2.14 -2.5, 3.14 0 C 4.14 2.5, 5.28 2.5, 6.28 0" fill="none" stroke="#22d3ee" stroke-width="0.08"></path>
+                        <!-- Cosine -->
+                        <path d="M 0 -1.5 C 1 -1.5, 1.5 1.5, 3.14 1.5 C 4.7 1.5, 5.28 -1.5, 6.28 -1.5" fill="none" stroke="#c084fc" stroke-width="0.08" stroke-dasharray="0.1 0.1"></path>
+                        <text x="3.14" y="-1.7" font-size="0.25" fill="#c084fc">Cosine</text>
+                        <text x="4.5" y="-1" font-size="0.25" fill="#22d3ee">Sine</text>
+                        <!-- Shift arrow -->
+                        <line x1="0" y1="-1.5" x2="1.57" y2="-1.5" stroke="#fbbf24" stroke-width="0.05"></line>
+                        <polygon points="1.57,-1.5 1.4,-1.4 1.4,-1.6" fill="#fbbf24"></polygon>
+                        <text x="0.2" y="-1.1" font-size="0.2" fill="#fbbf24">Shift π/2</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+        <h2 class="slide-title">The Compound Angle Formulas</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-white mb-8">How do we find the exact value of <span class="font-mono text-cyan-400 bg-slate-800 px-2 rounded">cos(7&pi;/12)</span>?</p>
+            <p class="text-2xl text-slate-300 mb-8 max-w-4xl">7&pi;/12 is not on our special triangles. But, we can break it apart into two angles that ARE on our triangles!</p>
+            
+            <div class="math-box text-5xl py-8 px-16 border-none bg-slate-800 shadow-2xl rounded-2xl mb-12">
+                7&pi;/12 = <span class="text-pink-400">3&pi;/12</span> + <span class="text-green-400">4&pi;/12</span> = <span class="text-pink-400">&pi;/4</span> + <span class="text-green-400">&pi;/3</span>
+            </div>
+            
+            <p class="text-2xl text-white">To evaluate this, we need formulas that allow us to add angles INSIDE a trig function: <strong class="text-cyan-400">f(a + b)</strong>.</p>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+        <h2 class="slide-title">Compound Formulas: Cosine</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-10">Memory Trick: <strong class="text-purple-400">"Cosine is Cliquey and Contrary"</strong><br>The cosines group together, the sines group together, and the sign flips!</p>
+            
+            <div class="grid grid-rows-2 gap-8 w-full max-w-4xl">
+                <div class="math-box purple py-8 px-12 text-4xl">
+                    cos(a <span class="text-yellow-400 font-bold">+</span> b) = cos(a)cos(b) <span class="text-yellow-400 font-bold">-</span> sin(a)sin(b)
+                </div>
+                <div class="math-box purple py-8 px-12 text-4xl">
+                    cos(a <span class="text-yellow-400 font-bold">-</span> b) = cos(a)cos(b) <span class="text-yellow-400 font-bold">+</span> sin(a)sin(b)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-9">
+        <h2 class="slide-title">Compound Formulas: Sine</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-10">Memory Trick: <strong class="text-cyan-400">"Sine is Social and Same"</strong><br>Sine mixes with cosine, and the sign stays exactly the same!</p>
+            
+            <div class="grid grid-rows-2 gap-8 w-full max-w-4xl">
+                <div class="math-box py-8 px-12 text-4xl">
+                    sin(a <span class="text-yellow-400 font-bold">+</span> b) = sin(a)cos(b) <span class="text-yellow-400 font-bold">+</span> cos(a)sin(b)
+                </div>
+                <div class="math-box py-8 px-12 text-4xl">
+                    sin(a <span class="text-yellow-400 font-bold">-</span> b) = sin(a)cos(b) <span class="text-yellow-400 font-bold">-</span> cos(a)sin(b)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+        <h2 class="slide-title">Compound Formulas: Tangent</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-10">Tangent creates a fraction. <br>The <strong class="text-white">TOP</strong> matches the original sign. The <strong class="text-white">BOTTOM</strong> is opposite.</p>
+            
+            <div class="grid grid-rows-2 gap-8 w-full max-w-5xl">
+                <div class="math-box orange py-6 px-12 text-3xl">
+                    tan(a <span class="text-yellow-400 font-bold">+</span> b) = (tan a <span class="text-yellow-400 font-bold">+</span> tan b) / (1 <span class="text-yellow-400 font-bold">-</span> tan a tan b)
+                </div>
+                <div class="math-box orange py-6 px-12 text-3xl">
+                    tan(a <span class="text-yellow-400 font-bold">-</span> b) = (tan a <span class="text-yellow-400 font-bold">-</span> tan b) / (1 <span class="text-yellow-400 font-bold">+</span> tan a tan b)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+        <h2 class="slide-title">Practice: Exact Values</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-white mb-10">Find the exact value of: <span class="math-box inline-block border-none mx-4 bg-slate-800 shadow-xl">sin(5&pi;/12)</span></p>
+            
+            <div class="card border-slate-600 w-full max-w-4xl text-left p-8 space-y-6">
+                <p class="text-2xl text-slate-300"><strong class="text-cyan-400">Step 1:</strong> Break the angle apart.<br>5&pi;/12 = 2&pi;/12 + 3&pi;/12 = <strong class="text-white">&pi;/6 + &pi;/4</strong></p>
+                <p class="text-2xl text-slate-300"><strong class="text-cyan-400">Step 2:</strong> Set up the formula. (Sine is "Social and Same")<br><span class="font-mono text-white ml-8">sin(&pi;/6)cos(&pi;/4) + cos(&pi;/6)sin(&pi;/4)</span></p>
+                <p class="text-2xl text-slate-300"><strong class="text-cyan-400">Step 3:</strong> Plug in Special Triangle values.<br><span class="font-mono text-white ml-8">(1/2)(&radic;2/2) + (&radic;3/2)(&radic;2/2)</span></p>
+                <p class="text-3xl text-green-400 font-bold mt-8 ml-8">Answer = (&radic;2 + &radic;6) / 4</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+        <h2 class="slide-title">Double Angle Formulas</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">What happens if angles 'a' and 'b' are the exact same angle? <strong class="text-white">sin(x + x)</strong></p>
+                    <p class="text-xl text-slate-400 mb-8">The compound formulas condense perfectly into the <strong class="text-cyan-400">Double Angle Formulas</strong>.</p>
+                    <ul class="bullet-list space-y-8 mt-8">
+                        <li><span class="math-box text-3xl p-4">sin(2x) = 2 sin(x)cos(x)</span></li>
+                        <li><span class="math-box orange text-3xl p-4">tan(2x) = 2 tan(x) / (1 - tan<sup>2</sup>x)</span></li>
+                    </ul>
+                </div>
+                <div class="card border-purple-400 bg-purple-900/20 text-center p-10 h-full flex flex-col justify-center">
+                    <h3 class="text-purple-400 text-3xl mb-6">What about Cosine?</h3>
+                    <p class="text-2xl text-white">Cosine is special.</p>
+                    <p class="text-xl text-slate-300 mt-4">Because cos(x+x) = cos(x)cos(x) - sin(x)sin(x)...</p>
+                    <p class="text-4xl font-mono text-purple-400 font-bold mt-6">cos(2x) = cos<sup>2</sup>x - sin<sup>2</sup>x</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-13">
+        <h2 class="slide-title">The 3 Faces of Cos(2x)</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-8">Using the Pythagorean identity (sin<sup>2</sup>x + cos<sup>2</sup>x = 1), we can rewrite cos(2x) in three different ways. You must memorize these for proofs!</p>
+            
+            <div class="grid grid-cols-3 gap-8 w-full max-w-6xl mt-6">
+                <div class="card border-purple-400">
+                    <h3 class="text-white text-xl mb-4 border-b border-purple-400/50 pb-2">1. The Standard</h3>
+                    <p class="font-mono text-3xl text-purple-400 mt-8">cos<sup>2</sup>x - sin<sup>2</sup>x</p>
+                </div>
+                <div class="card border-cyan-400">
+                    <h3 class="text-white text-xl mb-4 border-b border-cyan-400/50 pb-2">2. Cosine Only</h3>
+                    <p class="font-mono text-3xl text-cyan-400 mt-8">2cos<sup>2</sup>x - 1</p>
+                </div>
+                <div class="card border-green-400">
+                    <h3 class="text-white text-xl mb-4 border-b border-green-400/50 pb-2">3. Sine Only</h3>
+                    <p class="font-mono text-3xl text-green-400 mt-8">1 - 2sin<sup>2</sup>x</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-14">
+        <h2 class="slide-title">Practice: Double Angle Expansion</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-white mb-10">Condense and evaluate the exact value of:</p>
+            <div class="math-box text-6xl py-12 px-24 border-2 border-cyan-400 bg-slate-900 shadow-2xl rounded-2xl mb-12">
+                2 sin(&pi;/8) cos(&pi;/8)
+            </div>
+            <div class="card border-slate-600 w-full max-w-4xl text-left p-8">
+                <p class="text-2xl text-slate-300 mb-4">Notice the pattern: <strong class="text-cyan-400 font-mono">2 sin(x) cos(x) = sin(2x)</strong></p>
+                <p class="text-2xl text-slate-300 mb-4">Here, x = &pi;/8.</p>
+                <p class="text-2xl text-white font-mono ml-8 mb-2">&rarr; sin( 2 * &pi;/8 )</p>
+                <p class="text-2xl text-white font-mono ml-8 mb-6">&rarr; sin( &pi;/4 )</p>
+                <p class="text-4xl text-green-400 font-bold ml-8">Answer = 1 / &radic;2</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-15">
+        <h2 class="slide-title">Proving Identities: The Golden Rules</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">Proving an identity is NOT solving an equation. You are trying to prove that <strong class="text-cyan-400">LHS = RHS</strong>.</p>
+                    <ul class="bullet-list space-y-6 mt-8">
+                        <li><strong class="text-white">Rule 1: NEVER cross the line.</strong> You cannot move terms from left to right. Work on one side independently.</li>
+                        <li><strong class="text-white">Rule 2: Start Messy.</strong> Pick the ugliest, most complicated side to simplify.</li>
+                        <li><strong class="text-white">Rule 3: Convert.</strong> When in doubt, change everything to sine and cosine.</li>
+                    </ul>
+                </div>
+                <div class="card border-red-500 bg-red-900/20 text-center p-10 h-full flex flex-col justify-center">
+                    <i class="fas fa-hand-paper text-7xl text-red-500 mb-6"></i>
+                    <h3 class="text-red-500 text-3xl mb-4">The Fatal Error</h3>
+                    <p class="text-xl text-slate-200">If you multiply both sides by the same thing, or square both sides, you get <strong class="text-white">ZERO MARKS</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-16">
+        <h2 class="slide-title">Identity Proof: Example 1</h2>
+        <div class="flex-grow flex flex-col w-full">
+            <p class="text-2xl text-white mb-6">Prove: <span class="font-mono text-cyan-400 ml-4">tan(x) + cot(x) = sec(x)csc(x)</span></p>
+            
+            <div class="grid grid-cols-2 gap-12 w-full mt-4">
+                <div class="card border-slate-600 bg-slate-900 text-left p-8">
+                    <h3 class="text-slate-400 border-b border-slate-700 pb-2 mb-4">Left Hand Side (LHS)</h3>
+                    <p class="font-mono text-xl text-white mb-4">tan(x) + cot(x)</p>
+                    <p class="font-mono text-xl text-cyan-400 mb-4">= (sin x / cos x) + (cos x / sin x) <span class="text-sm text-slate-500 ml-2">// Convert</span></p>
+                    <p class="font-mono text-xl text-cyan-400 mb-4">= (sin<sup>2</sup>x + cos<sup>2</sup>x) / (sin x cos x) <span class="text-sm text-slate-500 ml-2">// LCD</span></p>
+                    <p class="font-mono text-xl text-green-400 mb-4">= 1 / (sin x cos x) <span class="text-sm text-slate-500 ml-2">// Pythagorean!</span></p>
+                    <p class="font-mono text-xl text-purple-400 mb-4">= (1 / cos x)(1 / sin x)</p>
+                    <p class="font-mono text-2xl text-white font-bold">= sec(x)csc(x)</p>
+                </div>
+                <div class="card border-slate-600 bg-slate-900 text-left p-8">
+                    <h3 class="text-slate-400 border-b border-slate-700 pb-2 mb-4">Right Hand Side (RHS)</h3>
+                    <p class="font-mono text-xl text-white mb-4">sec(x)csc(x)</p>
+                    <div class="flex flex-col items-center justify-center h-48">
+                        <p class="text-4xl text-green-400 font-bold mb-4">LHS = RHS</p>
+                        <p class="text-xl text-slate-400">Q.E.D.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-17">
+        <h2 class="slide-title">Identity Proof: Example 2 (Double Angles)</h2>
+        <div class="flex-grow flex flex-col w-full">
+            <p class="text-2xl text-white mb-6">Prove: <span class="font-mono text-cyan-400 ml-4">sin(2x) / (1 + cos 2x) = tan(x)</span></p>
+            
+            <div class="card border-slate-600 bg-slate-900 text-left p-8 mt-4 max-w-4xl mx-auto w-full">
+                <h3 class="text-slate-400 border-b border-slate-700 pb-2 mb-6">Left Hand Side (LHS)</h3>
+                <p class="font-mono text-2xl text-white mb-6">sin(2x) / (1 + cos 2x)</p>
+                <div class="bg-slate-800 p-4 rounded-lg mb-6 border-l-4 border-yellow-400">
+                    <p class="text-lg text-slate-300">Top must become <strong class="text-white font-mono">2 sin x cos x</strong>.</p>
+                    <p class="text-lg text-slate-300">For the bottom, pick the version of cos(2x) that cancels out the '1': <strong class="text-white font-mono">2 cos<sup>2</sup>x - 1</strong>.</p>
+                </div>
+                <p class="font-mono text-xl text-cyan-400 mb-4">= (2 sin x cos x) / (1 + 2 cos<sup>2</sup>x - 1)</p>
+                <p class="font-mono text-xl text-cyan-400 mb-4">= (2 sin x cos x) / (2 cos<sup>2</sup>x)</p>
+                <p class="font-mono text-xl text-cyan-400 mb-4">= (sin x) / (cos x) <span class="text-sm text-slate-500 ml-2">// Cancel the 2 and one cos(x)</span></p>
+                <p class="font-mono text-2xl text-green-400 font-bold">= tan(x)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-18">
+        <h2 class="slide-title">Your Turn! Prove the Identity</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-2xl text-slate-300 mb-10">Grab your paper. Prove the following identity:</p>
+            
+            <div class="math-box text-5xl py-12 px-20 border-2 border-orange-400 bg-slate-900 shadow-2xl text-white mb-12 rounded-2xl">
+                cos(x) / (1 - sin x) = (1 + sin x) / cos(x)
+            </div>
+            
+            <div class="card border-slate-600 bg-slate-800/50 p-6 max-w-3xl">
+                <p class="text-xl text-yellow-400 font-bold mb-2"><i class="fas fa-lightbulb mr-2"></i> Hint:</p>
+                <p class="text-lg text-slate-300">Try multiplying the Left Hand Side by the conjugate <strong class="text-white font-mono">(1 + sin x)</strong> on both the top and the bottom to create a difference of squares!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-19">
+        <h2 class="slide-title">Solving Trig Equations: Linear Review</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">Switching back to Equations. Our goal is to solve for <strong class="text-white">x</strong> in the domain <strong class="text-white">0 &le; x &le; 2&pi;</strong>.</p>
+                    <p class="font-mono text-3xl text-cyan-400 bg-slate-900 p-6 rounded-xl border border-slate-700 mb-6">2 sin(x) - 1 = 0</p>
+                    <ul class="bullet-list mt-8 space-y-4">
+                        <li><strong>Step 1:</strong> Isolate the trig ratio. (sin x = 1/2)</li>
+                        <li><strong>Step 2:</strong> Use CAST rule to find quadrants. (Q1 and Q2)</li>
+                        <li><strong>Step 3:</strong> Use special triangles for ref angle. (&pi;/6)</li>
+                    </ul>
+                    <p class="text-2xl text-green-400 font-bold mt-8">x = &pi;/6, 5&pi;/6</p>
+                </div>
+                <div class="svg-container border-cyan-400/50 bg-slate-900">
+                    <svg width="250" height="250" viewBox="-1.5 -1.5 3 3">
+                        <line x1="-1.5" y1="0" x2="1.5" y2="0" stroke="#475569" stroke-width="0.02"></line>
+                        <line x1="0" y1="-1.5" x2="0" y2="1.5" stroke="#475569" stroke-width="0.02"></line>
+                        <circle cx="0" cy="0" r="1" fill="none" stroke="#334155" stroke-width="0.02"></circle>
+                        <!-- Q1 -->
+                        <line x1="0" y1="0" x2="0.866" y2="-0.5" stroke="#22d3ee" stroke-width="0.04"></line>
+                        <!-- Q2 -->
+                        <line x1="0" y1="0" x2="-0.866" y2="-0.5" stroke="#22d3ee" stroke-width="0.04"></line>
+                        <path d="M -0.866 -0.5 L 0.866 -0.5" stroke="#4ade80" stroke-width="0.03" stroke-dasharray="0.05 0.05"></path>
+                        <text x="0.1" y="-0.6" font-size="0.15" fill="#4ade80">y = +1/2</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-20">
+        <h2 class="slide-title">Solving Trig Equations: Quadratic</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-2xl text-slate-200 mb-6">What if there is a squared term? Factor it exactly like Grade 10 math!</p>
+                    <div class="math-box text-4xl border-none bg-slate-800 text-white py-6">2 sin<sup>2</sup>x - sin x - 1 = 0</div>
+                    <p class="text-xl text-slate-400 mt-6 mb-4">Treat sin(x) like a giant 'A'.</p>
+                    <p class="font-mono text-2xl text-yellow-400 bg-yellow-400/10 p-4 rounded-lg border border-yellow-400/30">2A<sup>2</sup> - A - 1 = 0</p>
+                    <p class="text-xl text-slate-400 mt-6 mb-4">Factor the quadratic:</p>
+                    <p class="font-mono text-2xl text-green-400 bg-green-400/10 p-4 rounded-lg border border-green-400/30">(2A + 1)(A - 1) = 0</p>
+                </div>
+                <div class="card border-slate-600 bg-slate-900 text-left p-8 h-full flex flex-col justify-center">
+                    <h3 class="text-white text-2xl border-b border-slate-700 pb-2 mb-6">The Two Branches</h3>
+                    <p class="text-xl text-slate-300 mb-4">Replace 'A' back with sin(x):</p>
+                    <p class="font-mono text-2xl text-cyan-400 mb-8">(2 sin x + 1)(sin x - 1) = 0</p>
+                    <p class="text-lg text-white mb-2">This splits into two linear equations:</p>
+                    <ul class="font-mono text-xl text-purple-400 space-y-4 ml-6 list-disc">
+                        <li>sin x = -1/2</li>
+                        <li>sin x = 1</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-21">
+        <h2 class="slide-title">Worked Example: Quadratic Trig Eq</h2>
+        <div class="flex-grow flex flex-col w-full">
+            <p class="text-2xl text-white mb-6">Solving: <span class="font-mono text-cyan-400 ml-4">(2 sin x + 1)(sin x - 1) = 0</span> for 0 &le; x &le; 2&pi;</p>
+            
+            <div class="grid grid-cols-2 gap-12 w-full mt-4">
+                <div class="card border-slate-600 bg-slate-900 text-left p-8">
+                    <h3 class="text-purple-400 border-b border-slate-700 pb-2 mb-4">Branch 1: sin x = -1/2</h3>
+                    <ul class="text-lg text-slate-300 space-y-4 list-disc ml-6">
+                        <li>Sine is negative in Q3 and Q4.</li>
+                        <li>Reference angle is &pi;/6.</li>
+                        <li>Q3: &pi; + &pi;/6 = <strong class="text-white">7&pi;/6</strong></li>
+                        <li>Q4: 2&pi; - &pi;/6 = <strong class="text-white">11&pi;/6</strong></li>
+                    </ul>
+                </div>
+                <div class="card border-slate-600 bg-slate-900 text-left p-8">
+                    <h3 class="text-purple-400 border-b border-slate-700 pb-2 mb-4">Branch 2: sin x = 1</h3>
+                    <ul class="text-lg text-slate-300 space-y-4 list-disc ml-6">
+                        <li>Where on the unit circle is the y-coordinate exactly +1?</li>
+                        <li>Right at the top!</li>
+                        <li><strong class="text-white">x = &pi;/2</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8 text-center">
+                <p class="text-3xl text-green-400 font-bold bg-green-900/20 py-4 rounded-xl border border-green-400/50 inline-block px-12">Solution: x &isin; { &pi;/2, 7&pi;/6, 11&pi;/6 }</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-22">
+        <h2 class="slide-title">Solving Equations with Double Angles</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full text-center">
+            <p class="text-3xl text-red-400 font-bold mb-8"><i class="fas fa-exclamation-triangle mr-2"></i> The Ultimate Trap</p>
+            <div class="math-box text-5xl py-8 px-20 border-2 border-red-500 bg-slate-900 text-white mb-8 rounded-2xl">
+                cos(2x) + cos(x) = 0
+            </div>
+            <p class="text-2xl text-slate-300 mb-8 max-w-4xl">You <strong class="text-white">CANNOT</strong> factor this right now because the angles don't match! One is '2x', the other is 'x'.</p>
+            
+            <div class="card border-cyan-400/50 w-full max-w-4xl p-8 text-left">
+                <p class="text-xl text-white mb-4"><strong class="text-cyan-400">Step 1:</strong> Use a Double Angle Formula to swap out cos(2x). Choose the one that only has cosine: <span class="font-mono text-yellow-400">2 cos<sup>2</sup>x - 1</span></p>
+                <p class="text-xl text-white mb-4"><strong class="text-cyan-400">Step 2:</strong> Substitute. &rarr; <span class="font-mono">(2 cos<sup>2</sup>x - 1) + cos(x) = 0</span></p>
+                <p class="text-xl text-white mb-4"><strong class="text-cyan-400">Step 3:</strong> Rearrange into a standard quadratic. &rarr; <span class="font-mono text-green-400 font-bold">2 cos<sup>2</sup>x + cos x - 1 = 0</span></p>
+                <p class="text-lg text-slate-400 italic">Now you can factor and solve!</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-23">
+        <h2 class="slide-title">The Extraneous Root Trap</h2>
+        <div class="flex-grow flex items-center w-full">
+            <div class="grid grid-cols-2 gap-12 items-center w-full">
+                <div>
+                    <p class="text-3xl text-white mb-6">Solve: <span class="font-mono text-cyan-400 bg-slate-800 px-2 rounded">sin(x)cos(x) = sin(x)</span></p>
+                    <div class="card border-red-500 bg-red-900/20 text-left mb-8 p-6">
+                        <h3 class="text-red-500 text-xl mb-2 font-bold"><i class="fas fa-times-circle mr-2"></i> Fatal Error</h3>
+                        <p class="text-lg text-white">Dividing both sides by sin(x) to get cos(x) = 1. <strong class="text-red-400">You just deleted half your answers!</strong></p>
+                    </div>
+                </div>
+                <div class="card border-green-400 bg-green-900/10 text-left p-8 h-full">
+                    <h3 class="text-green-400 text-2xl mb-6 font-bold"><i class="fas fa-check-circle mr-2"></i> The Correct Way</h3>
+                    <p class="text-lg text-slate-300 mb-4">Move everything to one side and common factor!</p>
+                    <p class="font-mono text-xl text-white mb-2">sin(x)cos(x) - sin(x) = 0</p>
+                    <p class="font-mono text-xl text-cyan-400 mb-6">sin(x) [ cos(x) - 1 ] = 0</p>
+                    <p class="text-lg text-slate-300 mb-2">Now you have two valid branches:</p>
+                    <ul class="font-mono text-lg text-purple-400 list-disc ml-6">
+                        <li>sin(x) = 0</li>
+                        <li>cos(x) = 1</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="slide" id="slide-24">
+        <h2 class="slide-title">Unit 5 Consolidation</h2>
+        <div class="flex-grow flex flex-col justify-center items-center w-full">
+            <p class="text-5xl text-orange-400 mb-16 font-bold text-center tracking-wide"><i class="fas fa-bolt text-yellow-400 mr-6"></i>Rapid Fire Exit Ticket!</p>
+            <div class="card border-slate-600 w-full max-w-4xl p-12 text-left">
+                <ol class="space-y-12 text-3xl text-slate-200 list-decimal ml-10">
+                    <li>What is the difference between an Identity and an Equation?</li>
+                    <li>Expand <span class="font-mono text-cyan-400 bg-slate-800 px-2 rounded">sin(a - b)</span>.</li>
+                    <li>What is the golden rule of proving an identity?</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- NAVIGATION BAR -->
+<div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+    <span class="progress-text" id="slideCounter">1 / 24</span>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next <i class="fas fa-chevron-right"></i></button>
+</div>
+
+<script>
+    let currentSlide = 1;
+    const totalSlides = 24;
+
+    function changeSlide(direction) {
+        document.getElementById(`slide-${currentSlide}`).classList.remove('active');
+        currentSlide += direction;
+        document.getElementById(`slide-${currentSlide}`).classList.add('active');
+        
+        document.getElementById('slideCounter').innerText = `${currentSlide} / ${totalSlides}`;
+        document.getElementById('prevBtn').disabled = currentSlide === 1;
+        document.getElementById('nextBtn').disabled = currentSlide === totalSlides;
+    }
+</script>
+
+</body>
+</html>
