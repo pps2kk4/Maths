@@ -1,0 +1,418 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MHF4U — Long Division & Synthetic Division — 50 Page Student Lesson</title><style>
+:root{--bg:#eef2f7;--card:#fff;--ink:#152033;--muted:#5d6a7e;--line:#d7deea;--accent:#2b5fd3;--accent-dark:#21479e;--ok:#147a4b;--okbg:#eaf8f0;--bad:#a32631;--badbg:#fff0f1;--warn:#8a5a00;--warnbg:#fff7df}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);overflow:hidden}
+#top{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:relative;z-index:5}.brand{font-weight:800}.brand small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}.pagecount{font-weight:700;color:var(--muted)}
+#progress{height:6px;background:#e6ebf3}#bar{height:100%;width:0;background:var(--accent);transition:width .25s ease}
+#app{height:calc(100vh - 76px);display:flex;flex-direction:column}.stage{flex:1;display:flex;align-items:center;justify-content:center;padding:22px 26px;overflow:hidden}.page{width:min(1160px,97vw);height:min(770px,calc(100vh - 150px));background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 36px rgba(32,48,80,.10);padding:40px 50px;overflow:auto;display:none}.page.active{display:block;animation:fade .18s ease}@keyframes fade{from{opacity:.25;transform:translateY(7px)}to{opacity:1;transform:none}}
+.kicker{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:10px}.page h2{font-size:35px;line-height:1.16;margin:0 0 20px}.lead{font-size:20px;line-height:1.65;color:var(--muted)}.smalllead{font-size:17px}p,li{font-size:17px;line-height:1.62;color:#39455b}ul,ol{padding-left:27px}.math,.equation{font-family:"Cambria Math","Times New Roman",serif}.equation{font-size:28px;text-align:center;padding:15px 18px;margin:17px 0;background:#f7f9fd;border:1px solid var(--line);border-radius:13px}.equation.small{font-size:22px}.callout{padding:17px 19px;border-radius:13px;border-left:5px solid var(--accent);background:#f3f7ff;margin:18px 0;font-size:17px}.callout.warning{background:var(--warnbg);border-color:#d29414}.goalgrid,.summary-grid,.error-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.goalgrid>div,.summary-grid>div,.errorcard{border:1px solid var(--line);border-radius:15px;padding:18px;background:#fbfcfe}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}.steps>div{padding:20px;border:1px solid var(--line);border-radius:15px;background:#fbfcfe}.steps span{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#e9efff;color:var(--accent);font-weight:800;margin-bottom:10px}.steps b{display:block;font-size:16px;margin-bottom:6px}.steps p{font-size:14px}.question{border:1px solid var(--line);border-radius:16px;padding:23px;background:#fbfcff}.options{display:grid;gap:11px;margin-top:16px}.options button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:14px 15px;text-align:left;font-size:17px;cursor:pointer;transition:.15s}.options button:hover:not(:disabled){border-color:var(--accent);background:#f6f9ff}.options button:disabled{cursor:default}.options button.correct{border-color:var(--ok);background:var(--okbg);color:#0c5a37;font-weight:700}.options button.incorrect{border-color:var(--bad);background:var(--badbg);color:#7c1c25}.feedback{margin-top:14px;padding:13px;border-radius:11px;display:none;font-size:16px;line-height:1.5}.feedback.show{display:block}.feedback.ok{background:var(--okbg);color:#0d5e39;border:1px solid #b9e5cc}.feedback.bad{background:var(--badbg);color:#7d1c26;border:1px solid #efb9bf}.synthetic{display:flex;gap:18px;align-items:flex-start;border:1px solid var(--line);padding:18px;border-radius:14px;background:#fbfcff}.synthetic.big{font-size:24px}.synthetic.big .grid{display:grid;grid-template-columns:repeat(4,65px);gap:7px}.synthetic.big .grid span{text-align:center}.synthetic.final{display:block}.synthetic.final .bottom{margin-top:12px;border-top:2px solid #222;padding-top:9px;font-size:27px;letter-spacing:6px}.division{display:flex;justify-content:center;gap:10px;font-size:25px}.div-left{padding-top:54px}.div-main{min-width:520px}.quotient{margin-left:100px;margin-bottom:6px}.bar{border-top:2px solid #222;padding:8px}.work{padding-left:26px;line-height:1.75}.rem{font-weight:800;color:var(--ok)}table{width:100%;border-collapse:collapse;margin:16px 0;font-size:16px}th,td{padding:11px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}th{background:#f7f9fd}.practice-list{display:grid;gap:11px}.practice-list p{margin:0}.final-summary{margin-top:20px;padding:17px;border-radius:14px;background:#f3f7ff;border:1px solid #cfd9f2}
+#nav{height:80px;background:#fff;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 26px}.navgroup{display:flex;gap:10px}.navbtn{padding:12px 18px;border-radius:11px;border:1px solid var(--line);background:#fff;font-size:16px;font-weight:700;cursor:pointer}.navbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.navbtn.primary:hover:not(:disabled){background:var(--accent-dark)}.navbtn:disabled{opacity:.45;cursor:not-allowed}.status{font-size:14px;color:var(--muted)}
+#celebrate{position:fixed;inset:0;pointer-events:none;z-index:20;display:none}.confetti{position:absolute;width:8px;height:14px;animation:fall 850ms ease-out forwards}@keyframes fall{from{transform:translateY(-30px) rotate(0deg);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(500deg);opacity:0}}
+@media(max-width:900px){.page{padding:30px}.page h2{font-size:30px}.steps,.goalgrid,.summary-grid,.error-grid{grid-template-columns:1fr 1fr}.stage{padding:12px}.page{height:calc(100vh - 140px)}.division{font-size:20px}.div-main{min-width:0;width:100%}}
+@media(max-width:620px){.page{padding:22px}.steps,.goalgrid,.summary-grid,.error-grid{grid-template-columns:1fr}.page h2{font-size:27px}.equation{font-size:23px}.equation.small{font-size:19px}.synthetic.final .bottom{font-size:20px;letter-spacing:2px}.brand small{display:none}}
+</style></head><body><div id="celebrate"></div><header id="top"><div class="brand">MHF4U • Long Division & Synthetic Division<small>Student lesson • 50 pages</small></div><div class="pagecount" id="pagecount">Page 1 of 50</div></header><div id="progress"><div id="bar"></div></div><div id="app"><main class="stage"><section class="page" id="page-1">
+      <div class="kicker">MHF4U • Chapter 2 • 2.1</div>
+      <h2>Long Division & Synthetic Division</h2>
+      
+<p class="lead">Today we are focusing on two ways to divide polynomials, plus a shortcut for finding remainders.</p>
+<div class="goalgrid">
+<div><b>By the end</b><p>You should be able to divide a polynomial, write the quotient and remainder correctly, check the result, find a remainder without dividing, and use synthetic division when it fits.</p></div>
+<div><b>Watch closely</b><p>Signs, missing powers, the zero of the divisor, and the degree of the quotient.</p></div>
+</div>
+    </section><section class="page" id="page-2">
+      <div class="kicker">The big idea</div>
+      <h2>Division is a relationship</h2>
+      
+<p>For numbers:</p><div class="equation">107 = 4(26) + 3</div>
+<p>For polynomials, the same structure becomes:</p>
+<div class="equation">P(x) = D(x)Q(x) + R(x)</div>
+<p>Here, <b>P(x)</b> is the dividend, <b>D(x)</b> the divisor, <b>Q(x)</b> the quotient, and <b>R(x)</b> the remainder.</p>
+    </section><section class="page" id="page-3">
+      <div class="kicker">Number reminder</div>
+      <h2>The four moves</h2>
+      
+<div class="steps">
+<div><span>1</span><b>Divide</b><p>Use the first terms to decide the next quotient term.</p></div>
+<div><span>2</span><b>Multiply</b><p>Multiply that quotient term by the whole divisor.</p></div>
+<div><span>3</span><b>Subtract</b><p>Subtract the product carefully, including signs.</p></div>
+<div><span>4</span><b>Repeat</b><p>Bring down the next part and continue.</p></div>
+</div>
+<p class="lead smalllead">Polynomial long division follows exactly the same rhythm.</p>
+    </section><section class="page" id="page-4">
+      <div class="kicker">Try it first</div>
+      <h2>Quick number check</h2>
+      
+<div class="question" data-q="q1"><p><b>What is the remainder when 753 is divided by 22?</b></p>
+<div class="options"><button onclick="answer('q1',this,false,'22×34 = 748, so the remainder is not 7.')">3</button><button onclick="answer('q1',this,false,'22×33 = 726, leaving more than 5.')">4</button><button onclick="answer('q1',this,true,'Yes. 22×34 = 748 and 753−748 = 5.')">5</button><button onclick="answer('q1',this,false,'22×34 = 748, so the remainder is 5.')">7</button></div><div class="feedback" id="f-q1"></div></div>
+    </section><section class="page" id="page-5">
+      <div class="kicker">Bridge</div>
+      <h2>From number division to polynomial division</h2>
+      
+<p>Now replace the numbers with powers of <span class="math">x</span>.</p>
+<div class="equation">x<sup>3</sup> + 3x<sup>2</sup> − 2x + 5 ÷ (x + 1)</div>
+<p>The first question is always about the leading terms:</p>
+<div class="equation">x<sup>3</sup> ÷ x = x<sup>2</sup></div>
+<p>That becomes the first term of the quotient.</p>
+    </section><section class="page" id="page-6">
+      <div class="kicker">Before dividing</div>
+      <h2>Get the polynomial ready</h2>
+      
+<p>Write the dividend in descending powers.</p>
+<div class="equation">x<sup>4</sup> − 4x<sup>2</sup> − 2x + 3</div>
+<p>There is no <span class="math">x<sup>3</sup></span> term, so write its coefficient as zero:</p>
+<div class="equation">x<sup>4</sup> + 0x<sup>3</sup> − 4x<sup>2</sup> − 2x + 3</div>
+<div class="callout warning"><b>Do not skip the zero.</b> It keeps every column aligned when you divide or use synthetic division.</div>
+    </section><section class="page" id="page-7">
+      <div class="kicker">Long Division</div>
+      <h2>First worked polynomial division</h2>
+      
+<p>Divide <span class="math">3x<sup>3</sup> − 5x<sup>2</sup> − 7x − 1</span> by <span class="math">x − 3</span>.</p>
+<div class="division">
+<div class="div-left math">x−3</div><div class="div-main"><div class="quotient math">3x² + 4x + 5</div><div class="bar math">3x³ − 5x² − 7x − 1</div><div class="work math">3x³ − 9x²<br>────────<br>4x² − 7x<br><br>4x² − 12x<br>────────<br>5x − 1<br><br>5x − 15<br>────────<br><span class="rem">14</span></div></div></div>
+<p>The quotient is <b>3x² + 4x + 5</b> and the remainder is <b>14</b>, matching the supplied lesson example.</p>
+    </section><section class="page" id="page-8">
+      <div class="kicker">Long Division explained</div>
+      <h2>What each step is doing</h2>
+      
+<ol>
+<li><b>3x³ ÷ x = 3x²</b> → first quotient term.</li>
+<li><b>3x²(x−3)=3x³−9x²</b> → multiply.</li>
+<li>Subtract → <b>4x²−7x</b>.</li>
+<li><b>4x² ÷ x = 4x</b> → next quotient term.</li>
+<li>Repeat until the remainder has smaller degree than the divisor.</li>
+</ol>
+<div class="callout"><b>Stopping rule:</b> stop when the degree of the remainder is less than the degree of the divisor.</div>
+    </section><section class="page" id="page-9">
+      <div class="kicker">Write the answer properly</div>
+      <h2>Quotient form vs. division statement</h2>
+      
+<p>For the previous example:</p>
+<div class="equation small">(3x³−5x²−7x−1)/(x−3) = 3x²+4x+5 + 14/(x−3)</div>
+<p>The equivalent division statement is:</p>
+<div class="equation">3x³−5x²−7x−1 = (x−3)(3x²+4x+5)+14</div>
+<p>The source lesson explicitly uses both forms and recommends checking by expanding the product.</p>
+    </section><section class="page" id="page-10">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: read the remainder</h2>
+      
+<div class="question" data-q="q2"><p><b>If the final line of a polynomial division has constant value 14 and the divisor has degree 1, what does 14 represent?</b></p>
+<div class="options"><button onclick="answer('q2',this,false,'The quotient is made from the earlier terms, not the final constant.')">The divisor</button><button onclick="answer('q2',this,true,'Correct. The final value is the remainder when its degree is smaller than the divisor.')">The remainder</button><button onclick="answer('q2',this,false,'The quotient has degree one less than the dividend when the divisor is linear.')">The leading coefficient</button><button onclick="answer('q2',this,false,'It is not the divisor.')">The quotient</button></div><div class="feedback" id="f-q2"></div></div>
+    </section><section class="page" id="page-11">
+      <div class="kicker">A useful source case</div>
+      <h2>Non-monic divisors in long division</h2>
+      
+<p>The review also contains divisors such as <span class="math">3x+1</span>, <span class="math">2x−1</span>, and <span class="math">5x−2</span>.</p>
+<p>Example:</p><div class="equation">(12x³−2x²+x−11) ÷ (3x+1)</div>
+<div class="equation">Q(x)=4x²−2x+1, &nbsp; R=−12</div>
+<p>So the check is:</p><div class="equation small">12x³−2x²+x−11=(3x+1)(4x²−2x+1)−12</div>
+    </section><section class="page" id="page-12">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: the first quotient term</h2>
+      
+<div class="question" data-q="q3"><p><b>When dividing <span class="math">12x³−2x²+x−11</span> by <span class="math">3x+1</span>, what is the first quotient term?</b></p>
+<div class="options"><button onclick="answer('q3',this,false,'12x³ ÷ 3x = 4x², not 4x³.')">4x³</button><button onclick="answer('q3',this,true,'Correct: 12x³ ÷ 3x = 4x².')">4x²</button><button onclick="answer('q3',this,false,'Use the leading terms: 12x³ ÷ 3x.')">4x</button><button onclick="answer('q3',this,false,'The first quotient term comes from dividing the leading terms.')">12x²</button></div><div class="feedback" id="f-q3"></div></div>
+    </section><section class="page" id="page-13">
+      <div class="kicker">Check your division</div>
+      <h2>Why verification matters</h2>
+      
+<p>A correct division can always be reconstructed:</p>
+<div class="equation">Dividend = Divisor × Quotient + Remainder</div>
+<p>For <span class="math">x³+9x²−5x+3</span> divided by <span class="math">x−2</span>:</p>
+<div class="equation small">x³+9x²−5x+3=(x−2)(x²+11x+17)+37</div>
+<div class="callout">When you multiply and simplify the right side, you should get the original dividend exactly.</div>
+    </section><section class="page" id="page-14">
+      <div class="kicker">Interactive error check</div>
+      <h2>Checkpoint: find the mistake</h2>
+      
+<div class="question" data-q="q4"><p><b>A student gets</b> <span class="math">Q(x)=x²+11x+17, R=37</span> for the previous problem. Which final check is correct?</p>
+<div class="options"><button onclick="answer('q4',this,true,'Yes. Multiply divisor × quotient, then add the remainder.')">(x−2)(x²+11x+17)+37</button><button onclick="answer('q4',this,false,'The remainder is added, not multiplied by the quotient.')">(x−2)(x²+11x+17)×37</button><button onclick="answer('q4',this,false,'The quotient belongs inside the product with the divisor.')">(x−2)+x²+11x+17+37</button><button onclick="answer('q4',this,false,'Subtraction is not the final reconstruction rule.')">(x−2)(x²+11x+17)−37</button></div><div class="feedback" id="f-q4"></div></div>
+    </section><section class="page" id="page-15">
+      <div class="kicker">The shortcut</div>
+      <h2>Remainder Theorem</h2>
+      
+<p>When <span class="math">P(x)</span> is divided by <span class="math">x−b</span>, the remainder is:</p>
+<div class="equation">P(b)</div>
+<p>So if the question asks only for the remainder, you do <b>not</b> need to perform the whole division.</p>
+<div class="callout"><b>First move:</b> set the divisor equal to zero to find the value of <span class="math">x</span> you need.</div>
+<p>This is the exact rule presented in the supplied lesson package.</p>
+    </section><section class="page" id="page-16">
+      <div class="kicker">Worked example</div>
+      <h2>Remainder Theorem example</h2>
+      
+<p>Find the remainder when <span class="math">P(x)=x⁴−4x²−2x+3</span> is divided by <span class="math">x+1</span>.</p>
+<p><b>Step 1:</b> <span class="math">x+1=x−(−1)</span>, so use <span class="math">P(−1)</span>.</p>
+<div class="equation">P(−1)=1−4+2+3=2</div>
+<p>Therefore, the remainder is <b>2</b>. This is also question 1 in the supplied review.</p>
+    </section><section class="page" id="page-17">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: sign first</h2>
+      
+<div class="question" data-q="q5"><p><b>For the divisor <span class="math">x+3</span>, which value should you substitute into <span class="math">P(x)</span>?</b></p>
+<div class="options"><button onclick="answer('q5',this,false,'x+3 = 0 gives x = −3.')">3</button><button onclick="answer('q5',this,true,'Correct. x+3 = 0, so x = −3.')">−3</button><button onclick="answer('q5',this,false,'The sign changes when you solve x+3=0.')">1/3</button><button onclick="answer('q5',this,false,'The zero of x+3 is not 0.')">0</button></div><div class="feedback" id="f-q5"></div></div>
+    </section><section class="page" id="page-18">
+      <div class="kicker">ax − b</div>
+      <h2>The non-monic Remainder Theorem case</h2>
+      
+<p>The supplied teacher lesson also gives the more general case:</p>
+<div class="equation">If divisor = ax−b, use P(b/a)</div>
+<p>Example divisor:</p><div class="equation">2x−3=0 → x=3/2</div>
+<p>So the remainder is <span class="math">P(3/2)</span>.</p>
+<p>This exact idea appears in the supplied lesson and review.</p>
+    </section><section class="page" id="page-19">
+      <div class="kicker">Example</div>
+      <h2>Worked non-monic remainder</h2>
+      
+<p>Find the remainder when <span class="math">P(x)=2x³+x²−3x−6</span> is divided by <span class="math">2x−3</span>.</p>
+<p>The divisor's zero is <span class="math">3/2</span>.</p>
+<div class="equation small">P(3/2)=2(3/2)³+(3/2)²−3(3/2)−6</div>
+<div class="equation">P(3/2)=−3/2</div>
+<p>The supplied teacher material verifies this result by long division.</p>
+    </section><section class="page" id="page-20">
+      <div class="kicker">Remainder information</div>
+      <h2>Finding an unknown coefficient</h2>
+      
+<p>Another source question gives an unknown <span class="math">k</span> and the remainder.</p>
+<p>Find <span class="math">k</span> if</p>
+<div class="equation small">P(x)=x⁴+kx³−3x−5</div>
+<p>has remainder −10 when divided by <span class="math">x−3</span>.</p>
+<p>Use the theorem:</p><div class="equation">P(3)=−10</div>
+<div class="callout">The division is not the point here. The point is turning the remainder information into an equation for <span class="math">k</span>.</div>
+    </section><section class="page" id="page-21">
+      <div class="kicker">Worked algebra</div>
+      <h2>Solve for k</h2>
+      
+<div class="equation small">3⁴+k(3³)−3(3)−5=−10</div>
+<div class="equation small">81+27k−9−5=−10</div>
+<div class="equation small">27k+67=−10</div>
+<div class="equation small">27k=−77</div>
+<div class="equation">k=−77/27</div>
+<p>This matches the answer in the supplied review solutions.</p>
+    </section><section class="page" id="page-22">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: choose the tool</h2>
+      
+<div class="question" data-q="q6"><p><b>You only need the remainder when a polynomial is divided by <span class="math">x−5</span>. What is the best first move?</b></p>
+<div class="options"><button onclick="answer('q6',this,false,'Long division is possible, but it is unnecessary when only the remainder is required.')">Start long division</button><button onclick="answer('q6',this,true,'Correct. Use the Remainder Theorem and evaluate P(5).')">Evaluate P(5)</button><button onclick="answer('q6',this,false,'Synthetic division gives more information than the problem asks for.')">Factor the polynomial</button><button onclick="answer('q6',this,false,'The divisor is linear, but you only need the remainder.')">Find all roots first</button></div><div class="feedback" id="f-q6"></div></div>
+    </section><section class="page" id="page-23">
+      <div class="kicker">A shorter layout</div>
+      <h2>Synthetic Division: what changes?</h2>
+      
+<p>Synthetic division keeps the same core arithmetic as long division, but it works with coefficients rather than the full expressions.</p>
+<p>For a divisor of the form <span class="math">x−b</span>, place <span class="math">b</span> to the left and use the coefficient row.</p>
+<div class="synthetic big"><div class="grid"><span>3</span><span>−5</span><span>−7</span><span>−1</span></div><div class="result">Bring down → multiply by 3 → add → repeat.</div></div>
+<p>The supplied lesson gives this process step-by-step.</p>
+    </section><section class="page" id="page-24">
+      <div class="kicker">Worked example</div>
+      <h2>Synthetic division, one move at a time</h2>
+      
+<p>Divide <span class="math">3x³−5x²−7x−1</span> by <span class="math">x−3</span>.</p>
+<div class="synthetic final"><div class="math">3 &nbsp;|&nbsp; 3 &nbsp;&nbsp; −5 &nbsp;&nbsp; −7 &nbsp;&nbsp; −1</div><div class="bottom math">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;9 &nbsp;&nbsp;&nbsp;12 &nbsp;&nbsp;&nbsp;15<br>──────────────<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3 &nbsp;&nbsp;&nbsp;&nbsp;4 &nbsp;&nbsp;&nbsp;&nbsp;5 &nbsp;|&nbsp;14</div></div>
+<p>The bottom row gives the quotient coefficients <b>3, 4, 5</b> and the final number <b>14</b> is the remainder.</p>
+    </section><section class="page" id="page-25">
+      <div class="kicker">Read the bottom row</div>
+      <h2>How to rebuild the quotient</h2>
+      
+<p>The original polynomial has degree 3, so after division by a linear expression, the quotient has degree 2.</p>
+<div class="equation">3, 4, 5 → 3x²+4x+5</div>
+<p>The final number is separate:</p><div class="equation">R=14</div>
+<p>So the division statement is:</p><div class="equation small">3x³−5x²−7x−1=(x−3)(3x²+4x+5)+14</div>
+    </section><section class="page" id="page-26">
+      <div class="kicker">Critical setup</div>
+      <h2>Missing coefficients in synthetic division</h2>
+      
+<p>For <span class="math">x³−7x−6</span>, there is no <span class="math">x²</span> term.</p>
+<p>The coefficient row is:</p>
+<div class="equation">1, 0, −7, −6</div>
+<p>The supplied workbook intentionally includes this kind of problem.</p>
+<div class="callout warning"><b>Zero is not optional.</b> It represents the missing power.</div>
+    </section><section class="page" id="page-27">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: insert the zero</h2>
+      
+<div class="question" data-q="q7"><p><b>Which coefficient row represents <span class="math">x³−2x+1</span>?</b></p>
+<div class="options"><button onclick="answer('q7',this,false,'You need one coefficient for x².')">1, −2, 1</button><button onclick="answer('q7',this,true,'Correct. x³ + 0x² − 2x + 1 gives 1, 0, −2, 1.')">1, 0, −2, 1</button><button onclick="answer('q7',this,false,'Do not create a coefficient for a missing x⁰ term.')">1, −2, 0, 1</button><button onclick="answer('q7',this,false,'The row must match powers 3,2,1,0.')">0, 1, −2, 1</button></div><div class="feedback" id="f-q7"></div></div>
+    </section><section class="page" id="page-28">
+      <div class="kicker">Sign control</div>
+      <h2>When the divisor is x + 3</h2>
+      
+<p>Rewrite:</p><div class="equation">x+3 = x−(−3)</div>
+<p>So synthetic division uses <b>−3</b> on the left.</p>
+<div class="callout warning"><b>Common trap:</b> copy the sign from the divisor without first finding its zero. Do not use +3 here.</div>
+<p>The supplied workbook's answer key shows this same sign handling in the examples with <span class="math">x+3</span> and <span class="math">x+2</span>.</p>
+    </section><section class="page" id="page-29">
+      <div class="kicker">Worked example</div>
+      <h2>Synthetic division with x + 2</h2>
+      
+<p>Divide <span class="math">x³+2x²−6x+1</span> by <span class="math">x+2</span>.</p>
+<p>Use <span class="math">−2</span>:</p>
+<div class="synthetic final"><div class="math">−2 &nbsp;|&nbsp; 1 &nbsp;&nbsp; 2 &nbsp;&nbsp; −6 &nbsp;&nbsp; 1</div><div class="bottom math">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;−2 &nbsp;&nbsp;0 &nbsp;&nbsp;12<br>────────────────<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1 &nbsp;&nbsp;0 &nbsp;&nbsp;−6 &nbsp;|&nbsp;13</div></div>
+<p>Therefore:</p><div class="equation small">x³+2x²−6x+1=(x+2)(x²−6)+13</div>
+    </section><section class="page" id="page-30">
+      <div class="kicker">2x − 3 and similar cases</div>
+      <h2>Non-monic divisors in synthetic division</h2>
+      
+<p>The supplied lesson explains that a divisor such as <span class="math">2x+3</span> can be rewritten first:</p>
+<div class="equation">2x+3 = 2(x+3/2)</div>
+<p>So the synthetic number is the zero of <span class="math">x+3/2</span>, namely <span class="math">−3/2</span>.</p>
+<p>After the synthetic work, the quotient must be adjusted for the factor 2. The source explicitly warns that long division may be easier for a divisor <span class="math">ax−b</span>.</p>
+    </section><section class="page" id="page-31">
+      <div class="kicker">Source case</div>
+      <h2>Worked non-monic synthetic example</h2>
+      
+<p>Divide <span class="math">6x³+5x²−16x−15</span> by <span class="math">2x+3</span>.</p>
+<div class="equation small">2x+3=2(x+3/2)</div>
+<p>Use synthetic number <span class="math">−3/2</span>:</p>
+<div class="synthetic final"><div class="math">−3/2 &nbsp;|&nbsp; 6 &nbsp;&nbsp; 5 &nbsp;&nbsp; −16 &nbsp;&nbsp; −15</div><div class="bottom math">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;−9 &nbsp;&nbsp;6 &nbsp;&nbsp;15<br>──────────────────<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6 &nbsp;&nbsp;−4 &nbsp;&nbsp;−10 &nbsp;|&nbsp;0</div></div>
+<p>The synthetic bottom row gives <span class="math">6x²−4x−10</span>. Divide the quotient by 2:</p>
+<div class="equation">Q(x)=3x²−2x−5</div>
+<div class="callout">Remainder = 0, so the divisor is a factor.</div>
+    </section><section class="page" id="page-32">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: non-monic divisor</h2>
+      
+<div class="question" data-q="q8"><p><b>For divisor <span class="math">2x−3</span>, what value belongs outside a synthetic division table?</b></p>
+<div class="options"><button onclick="answer('q8',this,false,'The divisor is not x−3; account for the coefficient 2.')">3</button><button onclick="answer('q8',this,true,'Correct. Factor out 2: 2(x−3/2), so the synthetic number is 3/2.')">3/2</button><button onclick="answer('q8',this,false,'The synthetic number is the zero of the normalized linear factor.')">−3/2</button><button onclick="answer('q8',this,false,'2 is the leading coefficient, not the zero.')">2</button></div><div class="feedback" id="f-q8"></div></div>
+    </section><section class="page" id="page-33">
+      <div class="kicker">Method choice</div>
+      <h2>Long division or synthetic division?</h2>
+      
+<table><tr><th>What the question asks for</th><th>Good first choice</th></tr>
+<tr><td>Only the remainder for x−b</td><td>Remainder Theorem</td></tr>
+<tr><td>Full quotient for x−b</td><td>Synthetic division is usually efficient</td></tr>
+<tr><td>Full quotient for ax−b</td><td>Long division is often simpler</td></tr><tr><td>Full quotient for a quadratic divisor such as x²+2</td><td>Long division</td></tr>
+<tr><td>A full algebraic check</td><td>Long division + multiplication check</td></tr>
+</table>
+<div class="callout"><b>Important:</b> choose from what the question asks, not just from what you happen to remember first.</div>
+    </section><section class="page" id="page-34">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: choose the method</h2>
+      
+<div class="question" data-q="q9"><p><b>You are asked: “Find the remainder when P(x) is divided by x+4.” Which method is most direct?</b></p>
+<div class="options"><button onclick="answer('q9',this,false,'Full division gives more information than needed.')">Long division</button><button onclick="answer('q9',this,true,'Correct. Use P(−4).')">Remainder Theorem</button><button onclick="answer('q9',this,false,'Factoring is not required to find a remainder.')">Factor first</button><button onclick="answer('q9',this,false,'Synthetic division could work, but there is an even shorter route.')">Synthetic division</button></div><div class="feedback" id="f-q9"></div></div>
+    </section><section class="page" id="page-35">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: choose synthetic division</h2>
+      
+<div class="question" data-q="q10"><p><b>You need the full quotient when dividing by <span class="math">x−6</span>. Which method is a natural first choice?</b></p>
+<div class="options"><button onclick="answer('q10',this,true,'Correct. The divisor is linear and already in x−b form.')">Synthetic division</button><button onclick="answer('q10',this,false,'You only need long division if you choose it; synthetic division is efficient here.')">Remainder Theorem</button><button onclick="answer('q10',this,false,'The question asks for a quotient, not just a factor test.')">Quadratic formula</button><button onclick="answer('q10',this,false,'Factoring is not the requested operation.')">Factor by grouping</button></div><div class="feedback" id="f-q10"></div></div>
+    </section><section class="page" id="page-36">
+      <div class="kicker">Practice</div>
+      <h2>Source review: three remainders</h2>
+      
+<p>The workbook asks for the remainders of</p>
+<div class="equation small">P(x)=2x³+7x²−8x+3</div>
+<p>divided by <span class="math">x+1</span>, <span class="math">x−2</span>, and <span class="math">x+3</span>.</p>
+<div class="practice-list"><p><b>For x+1:</b> use P(−1).</p><p><b>For x−2:</b> use P(2).</p><p><b>For x+3:</b> use P(−3).</p></div>
+<p>The important skill is not three long calculations. It is recognizing the same theorem three times.</p>
+    </section><section class="page" id="page-37">
+      <div class="kicker">Practice</div>
+      <h2>Source review: a full quotient</h2>
+      
+<p>From the review:</p>
+<div class="equation small">(x⁴−4x²−2x+3) ÷ (x−2)</div>
+<p>Use the source answer:</p>
+<div class="equation small">Q(x)=x³+2x²+2x−2,&nbsp; R=−1</div>
+<div class="callout">Notice the missing <span class="math">x³</span> coefficient in the dividend: it is 0.</div>
+<p>The review specifically asks students to state the answer in quotient form.</p>
+    </section><section class="page" id="page-38">
+      <div class="kicker">Practice</div>
+      <h2>Source review: a non-monic full division</h2>
+      
+<p>From the review:</p>
+<div class="equation small">(12x³−2x²+x−11) ÷ (3x+1)</div>
+<div class="equation small">Q(x)=4x²−2x+1,&nbsp; R=−12</div>
+<p>And the check:</p>
+<div class="equation small">12x³−2x²+x−11=(3x+1)(4x²−2x+1)−12</div>
+<p>This is a good example where long division is clear and synthetic division is not necessary.</p>
+    </section><section class="page" id="page-39">
+      <div class="kicker">Application</div>
+      <h2>Source review: box dimensions</h2>
+      
+<p>The workbook gives a volume of</p>
+<div class="equation">V(x)=2x³+17x²+38x+15</div>
+<p>and says the height is <span class="math">x+5</span>.</p>
+<p>Divide by <span class="math">x+5</span> to get the base area:</p>
+<div class="equation">2x²+7x+3</div>
+<p>Then factor:</p><div class="equation">(x+3)(2x+1)</div>
+<div class="callout"><b>Possible dimensions:</b> <span class="math">x+5</span>, <span class="math">x+3</span>, and <span class="math">2x+1</span>.</div>
+<p>This application is directly from the supplied workbook.</p>
+    </section><section class="page" id="page-40">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: application reasoning</h2>
+      
+<div class="question" data-q="q11"><p><b>Why do we divide the volume polynomial by the known height?</b></p>
+<div class="options"><button onclick="answer('q11',this,true,'Correct. Volume = height × base area, so division isolates the base-area expression.')">To find the base-area expression</button><button onclick="answer('q11',this,false,'Division does not directly give the height here; it is already known.')">To find the height</button><button onclick="answer('q11',this,false,'The polynomial is being divided because of the volume relationship.')">To find the x-intercepts</button><button onclick="answer('q11',this,false,'Factoring comes after the division in the source example.')">To find the leading coefficient</button></div><div class="feedback" id="f-q11"></div></div>
+    </section><section class="page" id="page-41">
+      <div class="kicker">Think about the mistake</div>
+      <h2>Error analysis: three common traps</h2>
+      
+<div class="error-grid"><div class="errorcard"><b>Trap 1</b><p>Using +3 for divisor x+3 in synthetic division.</p></div><div class="errorcard"><b>Trap 2</b><p>Skipping a zero for a missing power.</p></div><div class="errorcard"><b>Trap 3</b><p>Using 3 instead of 3/2 for divisor 2x−3.</p></div></div>
+<p>When you catch one of these early, the rest of the arithmetic becomes much safer.</p>
+    </section><section class="page" id="page-42">
+      <div class="kicker">Interactive</div>
+      <h2>Error analysis: wrong sign</h2>
+      
+<div class="question" data-q="q12"><p><b>A student uses +3 for the divisor <span class="math">x+3</span>. What should you do?</b></p>
+<div class="options"><button onclick="answer('q12',this,false,'The divisor must first be converted to x−b form.')">Keep +3</button><button onclick="answer('q12',this,true,'Correct. x+3 = x−(−3), so use −3.')">Replace it with −3</button><button onclick="answer('q12',this,false,'The zero is not 3.')">Replace it with 3/2</button><button onclick="answer('q12',this,false,'Zero is not the divisor root here.')">Use 0</button></div><div class="feedback" id="f-q12"></div></div>
+    </section><section class="page" id="page-43">
+      <div class="kicker">Interactive</div>
+      <h2>Error analysis: missing powers</h2>
+      
+<div class="question" data-q="q13"><p><b>For <span class="math">x⁴−16x³+4x²+10x−11</span>, which coefficient row is correct?</b></p>
+<div class="options"><button onclick="answer('q13',this,true,'Correct. Every power from 4 to 0 is present.')">1, −16, 4, 10, −11</button><button onclick="answer('q13',this,false,'No term is missing, so adding a zero changes the polynomial.')">1, 0, −16, 4, 10, −11</button><button onclick="answer('q13',this,false,'Do not drop the x² coefficient.')">1, −16, 0, 4, 10</button><button onclick="answer('q13',this,false,'The constant −11 is required.')">1, −16, 4, 10</button></div><div class="feedback" id="f-q13"></div></div>
+    </section><section class="page" id="page-44">
+      <div class="kicker">Reasoning</div>
+      <h2>A deeper question: why the degree drops</h2>
+      
+<p>If a degree-5 polynomial is divided by a degree-1 polynomial, the quotient has degree 4.</p>
+<div class="equation">5 − 1 = 4</div>
+<p>This matters when reading a synthetic-division row: if the dividend has degree 4, the first bottom-row value is the coefficient of <span class="math">x³</span>, not <span class="math">x⁴</span>.</p>
+    </section><section class="page" id="page-45">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: quotient degree</h2>
+      
+<div class="question" data-q="q14"><p><b>A degree-5 polynomial is divided by a degree-1 polynomial. What is the quotient's degree?</b></p>
+<div class="options"><button onclick="answer('q14',this,false,'The quotient degree is one less than the dividend degree.')">5</button><button onclick="answer('q14',this,true,'Correct. 5−1=4.')">4</button><button onclick="answer('q14',this,false,'The quotient cannot have higher degree than the dividend.')">6</button><button onclick="answer('q14',this,false,'The divisor degree is 1, so the quotient degree is not 0.')">0</button></div><div class="feedback" id="f-q14"></div></div>
+    </section><section class="page" id="page-46">
+      <div class="kicker">Bridge to Factor Theorem</div>
+      <h2>The remainder connects the theorems</h2>
+      
+<p>For <span class="math">x−b</span>, the Remainder Theorem says the remainder is <span class="math">P(b)</span>.</p>
+<p>So if</p><div class="equation">P(b)=0</div>
+<p>the remainder is zero, which means <span class="math">x−b</span> divides evenly.</p>
+<div class="callout"><b>This is the doorway to the Factor Theorem.</b> We are not doing the full factoring lesson here; just connect the ideas.</div>
+    </section><section class="page" id="page-47">
+      <div class="kicker">Interactive</div>
+      <h2>Checkpoint: zero remainder</h2>
+      
+<div class="question" data-q="q15"><p><b>If <span class="math">P(4)=0</span>, what can you conclude about <span class="math">x−4</span>?</b></p>
+<div class="options"><button onclick="answer('q15',this,true,'Correct. A zero remainder means x−4 is a factor.')">x−4 is a factor</button><button onclick="answer('q15',this,false,'A nonzero remainder would not make it a factor.')">x+4 is a factor</button><button onclick="answer('q15',this,false,'P(4)=0 means the remainder is zero.')">The remainder is 4</button><button onclick="answer('q15',this,false,'It tells us about the factor x−4, not the degree.')">The quotient has degree 4</button></div><div class="feedback" id="f-q15"></div></div>
+    </section><section class="page" id="page-48">
+      <div class="kicker">Independent attempt</div>
+      <h2>Practice: synthetic division with a zero</h2>
+      
+<p>Try this on paper first:</p>
+<div class="equation">x³−7x−6 ÷ (x−3)</div>
+<p>Set up:</p><div class="equation">3 | 1 &nbsp; 0 &nbsp; −7 &nbsp; −6</div>
+<p>Then complete the multiply/add pattern.</p>
+<div class="callout">Source workbook answer: <span class="math">x³−7x−6=(x−3)(x²+3x+2)+0</span>.</div>
+    </section><section class="page" id="page-49">
+      <div class="kicker">Interactive</div>
+      <h2>Final mixed check: full division</h2>
+      
+<div class="question" data-q="q19"><p><b>Which expression is the correct way to state a division result with quotient Q(x) and remainder R when dividing P(x) by D(x)?</b></p>
+<div class="options"><button onclick="answer('q19',this,false,'Division identity multiplies divisor and quotient before adding the remainder.')">P(x)=Q(x)+R</button><button onclick="answer('q19',this,true,'Correct. This is the general division identity.')">P(x)=D(x)Q(x)+R</button><button onclick="answer('q19',this,false,'The remainder is added, not multiplied by the divisor alone.')">P(x)=D(x)+R</button><button onclick="answer('q19',this,false,'The divisor and quotient both matter in the check.')">P(x)=D(x)−Q(x)+R</button></div><div class="feedback" id="f-q19"></div></div>
+    </section><section class="page" id="page-50">
+      <div class="kicker">Completion</div>
+      <h2>Your work today</h2>
+      
+<div class="summary-grid"><div><b>Long division</b><p>You practiced setup, missing powers, quotient form, remainder, stopping rule, and verification.</p></div><div><b>Remainder Theorem</b><p>You used x−b and ax−b cases, including unknown coefficients.</p></div><div><b>Synthetic division</b><p>You practiced x−b, sign handling, zero coefficients, and non-monic divisors.</p></div><div><b>Method choice</b><p>You decided when to use the theorem, synthetic division, or long division.</p></div></div>
+<div id="final-summary" class="final-summary"></div>
+    </section></main><nav id="nav"><div class="navgroup"><button class="navbtn" id="prev" onclick="go(-1)">← Previous</button><button class="navbtn primary" id="next" onclick="go(1)">Next →</button></div><div class="status" id="status">Questions: 0 attempted • 0 first-try correct</div></nav></div><script>
+const TOTAL=50;let current=1;const state={attempted:new Set(),first:new Set(),answered:new Set(),mistakes:new Set()};
+function show(n){current=Math.max(1,Math.min(TOTAL,n));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+current).classList.add('active');document.getElementById('pagecount').textContent='Page '+current+' of '+TOTAL;document.getElementById('bar').style.width=((current-1)/(TOTAL-1))*100+'%';document.getElementById('prev').disabled=current===1;document.getElementById('next').textContent=current===TOTAL?'Back to start':'Next →';document.getElementById('status').textContent='Questions: '+state.attempted.size+' attempted • '+state.first.size+' first-try correct';if(current===50)updateFinal();}
+function go(d){if(current===TOTAL&&d>0){show(1);return}show(current+d)}
+function celebrate(){const c=document.getElementById('celebrate');c.innerHTML='';c.style.display='block';for(let i=0;i<22;i++){const s=document.createElement('span');s.className='confetti';s.style.left=(47+Math.random()*6)+'%';s.style.top='40%';s.style.background=['#2b5fd3','#147a4b','#d29414','#a32631'][i%4];s.style.setProperty('--dx',((Math.random()-.5)*420)+'px');s.style.setProperty('--dy',(220+Math.random()*280)+'px');c.appendChild(s)}setTimeout(()=>c.style.display='none',900)}
+function answer(q,btn,ok,msg){if(state.answered.has(q))return;if(!state.attempted.has(q)){state.attempted.add(q);if(ok)state.first.add(q);else state.mistakes.add(q)}const box=btn.closest('.question');const fb=document.getElementById('f-'+q);btn.classList.add(ok?'correct':'incorrect');fb.className='feedback show '+(ok?'ok':'bad');fb.textContent=ok?'✓ Correct. '+msg:'Not quite. '+msg;if(ok){box.querySelectorAll('button').forEach(b=>b.disabled=true);state.answered.add(q);celebrate()}else{setTimeout(()=>{btn.classList.remove('incorrect');fb.className='feedback show bad';fb.textContent='Try once more. Check the sign, the divisor, or the rule being used.'},700)}document.getElementById('status').textContent='Questions: '+state.attempted.size+' attempted • '+state.first.size+' first-try correct'}
+function updateFinal(){const total=state.attempted.size,first=state.first.size;document.getElementById('final-summary').innerHTML='<b>Your work</b><br>Questions attempted: '+total+'<br>First-try correct: '+first+(total?'<br><br>Look back at any checkpoint you needed to retry.':'<br><br>No checkpoints completed yet. Go back and try them.')}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)});show(1);
+</script></body></html>
