@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 2: Factor Theorem and Inequalities</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-color: #2b3035;
+            --primary: #0366d6;
+            --primary-dark: #004085;
+            --secondary: #d73a49;
+            --success: #28a745;
+            --warning: #f0ad4e;
+            --light-bg: #ffffff;
+            --border: #e1e4e8;
+            --code-bg: #f6f8fa;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Top Progress Bar */
+        #progress-container {
+            width: 100%;
+            background-color: var(--border);
+            height: 5px;
+        }
+
+        #progress-bar {
+            height: 100%;
+            background-color: var(--primary);
+            width: 2%;
+            transition: width 0.3s ease;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background-color: var(--light-bg);
+            border-bottom: 1px solid var(--border);
+        }
+
+        header h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        #page-indicator {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: #6a737d;
+        }
+
+        /* Main Content */
+        main {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+            background-color: var(--light-bg);
+            width: 100%;
+            max-width: 900px;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Typography */
+        h2 { font-size: 2.2rem; margin-bottom: 25px; color: var(--text-color); font-weight: 600; border-bottom: 2px solid var(--border); padding-bottom: 10px;}
+        h3 { font-size: 1.4rem; margin-top: 30px; margin-bottom: 15px; color: var(--text-color); font-weight: 600;}
+        p { font-size: 1.15rem; line-height: 1.7; margin-bottom: 18px; color: #444d56;}
+        ul, ol { margin-bottom: 18px; padding-left: 30px; font-size: 1.15rem; line-height: 1.7; color: #444d56;}
+        li { margin-bottom: 8px; }
+        
+        .math {
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+        }
+
+        .math-block {
+            display: block;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.5rem;
+            background-color: var(--code-bg);
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            margin: 25px 0;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .highlight { font-weight: 600; color: var(--primary); }
+        .danger { color: var(--secondary); font-weight: 600;}
+        .success-text { color: var(--success); font-weight: 600;}
+
+        .info-box {
+            background-color: #e1f0ff;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Interactive Questions */
+        .question-box {
+            background-color: var(--light-bg);
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .question-box p strong {
+            color: var(--primary);
+            font-size: 1.2rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .options { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+        .option-btn {
+            background-color: var(--light-bg);
+            border: 1px solid var(--border);
+            padding: 15px 20px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-color);
+        }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background-color: #f1f8ff; }
+        .option-btn:disabled { cursor: default; }
+        .option-btn.selected-correct { background-color: #dcffe4; border-color: var(--success); color: #144620; font-weight: 600;}
+        .option-btn.selected-incorrect { background-color: #ffdce0; border-color: var(--secondary); color: #86181d; }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        .feedback.success { display: block; background-color: #dcffe4; color: #144620; border: 1px solid var(--success); }
+        .feedback.error { display: block; background-color: #ffdce0; color: #86181d; border: 1px solid var(--secondary); }
+
+        /* Navigation Footer */
+        footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background-color: var(--light-bg);
+            border-top: 1px solid var(--border);
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--light-bg);
+            background-color: var(--primary);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-btn:hover:not(:disabled) { background-color: var(--primary-dark); }
+        .nav-btn:disabled { background-color: #e1e4e8; color: #959da5; cursor: not-allowed; }
+
+        /* Layout utilities */
+        .flex-row { display: flex; gap: 20px; align-items: center; margin: 20px 0;}
+        .flex-col { display: flex; flex-direction: column; gap: 10px; }
+        .half-width { width: 50%; }
+        table { width: 100%; border-collapse: collapse; margin: 25px 0; font-size: 1.15rem; }
+        th, td { border: 1px solid var(--border); padding: 15px; text-align: center; }
+        th { background-color: var(--code-bg); font-weight: 600;}
+        .text-center { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+
+    <header>
+        <h1>MHF4U Unit 2: Advanced Factoring Review</h1>
+        <div id="page-indicator">Page 1 of 50</div>
+    </header>
+
+    <main>
+        <!-- PAGE 1: Title -->
+        <div class="page active" id="page-1">
+            <h2>Factor Theorem and Inequalities</h2>
+            <p>This module provides a comprehensive review of the core concepts required for factoring and solving advanced polynomial functions.</p>
+            <p>We will progress systematically through theoretical explanations, detailed worked examples, and selective interactive checkpoints to test your understanding.</p>
+        </div>
+
+        <!-- PAGE 2: Learning Objectives -->
+        <div class="page" id="page-2">
+            <h2>Learning Objectives</h2>
+            <p>By the end of this lesson, you will be able to:</p>
+            <ul>
+                <li>Apply the <strong>Remainder Theorem</strong> and <strong>Factor Theorem</strong> to evaluate polynomials.</li>
+                <li>Solve for unknown variables (such as <em>k</em>, <em>m</em>, and <em>n</em>) within polynomial expressions.</li>
+                <li>Factor completely from scratch using the Integral Zero Theorem.</li>
+                <li>Identify special cases: Factor by Grouping and Difference of Cubes.</li>
+                <li>Solve polynomial equations and identify non-real roots using the discriminant.</li>
+                <li>Construct equations for <strong>Families of Polynomials</strong>, including those with irrational roots.</li>
+                <li>Solve complex <strong>Polynomial Inequalities</strong> using algebraic sign charts.</li>
+            </ul>
+        </div>
+
+        <!-- PAGE 3: The Big Picture -->
+        <div class="page" id="page-3">
+            <h2>The Big Picture: Why We Factor</h2>
+            <p>In Unit 1, we learned how to analyze the outer edges of a polynomial graph using degree and leading coefficients (End Behaviour).</p>
+            <p>However, to understand what a graph does in the middle, we need to know exactly where it crosses the x-axis.</p>
+            <p>The standard form <span class="math">P(x) = ax^n + bx^{n-1} + ... + c</span> does not reveal the x-intercepts.</p>
+            <p>We must convert it to factored form: <span class="math">P(x) = a(x - r_1)(x - r_2)...</span> where <span class="math">r_1, r_2</span> are the roots.</p>
+            <p>The theorems in this section are the tools we use to break down the standard form.</p>
+        </div>
+
+        <!-- PAGE 4: The Remainder Theorem -->
+        <div class="page" id="page-4">
+            <h2>Concept 1: The Remainder Theorem</h2>
+            <p>Polynomial division (long division or synthetic division) allows us to break down an expression, but it can be time-consuming.</p>
+            <p>If a problem only requires the <strong>remainder</strong> of a division, we can bypass the division process entirely.</p>
+            <div class="info-box">
+                <p><strong>The Remainder Theorem:</strong></p>
+                <p>When a polynomial <span class="math">P(x)</span> is divided by <span class="math">(x - b)</span>, the remainder is exactly equal to <span class="math">P(b)</span>.</p>
+            </div>
+            <p>To find the remainder, simply find the value that makes the divisor equal to zero, and substitute that value into the polynomial.</p>
+        </div>
+
+        <!-- PAGE 5: Worked Example - Remainder Theorem Setup -->
+        <div class="page" id="page-5">
+            <h2>Worked Example: Remainder Theorem</h2>
+            <p><strong>Problem:</strong> What is the remainder when <span class="math">x^4 - 4x^2 - 2x + 3</span> is divided by <span class="math">x + 1</span>?</p>
+            <p><strong>Step 1: Identify the Divisor Root</strong></p>
+            <p>The divisor is <span class="math">x + 1</span>.</p>
+            <p>Set the divisor to zero: <span class="math">x + 1 = 0 \rightarrow x = -1</span>.</p>
+            <p>According to the theorem, the remainder will be <span class="math">P(-1)</span>.</p>
+        </div>
+
+        <!-- PAGE 6: Worked Example - Remainder Theorem Solve -->
+        <div class="page" id="page-6">
+            <h2>Worked Example: Remainder Theorem</h2>
+            <p><strong>Step 2: Evaluate the Polynomial</strong></p>
+            <p>Substitute <span class="math">-1</span> into the polynomial.</p>
+            <div class="math-block">
+                P(-1) = (-1)<sup>4</sup> - 4(-1)<sup>2</sup> - 2(-1) + 3<br><br>
+                P(-1) = 1 - 4(1) + 2 + 3<br><br>
+                P(-1) = 1 - 4 + 2 + 3<br><br>
+                P(-1) = 2
+            </div>
+            <p>The remainder is exactly <strong>2</strong>.</p>
+        </div>
+
+        <!-- PAGE 7: Interactive Checkpoint - Remainder Theorem -->
+        <div class="page" id="page-7">
+            <h2>Checkpoint: Remainder Theorem</h2>
+            <p>Let's verify your understanding of substitution and signs.</p>
+            <div class="question-box" id="q1">
+                <p><strong>Question:</strong> What is the remainder when <span class="math">P(x) = x^3 - 2x^2 + 5</span> is divided by <span class="math">x - 2</span>?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer('q1', this, false, 'Did you substitute -2 instead of positive 2? The root of x - 2 is 2.')">A) -11</button>
+                    <button class="option-btn" onclick="checkAnswer('q1', this, true, 'Correct! P(2) = (2)³ - 2(2)² + 5 = 8 - 8 + 5 = 5.')">B) 5</button>
+                    <button class="option-btn" onclick="checkAnswer('q1', this, false, 'Check your exponent evaluation. 2³ is 8, not 6.')">C) 3</button>
+                    <button class="option-btn" onclick="checkAnswer('q1', this, false, 'Remember to evaluate the entire expression, including the constant +5 at the end.')">D) 0</button>
+                </div>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 8: The Factor Theorem -->
+        <div class="page" id="page-8">
+            <h2>Concept 2: The Factor Theorem</h2>
+            <p>In arithmetic, if you divide 12 by 4, the remainder is 0. This tells us that 4 is a perfect <strong>factor</strong> of 12.</p>
+            <p>The exact same logic applies to polynomials.</p>
+            <div class="info-box">
+                <p><strong>The Factor Theorem:</strong></p>
+                <p>A binomial <span class="math">x - b</span> is a factor of a polynomial <span class="math">P(x)</span> if and only if <span class="math">P(b) = 0</span>.</p>
+            </div>
+            <p>This is a specific, highly useful case of the Remainder Theorem. A remainder of zero confirms a factor.</p>
+        </div>
+
+        <!-- PAGE 9: Worked Example - Factor Theorem -->
+        <div class="page" id="page-9">
+            <h2>Worked Example: The Factor Theorem</h2>
+            <p><strong>Problem:</strong> Is <span class="math">x - 3</span> a factor of the polynomial <span class="math">3x^2 - 8x - 3</span>?</p>
+            <p>To determine this without dividing, we evaluate the polynomial at <span class="math">x = 3</span>.</p>
+            <div class="math-block">
+                P(3) = 3(3)<sup>2</sup> - 8(3) - 3<br><br>
+                P(3) = 3(9) - 24 - 3<br><br>
+                P(3) = 27 - 24 - 3<br><br>
+                P(3) = 0
+            </div>
+            <p>Because the remainder is <span class="math">0</span>, we conclude that <strong>yes, <span class="math">x - 3</span> is a factor</strong>.</p>
+        </div>
+
+        <!-- PAGE 10: Finding Unknowns -->
+        <div class="page" id="page-10">
+            <h2>Concept 3: Finding Unknown Coefficients</h2>
+            <p>A common application of these theorems is working backwards.</p>
+            <p>You may be given a polynomial with an unknown coefficient (like <span class="math">k</span>) and told what the remainder is.</p>
+            <p>By applying the Remainder Theorem, you can construct an algebraic equation and isolate the unknown variable.</p>
+        </div>
+
+        <!-- PAGE 11: Worked Example - Finding k (Setup) -->
+        <div class="page" id="page-11">
+            <h2>Worked Example: Finding 'k'</h2>
+            <p><strong>Problem:</strong> Determine the value of <span class="math">k</span> such that when <span class="math">f(x) = x^4 + kx^3 - 3x - 5</span> is divided by <span class="math">x - 3</span>, the remainder is <span class="math">-10</span>.</p>
+            <p><strong>Step 1: Apply the Remainder Theorem</strong></p>
+            <p>The divisor is <span class="math">x - 3</span>, so we evaluate at <span class="math">x = 3</span>.</p>
+            <p>We are told the remainder is <span class="math">-10</span>. Therefore, we establish the equation:</p>
+            <div class="math-block">f(3) = -10</div>
+        </div>
+
+        <!-- PAGE 12: Worked Example - Finding k (Solve) -->
+        <div class="page" id="page-12">
+            <h2>Worked Example: Finding 'k'</h2>
+            <p><strong>Step 2: Substitute and Solve</strong></p>
+            <div class="math-block">
+                (3)<sup>4</sup> + k(3)<sup>3</sup> - 3(3) - 5 = -10<br><br>
+                81 + 27k - 9 - 5 = -10<br><br>
+                27k + 67 = -10<br><br>
+                27k = -10 - 67<br><br>
+                27k = -77<br><br>
+                k = -77 / 27
+            </div>
+            <p>Fractions are valid answers! The value of <span class="math">k</span> is <strong>-77/27</strong>.</p>
+        </div>
+
+        <!-- PAGE 13: Systems of Equations in Polynomials -->
+        <div class="page" id="page-13">
+            <h2>Concept 4: Systems of Equations</h2>
+            <p>What happens if a polynomial is missing <em>two</em> coefficients?</p>
+            <p>If you have two unknown variables (e.g., <span class="math">m</span> and <span class="math">n</span>), you need <strong>two distinct pieces of information</strong> to solve the problem.</p>
+            <p>This will allow you to generate two linear equations and solve them using substitution or elimination, integrating Grade 10 concepts into Grade 12 polynomials.</p>
+        </div>
+
+        <!-- PAGE 14: Worked Example - System of Equations -->
+        <div class="page" id="page-14">
+            <h2>Worked Example: Systems of Equations</h2>
+            <p><strong>Problem:</strong> Suppose the cubic polynomial <span class="math">8x^3 + mx^2 + nx - 6</span> has both <span class="math">2x + 3</span> and <span class="math">x - 1</span> as factors. Find <span class="math">m</span> and <span class="math">n</span>.</p>
+            <p>We are given two factors, which means we have two roots that will yield a remainder of zero.</p>
+            <ul>
+                <li>Factor 1: <span class="math">x - 1 \rightarrow</span> Root is <span class="math">1</span></li>
+                <li>Factor 2: <span class="math">2x + 3 \rightarrow</span> Root is <span class="math">-3/2</span></li>
+            </ul>
+        </div>
+
+        <!-- PAGE 15: Worked Example - System Setup -->
+        <div class="page" id="page-15">
+            <h2>Worked Example: System Setup</h2>
+            <p><strong>Equation 1 (using root 1):</strong></p>
+            <div class="math-block">
+                P(1) = 0<br>
+                8(1)<sup>3</sup> + m(1)<sup>2</sup> + n(1) - 6 = 0<br>
+                8 + m + n - 6 = 0<br>
+                m + n + 2 = 0<br>
+                <strong>m + n = -2</strong> &nbsp;&nbsp;&nbsp;&nbsp; (Eq. 1)
+            </div>
+            <p><strong>Equation 2 (using root -3/2):</strong></p>
+            <div class="math-block">
+                P(-3/2) = 0<br>
+                8(-3/2)<sup>3</sup> + m(-3/2)<sup>2</sup> + n(-3/2) - 6 = 0<br>
+                8(-27/8) + m(9/4) - 1.5n - 6 = 0<br>
+                -27 + 2.25m - 1.5n - 6 = 0<br>
+                <strong>2.25m - 1.5n = 33</strong> &nbsp;&nbsp;&nbsp;&nbsp; (Eq. 2)
+            </div>
+        </div>
+
+        <!-- PAGE 16: Worked Example - System Solution -->
+        <div class="page" id="page-16">
+            <h2>Worked Example: System Solution</h2>
+            <p>We solve the system using substitution or elimination.</p>
+            <p>From Eq 1: <span class="math">n = -2 - m</span></p>
+            <p>Substitute into Eq 2:</p>
+            <div class="math-block">
+                2.25m - 1.5(-2 - m) = 33<br>
+                2.25m + 3 + 1.5m = 33<br>
+                3.75m = 30<br>
+                <strong>m = 8</strong>
+            </div>
+            <p>Substitute <span class="math">m = 8</span> back into Eq 1:</p>
+            <div class="math-block">
+                8 + n = -2<br>
+                <strong>n = -10</strong>
+            </div>
+        </div>
+
+        <!-- PAGE 17: Factoring from Scratch -->
+        <div class="page" id="page-17">
+            <h2>Concept 5: Factoring from Scratch</h2>
+            <p>If you are asked to factor a polynomial completely but are given no factors to start with, you must find the first factor yourself.</p>
+            <div class="info-box">
+                <p><strong>The Integral Zero Theorem:</strong></p>
+                <p>If a polynomial with integer coefficients has a rational root, that root must be a factor of the <strong>constant term</strong>.</p>
+            </div>
+            <p>You list the factors of the constant term and use the Factor Theorem (guess and check) until you find one that yields a remainder of 0.</p>
+        </div>
+
+        <!-- PAGE 18: Worked Example - Factoring a Cubic (Testing) -->
+        <div class="page" id="page-18">
+            <h2>Worked Example: Factoring a Cubic</h2>
+            <p><strong>Problem:</strong> Factor <span class="math">x^3 - 4x^2 + x + 6</span> completely.</p>
+            <p>The constant term is 6. Possible factors: <span class="math">&plusmn;1, &plusmn;2, &plusmn;3, &plusmn;6</span>.</p>
+            <p>Test values until P(x) = 0:</p>
+            <ul>
+                <li><span class="math">P(1) = 1 - 4 + 1 + 6 = 4 &ne; 0</span></li>
+                <li><span class="math">P(-1) = -1 - 4 - 1 + 6 = 0</span>. <strong>Bingo!</strong></li>
+            </ul>
+            <p>Since <span class="math">P(-1) = 0</span>, we know that <strong>(x + 1)</strong> is a factor.</p>
+        </div>
+
+        <!-- PAGE 19: Worked Example - Factoring a Cubic (Division) -->
+        <div class="page" id="page-19">
+            <h2>Worked Example: Factoring a Cubic</h2>
+            <p>Now we use synthetic division to divide the original cubic by the known factor <span class="math">(x + 1)</span>.</p>
+            <p>The root outside is <span class="math">-1</span>. The coefficients are <span class="math">1, -4, 1, 6</span>.</p>
+            <div class="math-block">
+                -1 | &nbsp; 1 &nbsp;&nbsp; -4 &nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp;&nbsp; 6<br>
+                &nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp; -1 &nbsp;&nbsp;&nbsp; 5 &nbsp;&nbsp; -6<br>
+                -------------------------<br>
+                &nbsp;&nbsp;&nbsp;&nbsp; 1 &nbsp;&nbsp; -5 &nbsp;&nbsp;&nbsp; 6 &nbsp;|&nbsp; 0
+            </div>
+            <p>The quotient is the remaining quadratic: <span class="math">x^2 - 5x + 6</span>.</p>
+        </div>
+
+        <!-- PAGE 20: Worked Example - Factoring a Cubic (Final) -->
+        <div class="page" id="page-20">
+            <h2>Worked Example: Factoring a Cubic</h2>
+            <p>We have reduced the cubic to:</p>
+            <div class="math-block">P(x) = (x + 1)(x<sup>2</sup> - 5x + 6)</div>
+            <p>Factor the resulting quadratic using standard trinomial factoring (find two numbers that multiply to 6 and add to -5). Those numbers are -2 and -3.</p>
+            <div class="math-block success-text">P(x) = (x + 1)(x - 2)(x - 3)</div>
+            <p>The polynomial is now completely factored.</p>
+        </div>
+
+        <!-- PAGE 21: Interactive Checkpoint - Finding the First Root -->
+        <div class="page" id="page-21">
+            <h2>Checkpoint: The Integral Zero Theorem</h2>
+            <p>You need to fully factor the polynomial <span class="math">P(x) = x^3 - 7x - 6</span>.</p>
+            <div class="question-box" id="q2">
+                <p><strong>Question:</strong> Based on the Integral Zero Theorem, which of the following is NOT a logical value to test when searching for the first root?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer('q2', this, false, '-1 is a factor of the constant term -6, so it is a logical candidate.')">A) -1</button>
+                    <button class="option-btn" onclick="checkAnswer('q2', this, true, 'Correct! 4 does not divide evenly into the constant term -6, so it cannot be an integer root.')">B) 4</button>
+                    <button class="option-btn" onclick="checkAnswer('q2', this, false, '3 is a factor of the constant term -6, so it is a logical candidate.')">C) 3</button>
+                    <button class="option-btn" onclick="checkAnswer('q2', this, false, '6 is a factor of the constant term -6, so it is a logical candidate.')">D) -6</button>
+                </div>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 22: Factoring by Grouping -->
+        <div class="page" id="page-22">
+            <h2>Concept 6: Factoring by Grouping</h2>
+            <p>Occasionally, you can bypass the Integral Zero Theorem and Synthetic Division entirely if the polynomial follows a specific structural pattern.</p>
+            <p><strong>Factoring by Grouping</strong> involves pairing terms together and extracting a common factor from each pair.</p>
+            <p>If the remaining binomial in both pairs matches exactly, you can factor that binomial out of the entire expression.</p>
+        </div>
+
+        <!-- PAGE 23: Worked Example - Grouping Setup -->
+        <div class="page" id="page-23">
+            <h2>Worked Example: Factoring by Grouping</h2>
+            <p><strong>Problem:</strong> Factor <span class="math">-4x^3 - 4x^2 + 16x + 16</span>.</p>
+            <p>First, always look for a greatest common factor (GCF) across the entire expression. We can extract a <span class="math">-4</span>.</p>
+            <div class="math-block">-4(x<sup>3</sup> + x<sup>2</sup> - 4x - 4)</div>
+            <p>Now, look at the four terms inside the bracket. Group the first two together, and the last two together.</p>
+            <div class="math-block">x<sup>3</sup> + x<sup>2</sup> &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; -4x - 4</div>
+        </div>
+
+        <!-- PAGE 24: Worked Example - Grouping Solve -->
+        <div class="page" id="page-24">
+            <h2>Worked Example: Factoring by Grouping</h2>
+            <p>Extract the GCF from each pair independently:</p>
+            <ul>
+                <li>From <span class="math">x^3 + x^2</span>, extract <span class="math">x^2</span> &rarr; <span class="math">x^2(x + 1)</span></li>
+                <li>From <span class="math">-4x - 4</span>, extract <span class="math">-4</span> &rarr; <span class="math">-4(x + 1)</span></li>
+            </ul>
+            <p>Reassemble the expression:</p>
+            <div class="math-block">-4[ x<sup>2</sup>(x + 1) - 4(x + 1) ]</div>
+            <p>Since <span class="math">(x + 1)</span> is common to both terms, factor it out:</p>
+            <div class="math-block">-4(x + 1)(x<sup>2</sup> - 4)</div>
+            <p>Recognize <span class="math">x^2 - 4</span> as a difference of squares to finish:</p>
+            <div class="math-block success-text">-4(x + 1)(x - 2)(x + 2)</div>
+        </div>
+
+        <!-- PAGE 25: Sum and Difference of Cubes -->
+        <div class="page" id="page-25">
+            <h2>Concept 7: Sum and Difference of Cubes</h2>
+            <p>Just as a "difference of squares" <span class="math">(a^2 - b^2)</span> has a set factoring pattern, the sum and difference of cubes have specific, memorizable formulas.</p>
+            <div class="info-box">
+                <p><strong>Sum of Cubes:</strong><br>
+                <span class="math">a^3 + b^3 = (a + b)(a^2 - ab + b^2)</span></p>
+                <p><br><strong>Difference of Cubes:</strong><br>
+                <span class="math">a^3 - b^3 = (a - b)(a^2 + ab + b^2)</span></p>
+            </div>
+            <p>Remember the signs using <strong>SOAP</strong> for the three operators: <strong>S</strong>ame, <strong>O</strong>pposite, <strong>A</strong>lways <strong>P</strong>ositive.</p>
+        </div>
+
+        <!-- PAGE 26: Worked Example - Difference of Cubes -->
+        <div class="page" id="page-26">
+            <h2>Worked Example: Difference of Cubes</h2>
+            <p><strong>Problem:</strong> Factor <span class="math">x^3 - 64</span>.</p>
+            <p>Identify the cubic components. <span class="math">x</span> is being cubed, and <span class="math">4</span> is being cubed (<span class="math">4^3 = 64</span>).</p>
+            <p>So, <span class="math">a = x</span> and <span class="math">b = 4</span>.</p>
+            <p>Apply the Difference of Cubes formula: <span class="math">(a - b)(a^2 + ab + b^2)</span></p>
+            <div class="math-block success-text">
+                (x - 4)(x<sup>2</sup> + 4x + 16)
+            </div>
+            <p><em>Note: The quadratic portion of a sum/difference of cubes cannot be factored further using real numbers.</em></p>
+        </div>
+
+        <!-- PAGE 27: Solving Polynomial Equations -->
+        <div class="page" id="page-27">
+            <h2>Concept 8: Solving Polynomial Equations</h2>
+            <p>Solving a polynomial equation means finding the values of <span class="math">x</span> that make the equation true. On a graph, these correspond to the x-intercepts.</p>
+            <p><strong>The Golden Rule for Solving:</strong></p>
+            <ol>
+                <li>Move all terms to one side so the equation is equal to 0.</li>
+                <li>Factor the polynomial completely.</li>
+                <li>Set each individual factor equal to 0 and solve for <span class="math">x</span>.</li>
+            </ol>
+        </div>
+
+        <!-- PAGE 28: Worked Example - Solving Equations (Setup) -->
+        <div class="page" id="page-28">
+            <h2>Worked Example: Solving Equations</h2>
+            <p><strong>Problem:</strong> Solve <span class="math">2x^3 + 1 = x^2 + 2x</span>.</p>
+            <p>Step 1: Move all terms to the left side.</p>
+            <div class="math-block">2x<sup>3</sup> - x<sup>2</sup> - 2x + 1 = 0</div>
+            <p>Step 2: This polynomial has four terms and looks like a perfect candidate for factoring by grouping.</p>
+        </div>
+
+        <!-- PAGE 29: Worked Example - Solving Equations (Solve) -->
+        <div class="page" id="page-29">
+            <h2>Worked Example: Solving Equations</h2>
+            <p>Group the terms: <span class="math">(2x^3 - x^2) + (-2x + 1) = 0</span></p>
+            <div class="math-block">
+                x<sup>2</sup>(2x - 1) - 1(2x - 1) = 0<br><br>
+                (2x - 1)(x<sup>2</sup> - 1) = 0<br><br>
+                (2x - 1)(x - 1)(x + 1) = 0
+            </div>
+            <p>Step 3: Set each factor to zero to find the roots.</p>
+            <ul>
+                <li><span class="math">2x - 1 = 0 \rightarrow x = 1/2</span></li>
+                <li><span class="math">x - 1 = 0 \rightarrow x = 1</span></li>
+                <li><span class="math">x + 1 = 0 \rightarrow x = -1</span></li>
+            </ul>
+        </div>
+
+        <!-- PAGE 30: Identifying Non-Real Roots -->
+        <div class="page" id="page-30">
+            <h2>Concept 9: Identifying Non-Real Roots</h2>
+            <p>Not every factor of a polynomial will yield a "real" root that appears on a Cartesian graph.</p>
+            <p>If a factor contains a quadratic expression that cannot be factored, you must use the quadratic formula.</p>
+            <p>If the value under the square root (the <strong>discriminant</strong>, <span class="math">b^2 - 4ac</span>) is negative, that portion of the equation produces <strong>no real solutions</strong>.</p>
+        </div>
+
+        <!-- PAGE 31: Worked Example - Non-Real Roots -->
+        <div class="page" id="page-31">
+            <h2>Worked Example: Non-Real Roots</h2>
+            <p><strong>Problem:</strong> Determine the real roots of <span class="math">(5x^2 + 20)(3x^2 - 48) = 0</span>.</p>
+            <p>The equation is already partially factored. Set each bracket to zero.</p>
+            <div class="flex-row">
+                <div class="half-width text-center">
+                    <strong>Bracket 1:</strong><br><br>
+                    <span class="math">5x^2 + 20 = 0</span><br>
+                    <span class="math">5x^2 = -20</span><br>
+                    <span class="math">x^2 = -4</span>
+                </div>
+                <div class="half-width text-center">
+                    <strong>Bracket 2:</strong><br><br>
+                    <span class="math">3x^2 - 48 = 0</span><br>
+                    <span class="math">3x^2 = 48</span><br>
+                    <span class="math">x^2 = 16</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 32: Worked Example - Non-Real Roots (Conclusion) -->
+        <div class="page" id="page-32">
+            <h2>Worked Example: Non-Real Roots</h2>
+            <p>Evaluate the results from the previous step:</p>
+            <ul>
+                <li><strong>Bracket 1 (<span class="math">x^2 = -4</span>):</strong> You cannot take the square root of a negative number in the real number system. This produces <strong>No Real Solutions</strong>.</li>
+                <li><strong>Bracket 2 (<span class="math">x^2 = 16</span>):</strong> Taking the square root yields two real solutions. <span class="math">x = &plusmn;4</span>.</li>
+            </ul>
+            <p>The only real roots for the entire equation are <span class="math">x = 4</span> and <span class="math">x = -4</span>.</p>
+        </div>
+
+        <!-- PAGE 33: Interactive Checkpoint - Discriminant -->
+        <div class="page" id="page-33">
+            <h2>Checkpoint: The Discriminant</h2>
+            <p>You have factored a polynomial down to <span class="math">P(x) = (x - 2)(x^2 + 3x + 5)</span>.</p>
+            <div class="question-box" id="q3">
+                <p><strong>Question:</strong> How many real roots does the quadratic factor <span class="math">x^2 + 3x + 5</span> contribute to the total solution?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer('q3', this, true, 'Correct! The discriminant (b² - 4ac) is (3)² - 4(1)(5) = 9 - 20 = -11. Since it is negative, it produces 0 real roots.')">A) 0</button>
+                    <button class="option-btn" onclick="checkAnswer('q3', this, false, 'Calculate the discriminant: b² - 4ac. Is it zero?')">B) 1</button>
+                    <button class="option-btn" onclick="checkAnswer('q3', this, false, 'Calculate the discriminant: b² - 4ac. Is it positive?')">C) 2</button>
+                    <button class="option-btn" onclick="checkAnswer('q3', this, false, 'A quadratic can only ever have a maximum of 2 roots.')">D) 3</button>
+                </div>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 34: Families of Polynomials -->
+        <div class="page" id="page-34">
+            <h2>Concept 10: Families of Polynomials</h2>
+            <p>A "Family" of polynomial functions is a set of equations that share the exact same roots (x-intercepts).</p>
+            <p>While they pass through the same points on the x-axis, they look different because they have different stretch or compression factors.</p>
+            <div class="math-block">y = k(x - r<sub>1</sub>)(x - r<sub>2</sub>)...(x - r<sub>n</sub>)</div>
+            <p>The variable <span class="math">k</span> represents any real number (except 0). Changing <span class="math">k</span> generates different members of the family.</p>
+        </div>
+
+        <!-- PAGE 35: Irrational Roots in Families -->
+        <div class="page" id="page-35">
+            <h2>Concept 11: Irrational Roots</h2>
+            <p>If a polynomial has real coefficients, any irrational roots (roots with square roots in them) must appear in <strong>conjugate pairs</strong>.</p>
+            <p>If <span class="math">a + \sqrt{b}</span> is a root, then <span class="math">a - \sqrt{b}</span> must also be a root.</p>
+            <p>To build a family equation using these roots, we work backwards from the quadratic formula to reconstruct the quadratic factor.</p>
+        </div>
+
+        <!-- PAGE 36: Worked Example - Irrational Roots (Setup) -->
+        <div class="page" id="page-36">
+            <h2>Worked Example: Irrational Roots</h2>
+            <p><strong>Problem:</strong> Find the equation for the family of quartic polynomials that have roots of <span class="math">3</span> (order 2) and <span class="math">2 &plusmn; \sqrt{2}</span>.</p>
+            <p>The root at 3 with order 2 is simple: <span class="math">(x - 3)^2</span>.</p>
+            <p>For the irrational roots, we set <span class="math">x</span> equal to the roots and manipulate the equation to remove the square root.</p>
+            <div class="math-block">x = 2 &plusmn; \sqrt{2}</div>
+        </div>
+
+        <!-- PAGE 37: Worked Example - Reconstructing the Quadratic -->
+        <div class="page" id="page-37">
+            <h2>Worked Example: Reconstructing the Quadratic</h2>
+            <p>Start with: <span class="math">x = 2 &plusmn; \sqrt{2}</span></p>
+            <p>Move the constant to the left side:</p>
+            <div class="math-block">x - 2 = &plusmn; \sqrt{2}</div>
+            <p>Square both sides to eliminate the radical:</p>
+            <div class="math-block">(x - 2)<sup>2</sup> = 2</div>
+            <p>Expand and simplify:</p>
+            <div class="math-block">
+                x<sup>2</sup> - 4x + 4 = 2<br>
+                <strong>x<sup>2</sup> - 4x + 2 = 0</strong>
+            </div>
+            <p>We have found our quadratic factor!</p>
+        </div>
+
+        <!-- PAGE 38: Worked Example - The Family Equation -->
+        <div class="page" id="page-38">
+            <h2>Worked Example: The Family Equation</h2>
+            <p>We combine the factors to write the general equation for the entire family of polynomials.</p>
+            <ul>
+                <li>Factor 1: <span class="math">(x - 3)^2</span></li>
+                <li>Factor 2: <span class="math">(x^2 - 4x + 2)</span></li>
+            </ul>
+            <div class="math-block success-text">y = k(x - 3)<sup>2</sup>(x<sup>2</sup> - 4x + 2)</div>
+            <p>This equation represents an infinite number of quartic curves that all share these specific roots.</p>
+        </div>
+
+        <!-- PAGE 39: Finding a Specific Member -->
+        <div class="page" id="page-39">
+            <h2>Worked Example: Finding a Specific Member</h2>
+            <p><strong>Problem:</strong> A family of cubic polynomials has roots of <span class="math">-2</span>, <span class="math">-3</span>, and <span class="math">-5</span>. Find the specific member of this family that passes through the point <span class="math">(2, -35)</span>.</p>
+            <p>First, establish the family skeleton:</p>
+            <div class="math-block">y = k(x + 2)(x + 3)(x + 5)</div>
+            <p>To find the specific member, we must solve for <span class="math">k</span> by substituting the known point <span class="math">x = 2</span> and <span class="math">y = -35</span>.</p>
+        </div>
+
+        <!-- PAGE 40: Solving for k -->
+        <div class="page" id="page-40">
+            <h2>Worked Example: Solving for k</h2>
+            <p>Substitute the point (2, -35) into the skeleton:</p>
+            <div class="math-block">
+                -35 = k(2 + 2)(2 + 3)(2 + 5)<br><br>
+                -35 = k(4)(5)(7)<br><br>
+                -35 = k(140)<br><br>
+                k = -35 / 140<br><br>
+                k = -1/4
+            </div>
+            <p>The specific equation is: <span class="math success-text">y = -1/4(x + 2)(x + 3)(x + 5)</span></p>
+        </div>
+
+        <!-- PAGE 41: Polynomial Inequalities -->
+        <div class="page" id="page-41">
+            <h2>Concept 12: Polynomial Inequalities</h2>
+            <p>An equation asks: Where does the graph cross the x-axis? (<span class="math">y = 0</span>)</p>
+            <p>An inequality asks: Where is the graph <strong>above</strong> the x-axis? (<span class="math">&gt; 0</span>) Or where is it <strong>below</strong>? (<span class="math">&lt; 0</span>)</p>
+            <p>There are two main methods to solve an inequality:</p>
+            <ol>
+                <li><strong>Algebraically:</strong> Using a factor table (Sign Chart).</li>
+                <li><strong>Graphically:</strong> Sketching the curve based on roots and end behavior.</li>
+            </ol>
+            <p class="danger">Never divide an inequality by a variable expression, as you do not know if it is positive or negative (which would require flipping the inequality sign).</p>
+        </div>
+
+        <!-- PAGE 42: Worked Example - Sign Chart Setup -->
+        <div class="page" id="page-42">
+            <h2>Worked Example: The Sign Chart</h2>
+            <p><strong>Problem:</strong> Solve <span class="math">2x^3 - x^2 - 2x + 1 &lt; 0</span>.</p>
+            <p>We factored this exact expression earlier using grouping:</p>
+            <div class="math-block">(2x - 1)(x - 1)(x + 1) &lt; 0</div>
+            <p>The roots are <span class="math">-1</span>, <span class="math">1/2</span>, and <span class="math">1</span>.</p>
+            <p>These roots divide the x-axis into four test intervals. We pick a random number inside each interval to test the signs.</p>
+        </div>
+
+        <!-- PAGE 43: Worked Example - Sign Chart Intervals -->
+        <div class="page" id="page-43">
+            <h2>Worked Example: Sign Chart Intervals</h2>
+            <table>
+                <tr>
+                    <th>Interval</th>
+                    <th>Test Point</th>
+                    <th>Sign of (2x-1)(x-1)(x+1)</th>
+                </tr>
+                <tr>
+                    <td>x &lt; -1</td>
+                    <td>-2</td>
+                    <td>(-) &times; (-) &times; (-) = <strong>Negative</strong></td>
+                </tr>
+                <tr>
+                    <td>-1 &lt; x &lt; 1/2</td>
+                    <td>0</td>
+                    <td>(-) &times; (-) &times; (+) = <strong>Positive</strong></td>
+                </tr>
+                <tr>
+                    <td>1/2 &lt; x &lt; 1</td>
+                    <td>0.75</td>
+                    <td>(+) &times; (-) &times; (+) = <strong>Negative</strong></td>
+                </tr>
+                <tr>
+                    <td>x &gt; 1</td>
+                    <td>2</td>
+                    <td>(+) &times; (+) &times; (+) = <strong>Positive</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- PAGE 44: Worked Example - Sign Chart Evaluation -->
+        <div class="page" id="page-44">
+            <h2>Worked Example: Sign Chart Evaluation</h2>
+            <p>Our original inequality was strictly less than zero: <span class="math">&lt; 0</span>.</p>
+            <p>Therefore, we are looking for the intervals that resulted in a <strong>Negative</strong> sign.</p>
+            <p>Looking at our chart, those intervals are:</p>
+            <ul>
+                <li><span class="math">x &lt; -1</span></li>
+                <li><span class="math">1/2 &lt; x &lt; 1</span></li>
+            </ul>
+            <p>In proper interval notation, the solution is:</p>
+            <div class="math-block success-text">x &isin; (-&infin;, -1) &cup; (0.5, 1)</div>
+        </div>
+
+        <!-- PAGE 45: Graphing Inequalities -->
+        <div class="page" id="page-45">
+            <h2>Concept 13: Graphing Inequalities</h2>
+            <p>If you prefer a visual approach, you can sketch the graph instead of building a sign chart.</p>
+            <p>To do this, you need:</p>
+            <ul>
+                <li>The factored form (to plot the x-intercepts).</li>
+                <li>The multiplicity of each root (to know if it crosses or bounces).</li>
+                <li>The degree and leading coefficient (to determine end behaviour).</li>
+            </ul>
+            <p>Once sketched, simply highlight the sections of the curve that satisfy the inequality (above or below the axis).</p>
+        </div>
+
+        <!-- PAGE 46: Worked Example - Graphing Setup -->
+        <div class="page" id="page-46">
+            <h2>Worked Example: Graphing Inequalities</h2>
+            <p><strong>Problem:</strong> Solve <span class="math">6x^3 + 13x^2 - 41x + 12 &le; 0</span>.</p>
+            <p>Assume we used the Factor Theorem and Synthetic Division to factor this completely into:</p>
+            <div class="math-block">(x + 4)(2x - 3)(3x - 1) &le; 0</div>
+            <p>The roots are <span class="math">-4</span>, <span class="math">3/2</span>, and <span class="math">1/3</span>. All have a multiplicity of 1, so the graph will cross straight through the axis at all three points.</p>
+        </div>
+
+        <!-- PAGE 47: Worked Example - Graphing Evaluation -->
+        <div class="page" id="page-47">
+            <h2>Worked Example: Graphing Evaluation</h2>
+            <p>The degree is 3 (Odd) and the leading coefficient is 6 (Positive). Therefore, the graph starts in Quadrant 3 (bottom left) and ends in Quadrant 1 (top right).</p>
+            <p>Visualizing the curve:</p>
+            <ul>
+                <li>It comes up from the bottom and crosses at -4 (curve is below axis).</li>
+                <li>It loops over and crosses down at 1/3 (curve is above axis).</li>
+                <li>It loops under and crosses up at 3/2 (curve is below axis).</li>
+                <li>It shoots off to infinity (curve is above axis).</li>
+            </ul>
+            <p>We want where it is <span class="math">&le; 0</span> (below the axis). That is before -4, and between 1/3 and 3/2.</p>
+            <div class="math-block success-text">x &isin; (-&infin;, -4] &cup; [1/3, 3/2]</div>
+        </div>
+
+        <!-- PAGE 48: Interactive Checkpoint - Notation -->
+        <div class="page" id="page-48">
+            <h2>Checkpoint: Inequality Notation</h2>
+            
+            <div class="question-box" id="q4">
+                <p><strong>Question:</strong> In the previous example, the solution was <span class="math">x &isin; (-&infin;, -4] &cup; [1/3, 3/2]</span>. Why were square brackets used for the numbers instead of round brackets?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer('q4', this, true, 'Correct! The inequality was &le; (less than or equal to). The equal sign dictates that the roots themselves are included in the solution, requiring square brackets.')">A) Because the original inequality included an 'or equal to' sign (&le;).</button>
+                    <button class="option-btn" onclick="checkAnswer('q4', this, false, 'No, infinity always uses round brackets because it is a concept, not a reachable number.')">B) Because the interval included infinity.</button>
+                    <button class="option-btn" onclick="checkAnswer('q4', this, false, 'The degree determines the shape of the graph, not the bracket notation.')">C) Because it was an odd-degree polynomial.</button>
+                    <button class="option-btn" onclick="checkAnswer('q4', this, false, 'Multiplicity determines if it crosses or bounces, not the bracket notation.')">D) Because the roots had a multiplicity of 1.</button>
+                </div>
+                <div class="feedback" id="feedback-q4"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 49: Interactive Checkpoint - Sign Flipping -->
+        <div class="page" id="page-49">
+            <h2>Checkpoint: Sign Flipping Rule</h2>
+            
+            <div class="question-box" id="q5">
+                <p><strong>Question:</strong> You are given the inequality <span class="math">-x^3 + 28x + 48 &ge; 0</span>. To make factoring easier, you divide both sides by -1. What is the resulting inequality?</p>
+                <div class="options">
+                    <button class="option-btn" onclick="checkAnswer('q5', this, false, 'You divided by -1, but you forgot the most important rule of inequalities!')">A) x³ - 28x - 48 &ge; 0</button>
+                    <button class="option-btn" onclick="checkAnswer('q5', this, true, 'Exactly! When you divide or multiply an inequality by a negative number, you MUST flip the inequality sign.')">B) x³ - 28x - 48 &le; 0</button>
+                    <button class="option-btn" onclick="checkAnswer('q5', this, false, 'Check your division. All terms must change sign.')">C) x³ + 28x + 48 &le; 0</button>
+                    <button class="option-btn" onclick="checkAnswer('q5', this, false, 'You flipped the sign, but you didn\'t divide the entire left side by -1.')">D) x³ + 28x + 48 &ge; 0</button>
+                </div>
+                <div class="feedback" id="feedback-q5"></div>
+            </div>
+        </div>
+
+        <!-- PAGE 50: Summary & Mastery -->
+        <div class="page" id="page-50">
+            <h2>Lesson Complete!</h2>
+            <p>Congratulations. You have completed the comprehensive review for MHF4U Unit 2.</p>
+            
+            <div class="info-box">
+                <p><strong>Key Concepts Mastered:</strong></p>
+                <ul>
+                    <li>The Remainder and Factor Theorems</li>
+                    <li>Solving for unknown coefficients using systems of equations</li>
+                    <li>Factoring by Grouping and Difference of Cubes</li>
+                    <li>Identifying non-real roots using the discriminant</li>
+                    <li>Building equations for Families of Polynomials</li>
+                    <li>Solving Polynomial Inequalities algebraically and graphically</li>
+                </ul>
+            </div>
+
+            <h3 class="text-center">Your Checkpoint Performance</h3>
+            <div id="mastery-summary" style="text-align: center; margin-top: 20px;">
+                <p style="font-size: 1.2rem;">Questions Attempted: <strong id="score-total">0</strong> / 5</p>
+                <p style="font-size: 1.2rem;">First-Attempt Correct: <strong id="score-first">0</strong></p>
+            </div>
+            <p class="text-center" style="margin-top: 25px; color: var(--success); font-weight: 600;">You are ready to tackle your Unit 2 assessments!</p>
+        </div>
+
+    </main>
+
+    <footer>
+        <button class="nav-btn" id="prev-btn" onclick="nav(-1)">Previous</button>
+        <button class="nav-btn" id="next-btn" onclick="nav(1)">Next</button>
+    </footer>
+
+    <script>
+        const TOTAL_PAGES = 50;
+        let currentPage = 1;
+        
+        // Progress Tracking
+        let questionsAttempted = 0;
+        let firstTryCorrect = 0;
+        const attemptedQuestions = new Set();
+        const failedFirstTry = new Set();
+
+        function updateUI() {
+            // Update pages
+            document.querySelectorAll('.page').forEach((el, index) => {
+                if (index + 1 === currentPage) {
+                    el.classList.add('active');
+                } else {
+                    el.classList.remove('active');
+                }
+            });
+
+            // Update header and progress bar
+            document.getElementById('page-indicator').innerText = `Page ${currentPage} of ${TOTAL_PAGES}`;
+            const progressPct = ((currentPage) / TOTAL_PAGES) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPct}%`;
+
+            // Update buttons
+            document.getElementById('prev-btn').disabled = currentPage === 1;
+            document.getElementById('next-btn').disabled = currentPage === TOTAL_PAGES;
+
+            // Final page updates
+            if (currentPage === TOTAL_PAGES) {
+                document.getElementById('score-total').innerText = questionsAttempted;
+                document.getElementById('score-first').innerText = firstTryCorrect;
+            }
+        }
+
+        function nav(direction) {
+            currentPage += direction;
+            if (currentPage < 1) currentPage = 1;
+            if (currentPage > TOTAL_PAGES) currentPage = TOTAL_PAGES;
+            updateUI();
+            
+            // Scroll to top
+            document.querySelector('main').scrollTop = 0;
+        }
+
+        function checkAnswer(qId, btn, isCorrect, feedbackText) {
+            const container = document.getElementById(qId);
+            const feedbackDiv = document.getElementById(`feedback-${qId}`);
+            const buttons = container.querySelectorAll('.option-btn');
+
+            if (!attemptedQuestions.has(qId)) {
+                questionsAttempted++;
+                attemptedQuestions.add(qId);
+                if (isCorrect) {
+                    firstTryCorrect++;
+                } else {
+                    failedFirstTry.add(qId);
+                }
+            }
+
+            if (isCorrect) {
+                // Disable all buttons
+                buttons.forEach(b => {
+                    b.disabled = true;
+                    if(b !== btn) b.style.opacity = '0.5';
+                });
+                btn.classList.add('selected-correct');
+                feedbackDiv.className = 'feedback success';
+                feedbackDiv.innerHTML = `<strong>Correct!</strong> ${feedbackText}`;
+            } else {
+                btn.classList.add('selected-incorrect');
+                btn.disabled = true;
+                feedbackDiv.className = 'feedback error';
+                feedbackDiv.innerHTML = `<strong>Not quite.</strong> ${feedbackText}`;
+            }
+        }
+
+        // Init
+        updateUI();
+    </script>
+</body>
+</html>

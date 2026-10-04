@@ -1,0 +1,1038 @@
+# MHF4U Unit 2: Factor Theorem and Inequalities
+## Master Teacher Script
+
+========================================================
+PAGE 1
+========================================================
+OBJECTIVE:
+Orient the student to the lesson and set a collaborative tone.
+
+TEACHER SCRIPT:
+"Welcome back. Today we are doing a comprehensive review of Unit 2. This is where Advanced Functions really earns its name. We are going to look at advanced factoring applications, dealing with multiple unknowns, irrational roots, and polynomial inequalities."
+
+ASK THE STUDENT:
+"Looking back at this unit in class, did you find factoring the polynomials or solving the inequalities more challenging?"
+
+EXPECTED RESPONSE:
+Open-ended. (e.g., "Inequalities were confusing with the sign charts.")
+
+IF CORRECT/APPROPRIATE:
+"That's very common. We'll spend some dedicated time on sign charts at the end of the lesson."
+
+WHAT TO EMPHASIZE:
+The transition from basic division to advanced applications.
+
+TRANSITION:
+"Let's look at exactly what we'll be covering."
+
+========================================================
+PAGE 2
+========================================================
+OBJECTIVE:
+Outline the learning progression.
+
+TEACHER SCRIPT:
+"Here is our roadmap. We'll start by reviewing the core theorems, then apply them to find unknown variables. We'll look at special factoring cases like grouping and cubes, and then finish up with families of polynomials and inequalities."
+
+TRANSITION:
+"Before we get into the heavy stuff, let's establish why we are doing all this factoring in the first place."
+
+========================================================
+PAGE 3
+========================================================
+OBJECTIVE:
+Establish the "Why" of the unit. Connect standard form to factored form.
+
+TEACHER SCRIPT:
+"In Unit 1, you learned how to look at an equation in standard form and predict the end behaviour. But standard form is useless if you want to know what the graph does in the middle. To find the x-intercepts, we have to break that standard form down into factored form. The tools we review today are exactly how we do that."
+
+TRANSITION:
+"Let's start with our first major tool: The Remainder Theorem."
+
+========================================================
+PAGE 4
+========================================================
+OBJECTIVE:
+Review the Remainder Theorem concept.
+
+TEACHER SCRIPT:
+"You know how to do long division and synthetic division. But what if a question on a test only asks for the remainder? Doing full division is a massive waste of time. The Remainder Theorem gives us a shortcut."
+
+ASK THE STUDENT:
+"Look at the rule in the blue box. If I want to divide a polynomial by x minus 5, what do I actually evaluate?"
+
+EXPECTED RESPONSE:
+"P(5)."
+
+IF CORRECT:
+"Exactly. You just flip the sign and plug the root in."
+
+IF INCORRECT:
+"Look at the bold text. We evaluate P(b). So for x minus 5, b is positive 5."
+
+WHAT TO EMPHASIZE:
+The Remainder Theorem bypasses division entirely.
+
+TRANSITION:
+"Let's walk through a concrete example."
+
+========================================================
+PAGE 5
+========================================================
+OBJECTIVE:
+Setup a Remainder Theorem calculation.
+
+TEACHER SCRIPT:
+"Okay, look at this first. We want the remainder when dividing by x plus 1. Step 1 is always finding the root of the divisor."
+
+ASK THE STUDENT:
+"If our divisor is x + 1, what is the root we are going to plug in?"
+
+EXPECTED RESPONSE:
+"-1."
+
+IF CORRECT:
+"Perfect."
+
+IF INCORRECT:
+"Set x + 1 equal to 0 and solve for x. It becomes -1."
+
+TRANSITION:
+"Now we just evaluate P(-1)."
+
+========================================================
+PAGE 6
+========================================================
+OBJECTIVE:
+Execute a Remainder Theorem calculation.
+
+TEACHER SCRIPT:
+"We plug -1 into every x spot. Notice I put brackets around the -1 every time I substituted it. That is the best way to prevent sign errors on a test."
+
+ASK THE STUDENT:
+"Looking at the math, does it make sense how we arrived at a remainder of 2?"
+
+EXPECTED RESPONSE:
+"Yes."
+
+WHAT TO EMPHASIZE:
+Careful exponent evaluation with negative numbers.
+
+COMMON MISTAKE:
+Evaluating $(-1)^4$ as $-1$.
+
+TRANSITION:
+"Let's see if you can do one yourself."
+
+========================================================
+PAGE 7 (INTERACTIVE)
+========================================================
+OBJECTIVE:
+Student practice of the Remainder Theorem.
+
+TEACHER SCRIPT:
+"Try this one yourself on paper. Calculate the remainder when P(x) is divided by x - 2."
+
+*Wait for the student to calculate and select an answer.*
+
+ASK THE STUDENT:
+"Which option did you get?"
+
+EXPECTED RESPONSE:
+Option B (5).
+
+IF CORRECT:
+"Nice work. You plugged in positive 2 and followed BEDMAS perfectly."
+
+IF INCORRECT:
+"Let's check your setup. The root of x - 2 is 2. So we need 2 cubed, which is 8. Minus 2 times 2 squared, which is 8. So 8 - 8 + 5."
+
+WHAT TO EMPHASIZE:
+Proper substitution of the root (flipping the sign of the binomial).
+
+COMMON MISTAKE:
+Substituting -2 instead of positive 2.
+
+TRANSITION:
+"Now, what happens if that remainder turns out to be exactly zero?"
+
+========================================================
+PAGE 8
+========================================================
+OBJECTIVE:
+Introduce the Factor Theorem as a special case of the Remainder Theorem.
+
+TEACHER SCRIPT:
+"If you divide 12 by 4, you get exactly 3, with zero remainder. That means 4 is a perfect factor of 12. The exact same logic applies to algebra. This is the Factor Theorem."
+
+ASK THE STUDENT:
+"In your own words, what does the Factor Theorem tell us?"
+
+EXPECTED RESPONSE:
+"If you plug a number in and get zero, then it's a factor."
+
+IF CORRECT:
+"Exactly. It's the ultimate test for finding factors."
+
+WHAT TO EMPHASIZE:
+A remainder of zero is the only thing that confirms a factor.
+
+TRANSITION:
+"Let's look at an example."
+
+========================================================
+PAGE 9
+========================================================
+OBJECTIVE:
+Demonstrate applying the Factor Theorem.
+
+TEACHER SCRIPT:
+"Is x minus 3 a factor of this quadratic? To test it, we evaluate P(3). When we run the math, 27 minus 24 minus 3 equals exactly 0."
+
+ASK THE STUDENT:
+"Because the remainder is 0, what is our conclusion?"
+
+EXPECTED RESPONSE:
+"Yes, it is a factor."
+
+IF CORRECT:
+"Right. We just proved it without having to do any division."
+
+TRANSITION:
+"Now, let's look at how teachers make this harder on tests. Finding unknowns."
+
+========================================================
+PAGE 10
+========================================================
+OBJECTIVE:
+Introduce working backwards to find unknown coefficients.
+
+TEACHER SCRIPT:
+"This is a guaranteed test question style. Instead of asking for the remainder, they give you the remainder, but they replace one of the numbers in the polynomial with the letter 'k'."
+
+TRANSITION:
+"Let's set one up."
+
+========================================================
+PAGE 11
+========================================================
+OBJECTIVE:
+Setup the equation to find 'k'.
+
+TEACHER SCRIPT:
+"We are dividing by x - 3, so our root is 3. They tell us the remainder is -10. Mathematically, this means P(3) equals -10."
+
+ASK THE STUDENT:
+"Does the setup f(3) = -10 make sense to you based on the Remainder Theorem?"
+
+EXPECTED RESPONSE:
+"Yes."
+
+IF CORRECT:
+"Good. Getting the setup right is half the battle."
+
+WHAT TO EMPHASIZE:
+Translating the English sentence into the mathematical setup $f(3) = -10$.
+
+TRANSITION:
+"Now we just substitute and solve."
+
+========================================================
+PAGE 12
+========================================================
+OBJECTIVE:
+Execute the algebra to solve for 'k'.
+
+TEACHER SCRIPT:
+"We plug 3 into all the x spots, and set the whole equation to -10. 3 to the power of 4 is 81. The k stays attached to the 27. From here, it's just a grade 9 linear equation."
+
+ASK THE STUDENT:
+"Notice that we got a fraction for an answer. Does that mean we did something wrong?"
+
+EXPECTED RESPONSE:
+"No."
+
+IF CORRECT:
+"Exactly. Don't panic if you get fractions on advanced functions tests. They are completely normal."
+
+WHAT TO EMPHASIZE:
+Careful algebra when isolating k.
+
+COMMON MISTAKE:
+Adding the 81 and the 27k together (combining unlike terms).
+
+TRANSITION:
+"What if there are TWO letters missing in the polynomial?"
+
+========================================================
+PAGE 13
+========================================================
+OBJECTIVE:
+Introduce systems of equations for multiple unknowns.
+
+TEACHER SCRIPT:
+"What if a polynomial is missing two coefficients, like an 'm' and an 'n'? Grade 10 math tells us that if we have two unknown variables, we need two separate equations to solve for them."
+
+TRANSITION:
+"Let's look at how a question provides those two pieces of information."
+
+========================================================
+PAGE 14
+========================================================
+OBJECTIVE:
+Analyze a word problem to find two roots.
+
+TEACHER SCRIPT:
+"Look at this problem. We have 'm' and 'n'. But the problem tells us that BOTH 2x + 3 and x - 1 are factors."
+
+ASK THE STUDENT:
+"What is the root for the factor 2x + 3?"
+
+EXPECTED RESPONSE:
+"-3/2."
+
+IF CORRECT:
+"Perfect. You set it to 0 and solved."
+
+IF INCORRECT:
+"Set 2x + 3 equal to 0. Subtract 3, then divide by 2."
+
+WHAT TO EMPHASIZE:
+Two factors give us two roots to build our two equations.
+
+TRANSITION:
+"Let's build those equations."
+
+========================================================
+PAGE 15
+========================================================
+OBJECTIVE:
+Setup the two linear equations.
+
+TEACHER SCRIPT:
+"For Equation 1, we use the root 1. Since it's a factor, P(1) = 0. We simplify it down to m + n = -2. For Equation 2, we use the root -3/2. This one involves some messy fractions, but it simplifies down to 2.25m - 1.5n = 33."
+
+TRANSITION:
+"Now we have our system."
+
+========================================================
+PAGE 16
+========================================================
+OBJECTIVE:
+Solve the system using substitution.
+
+TEACHER SCRIPT:
+"We use substitution. We isolate n in the first equation to get n = -2 - m. Then we plug that into the second equation."
+
+ASK THE STUDENT:
+"Once we find that m = 8, how do we find n?"
+
+EXPECTED RESPONSE:
+"Plug m=8 back into the first equation."
+
+IF CORRECT:
+"Exactly. 8 + n = -2, so n = -10. We completely rebuilt the hidden polynomial."
+
+WHAT TO EMPHASIZE:
+Bringing grade 10 substitution skills into grade 12 polynomials.
+
+TRANSITION:
+"Now, let's talk about factoring an entire polynomial from absolute scratch."
+
+========================================================
+PAGE 17
+========================================================
+OBJECTIVE:
+Introduce the Integral Zero Theorem for guessing roots.
+
+TEACHER SCRIPT:
+"If a test asks you to completely factor a cubic, but gives you no clues, you have to guess the first factor yourself. But we don't guess randomly. The Integral Zero Theorem says any integer root MUST be a factor of the constant term."
+
+TRANSITION:
+"Let's see this in action."
+
+========================================================
+PAGE 18
+========================================================
+OBJECTIVE:
+Demonstrate guessing a root using the theorem.
+
+TEACHER SCRIPT:
+"Our polynomial ends in a +6. So we only guess numbers that divide evenly into 6. Like 1, 2, 3, or 6. We test P(1), and we get 4. Not a factor. We test P(-1), and we get 0. Bingo!"
+
+ASK THE STUDENT:
+"Since P(-1) equals 0, what is the bracket for our first factor?"
+
+EXPECTED RESPONSE:
+"(x + 1)."
+
+IF CORRECT:
+"Yes! Always remember to flip the sign for the factor."
+
+IF INCORRECT:
+"Remember the format is (x - b). If b is -1, it becomes x minus negative 1, which is x + 1."
+
+WHAT TO EMPHASIZE:
+Stop guessing once you find a zero.
+
+TRANSITION:
+"Now that we have one piece, we break down the rest."
+
+========================================================
+PAGE 19
+========================================================
+OBJECTIVE:
+Use synthetic division to find the remaining quadratic.
+
+TEACHER SCRIPT:
+"We use synthetic division to rip that (x + 1) out of the cubic. The root is -1, so it goes on the outside. We run the drop-multiply-add loop."
+
+ASK THE STUDENT:
+"Look at the bottom row. Does it make sense why the remainder is 0?"
+
+EXPECTED RESPONSE:
+"Yes, because we already proved it was a factor."
+
+IF CORRECT:
+"Exactly. If you don't get 0 here, you made a math error."
+
+WHAT TO EMPHASIZE:
+The synthetic division step reduces the cubic to a quadratic.
+
+TRANSITION:
+"Now we finish it off."
+
+========================================================
+PAGE 20
+========================================================
+OBJECTIVE:
+Finalize the factoring process.
+
+TEACHER SCRIPT:
+"Our quotient is the quadratic x squared - 5x + 6. We factor this using simple grade 10 math. Two numbers that multiply to 6 and add to -5 are -2 and -3."
+
+ASK THE STUDENT:
+"So looking at the final green text, how many x-intercepts will this graph have?"
+
+EXPECTED RESPONSE:
+"Three."
+
+IF CORRECT:
+"Right. At -1, 2, and 3."
+
+WHAT TO EMPHASIZE:
+The complete flow: Guess root -> Divide -> Factor quadratic.
+
+TRANSITION:
+"Sometimes, there is a trick to skip division entirely."
+
+========================================================
+PAGE 21 (INTERACTIVE)
+========================================================
+OBJECTIVE:
+Test the student's understanding of logical root candidates.
+
+TEACHER SCRIPT:
+"Let's check if you understand the Integral Zero Theorem."
+
+*Wait for student to read and select.*
+
+ASK THE STUDENT:
+"Which number makes no sense to test?"
+
+EXPECTED RESPONSE:
+Option B (4).
+
+IF CORRECT:
+"Perfect. 4 does not divide into 6, so it can never be a root. You just saved yourself time on a test."
+
+IF INCORRECT:
+"Look at the constant term at the end of the polynomial. It's -6. The theorem says we only test numbers that divide evenly into -6."
+
+WHAT TO EMPHASIZE:
+Only test factors of the constant.
+
+TRANSITION:
+"Now let's look at that trick to skip division."
+
+========================================================
+PAGE 22
+========================================================
+OBJECTIVE:
+Introduce Factor by Grouping as an alternative strategy.
+
+TEACHER SCRIPT:
+"This trick is called Factoring by Grouping. If the polynomial has four terms that follow a specific proportional pattern, you can group them into pairs and factor without doing any synthetic division."
+
+TRANSITION:
+"Let's look at an example."
+
+========================================================
+PAGE 23
+========================================================
+OBJECTIVE:
+Setup Factor by Grouping.
+
+TEACHER SCRIPT:
+"Here is our polynomial. The very first rule of factoring is always check for a Greatest Common Factor. We can pull a -4 out of the entire thing to make the numbers smaller."
+
+ASK THE STUDENT:
+"Look at the four terms inside the bracket. If we group the first two together, what is the biggest thing we can factor out of x cubed plus x squared?"
+
+EXPECTED RESPONSE:
+"x squared."
+
+IF CORRECT:
+"Spot on."
+
+IF INCORRECT:
+"Look for the lowest power of x they share, which is x squared."
+
+TRANSITION:
+"Let's execute the grouping."
+
+========================================================
+PAGE 24
+========================================================
+OBJECTIVE:
+Execute Factor by Grouping.
+
+TEACHER SCRIPT:
+"We pull x squared out of the first pair, leaving (x+1). We pull a -4 out of the second pair, leaving (x+1). Notice how the brackets match perfectly? That means the trick worked. We factor out the common (x+1)."
+
+ASK THE STUDENT:
+"We are left with x squared - 4. How do we break that down to get the final green answer?"
+
+EXPECTED RESPONSE:
+"Difference of squares."
+
+IF CORRECT:
+"Yes. (x-2)(x+2). This method is lightning fast when it works."
+
+WHAT TO EMPHASIZE:
+Grouping only works if the resulting binomial brackets match exactly.
+
+COMMON MISTAKE:
+Forgetting to carry down the initial GCF (-4) to the final answer.
+
+TRANSITION:
+"Let's look at another special factoring pattern."
+
+========================================================
+PAGE 25
+========================================================
+OBJECTIVE:
+Introduce Sum and Difference of Cubes formulas.
+
+TEACHER SCRIPT:
+"You know difference of squares. In Grade 12, you have to memorize Sum and Difference of Cubes. Look at the formulas. The pattern of the signs is remembered using the acronym SOAP."
+
+ASK THE STUDENT:
+"Can you guess what S, O, A, P stand for?"
+
+EXPECTED RESPONSE:
+"Same, Opposite, Always Positive." (from the slide text).
+
+IF CORRECT:
+"Exactly. The first sign is the Same as the question. The next is Opposite. The last is Always Positive."
+
+WHAT TO EMPHASIZE:
+The SOAP memory trick.
+
+TRANSITION:
+"Let's apply the formula."
+
+========================================================
+PAGE 26
+========================================================
+OBJECTIVE:
+Apply the Difference of Cubes formula.
+
+TEACHER SCRIPT:
+"Factor x cubed minus 64. We are cubing x, and we are cubing 4. So a=x and b=4. We just drop them into the formula."
+
+ASK THE STUDENT:
+"Look at the note at the bottom. Why don't we try to factor the quadratic part, x squared + 4x + 16, any further?"
+
+EXPECTED RESPONSE:
+"Because it can't be factored." or "No real numbers work."
+
+IF CORRECT:
+"Exactly. A sum or difference of cubes will never produce a factorable quadratic. It's a mathematical rule."
+
+WHAT TO EMPHASIZE:
+Don't waste time trying to factor the quadratic portion on a test.
+
+TRANSITION:
+"Now that we know all the ways to factor, what do we actually do with the factors?"
+
+========================================================
+PAGE 27
+========================================================
+OBJECTIVE:
+Connect factoring to solving equations.
+
+TEACHER SCRIPT:
+"We factor so we can solve equations. Solving an equation just means finding the x-intercepts. The golden rule is: Move everything to one side so it equals 0, factor it, and then set each bracket to 0."
+
+TRANSITION:
+"Let's solve one."
+
+========================================================
+PAGE 28
+========================================================
+OBJECTIVE:
+Setup solving an equation.
+
+TEACHER SCRIPT:
+"Solve 2x cubed + 1 = x squared + 2x. Step 1 is move everything to the left so it equals zero. We get 2x cubed - x squared - 2x + 1 = 0."
+
+TRANSITION:
+"Now we factor it."
+
+========================================================
+PAGE 29
+========================================================
+OBJECTIVE:
+Solve the equation by finding roots.
+
+TEACHER SCRIPT:
+"This looks like a perfect candidate for factoring by grouping. We group, pull out the common factors, and end up with (2x-1)(x-1)(x+1) = 0."
+
+ASK THE STUDENT:
+"If we set 2x - 1 equal to 0, what does x equal?"
+
+EXPECTED RESPONSE:
+"1/2."
+
+IF CORRECT:
+"Right. We just solved the equation. Our roots are 1/2, 1, and -1."
+
+WHAT TO EMPHASIZE:
+Solving is just factoring + setting brackets to zero.
+
+TRANSITION:
+"But what happens if a bracket doesn't give us a normal number?"
+
+========================================================
+PAGE 30
+========================================================
+OBJECTIVE:
+Introduce Non-Real Roots.
+
+TEACHER SCRIPT:
+"Not every factor produces a real root that you can graph on an x-y axis. If a factor has a quadratic that doesn't factor, we use the quadratic formula. If the discriminant under the square root is negative, we have a problem."
+
+TRANSITION:
+"Let's see what that looks like."
+
+========================================================
+PAGE 31
+========================================================
+OBJECTIVE:
+Analyze an equation for non-real roots.
+
+TEACHER SCRIPT:
+"Look at this equation. It's already factored into two brackets. Let's solve them one at a time. Bracket 1 gives us x squared = -4. Bracket 2 gives us x squared = 16."
+
+ASK THE STUDENT:
+"What happens if you try to take the square root of -4 on your calculator?"
+
+EXPECTED RESPONSE:
+"Error."
+
+IF CORRECT:
+"Right. It produces an imaginary number."
+
+TRANSITION:
+"Here is the conclusion."
+
+========================================================
+PAGE 32
+========================================================
+OBJECTIVE:
+Conclude the non-real roots example.
+
+TEACHER SCRIPT:
+"Because x squared = -4 has no real solutions, we say that bracket contributes no real roots to the graph. The only real roots come from the second bracket, which are plus and minus 4."
+
+WHAT TO EMPHASIZE:
+Only real roots correspond to x-intercepts on a graph.
+
+TRANSITION:
+"Let's check if you can spot a non-real root."
+
+========================================================
+PAGE 33 (INTERACTIVE: Q3)
+========================================================
+OBJECTIVE:
+Test discriminant checking for non-real roots.
+
+TEACHER SCRIPT:
+"Try this quick check. You have a quadratic factor: x squared + 3x + 5. How many real roots does it produce?"
+
+*Wait for student to calculate.*
+
+ASK THE STUDENT:
+"What did your discriminant calculation tell you?"
+
+EXPECTED RESPONSE:
+Option A (0).
+
+IF CORRECT:
+"Excellent. 9 minus 20 is negative. A negative discriminant always means zero real roots."
+
+IF INCORRECT:
+"Calculate b squared minus 4ac. 3 squared is 9. 4 times 1 times 5 is 20. 9 minus 20 is a negative number."
+
+WHAT TO EMPHASIZE:
+The discriminant ($b^2 - 4ac$) is the fastest way to check.
+
+TRANSITION:
+"Let's shift gears and look at Families of Polynomials."
+
+========================================================
+PAGE 34
+========================================================
+OBJECTIVE:
+Define Families of Polynomials.
+
+TEACHER SCRIPT:
+"A family of polynomials is a group of equations that all have the exact same x-intercepts. They cross the axis at the same spots, but they might be stretched taller or compressed flatter."
+
+ASK THE STUDENT:
+"In the equation on the screen, what variable acts as the stretch factor?"
+
+EXPECTED RESPONSE:
+"The letter k."
+
+IF CORRECT:
+"Exactly. Changing 'k' creates a different member of the same family."
+
+TRANSITION:
+"Let's look at a complex family."
+
+========================================================
+PAGE 35
+========================================================
+OBJECTIVE:
+Introduce irrational roots in families.
+
+TEACHER SCRIPT:
+"If a polynomial has real coefficients, any irrational roots—meaning roots with square roots in them—must always come in pairs. Like a plus and a minus version. We call them conjugate pairs."
+
+TRANSITION:
+"Let's see how to handle them when building an equation."
+
+========================================================
+PAGE 36
+========================================================
+OBJECTIVE:
+Setup building a family with irrational roots.
+
+TEACHER SCRIPT:
+"We want to build a family with a root at 3 (order 2), and irrational roots at 2 plus or minus root 2. The root at 3 is easy, it just gives us a bracket of (x-3) squared. But for the irrational roots, we have to do some reverse algebra."
+
+TRANSITION:
+"Let's reconstruct the quadratic."
+
+========================================================
+PAGE 37
+========================================================
+OBJECTIVE:
+Demonstrate reversing the quadratic formula.
+
+TEACHER SCRIPT:
+"We start with x = 2 plus or minus root 2. We move the 2 to the left side. Now, how do we get rid of a square root?"
+
+ASK THE STUDENT:
+"If we have a square root on the right side, what algebraic step removes it?"
+
+EXPECTED RESPONSE:
+"Square both sides."
+
+IF CORRECT:
+"Exactly. We square (x-2) and we square the root 2. When we expand and simplify, we get x squared - 4x + 2 = 0. That is our quadratic factor!"
+
+WHAT TO EMPHASIZE:
+This reverse-algebra trick avoids having to write messy brackets with square roots inside them.
+
+TRANSITION:
+"Let's put the family together."
+
+========================================================
+PAGE 38
+========================================================
+OBJECTIVE:
+Finalize the family equation.
+
+TEACHER SCRIPT:
+"We take our simple factor, (x-3) squared, and our new quadratic factor, and multiply them together. We stick a 'k' in front, and we have the equation for the entire family."
+
+TRANSITION:
+"Now, how do we find one specific member of that family?"
+
+========================================================
+PAGE 39
+========================================================
+OBJECTIVE:
+Setup finding a specific 'k' value.
+
+TEACHER SCRIPT:
+"To find a specific member of a family, the problem must give you a specific point on the graph. Here, they give us the point (2, -35)."
+
+ASK THE STUDENT:
+"If we have the point (2, -35) and our skeleton equation, what do we do next?"
+
+EXPECTED RESPONSE:
+"Plug 2 in for x, and -35 in for y."
+
+IF CORRECT:
+"Perfect. Then we just isolate k."
+
+TRANSITION:
+"Let's do the math."
+
+========================================================
+PAGE 40
+========================================================
+OBJECTIVE:
+Solve for 'k'.
+
+TEACHER SCRIPT:
+"We plug the numbers in. We simplify the brackets to 4, 5, and 7. We multiply them to get 140. We divide, and we find out that k = -1/4. We write our final equation with the -1/4 in front, and we're done."
+
+WHAT TO EMPHASIZE:
+Finding 'k' requires substituting a known point $(x,y)$.
+
+TRANSITION:
+"For our final major topic today, we are going to look at Polynomial Inequalities."
+
+========================================================
+PAGE 41
+========================================================
+OBJECTIVE:
+Introduce polynomial inequalities.
+
+TEACHER SCRIPT:
+"An inequality doesn't just ask where the graph equals zero. It asks where the graph is greater than zero (meaning above the x-axis) or less than zero (meaning below the x-axis)."
+
+ASK THE STUDENT:
+"Look at the red warning. Why can't we just divide both sides of an inequality by an 'x' term to simplify it?"
+
+EXPECTED RESPONSE:
+"Because we don't know if x is positive or negative, so we wouldn't know if we should flip the sign."
+
+IF CORRECT:
+"Yes! That is a fatal error on tests. Never divide by a variable in an inequality."
+
+WHAT TO EMPHASIZE:
+Inequalities represent physical locations on a graph (above/below).
+
+TRANSITION:
+"Let's solve one algebraically using a Sign Chart."
+
+========================================================
+PAGE 42
+========================================================
+OBJECTIVE:
+Setup a sign chart.
+
+TEACHER SCRIPT:
+"Solve 2x cubed - x squared - 2x + 1 < 0. Step 1 is to factor it. We factored this exact one earlier, so we know the roots are -1, 1/2, and 1."
+
+ASK THE STUDENT:
+"If we plot those three roots on a number line, how many distinct test zones does it create?"
+
+EXPECTED RESPONSE:
+"Four."
+
+IF CORRECT:
+"Exactly. Before -1, between -1 and half, between half and 1, and after 1."
+
+TRANSITION:
+"Let's test those zones."
+
+========================================================
+PAGE 43
+========================================================
+OBJECTIVE:
+Evaluate a sign chart.
+
+TEACHER SCRIPT:
+"We pick a random test number in each of the four zones. For example, in the first zone, we test -2. We plug -2 into all three brackets. A negative times a negative times a negative results in an overall Negative sign. We don't care about the actual number, just the sign."
+
+WHAT TO EMPHASIZE:
+We only care about the resulting sign (+ or -) in each interval.
+
+TRANSITION:
+"How do we read this chart to get our answer?"
+
+========================================================
+PAGE 44
+========================================================
+OBJECTIVE:
+Interpret the sign chart.
+
+TEACHER SCRIPT:
+"Our original inequality asked for where the function was LESS than 0. So we are looking for the Negative zones."
+
+ASK THE STUDENT:
+"Looking at the chart we just made, which two zones gave us a negative result?"
+
+EXPECTED RESPONSE:
+"x < -1 and between 1/2 and 1."
+
+IF CORRECT:
+"Right. And we write that final answer using interval notation, with round brackets because the inequality was strictly 'less than'."
+
+TRANSITION:
+"If you hate sign charts, there is another way to solve these."
+
+========================================================
+PAGE 45
+========================================================
+OBJECTIVE:
+Introduce solving inequalities by graphing.
+
+TEACHER SCRIPT:
+"You can solve inequalities just by sketching a quick graph. If you know the x-intercepts, the multiplicity (if it crosses or bounces), and the end behaviour, you can draw the curve and visually see what's above or below the axis."
+
+TRANSITION:
+"Let's try it."
+
+========================================================
+PAGE 46
+========================================================
+OBJECTIVE:
+Setup graphing an inequality.
+
+TEACHER SCRIPT:
+"Solve this cubic is less than or equal to 0. Let's assume we already factored it into those three brackets. The roots are -4, 3/2, and 1/3. They all have an order of 1, so the graph will cross straight through all of them."
+
+TRANSITION:
+"Let's visualize the sketch."
+
+========================================================
+PAGE 47
+========================================================
+OBJECTIVE:
+Analyze the graph to solve the inequality.
+
+TEACHER SCRIPT:
+"It's an odd degree with a positive leading coefficient, so it starts in Q3 and ends in Q1. It comes up from the bottom, crosses -4, loops down through 1/3, and up through 3/2."
+
+ASK THE STUDENT:
+"We want where it is less than or equal to 0. So, where is the graph physically below the x-axis?"
+
+EXPECTED RESPONSE:
+"Before -4, and between 1/3 and 3/2."
+
+IF CORRECT:
+"Exactly. And notice in the green answer, we use square brackets because the inequality included 'or equal to'."
+
+WHAT TO EMPHASIZE:
+Visualizing the curve is often faster than a full sign chart.
+
+TRANSITION:
+"Let's check if you remember your bracket rules."
+
+========================================================
+PAGE 48 (INTERACTIVE: Q4)
+========================================================
+OBJECTIVE:
+Test interval notation bracket rules.
+
+TEACHER SCRIPT:
+"Let's make sure you have the notation down."
+
+*Wait for student to select.*
+
+ASK THE STUDENT:
+"Why did we use square brackets for the numbers in that last example?"
+
+EXPECTED RESPONSE:
+Option A (Because the original inequality included an 'or equal to' sign).
+
+IF CORRECT:
+"Spot on. If it has the line underneath, use a square bracket. But remember, infinity always gets a round bracket."
+
+IF INCORRECT:
+"Look at the original symbol. It was less than OR EQUAL TO. The 'equal to' part means the root itself is part of the answer, so we enclose it with a square bracket."
+
+WHAT TO EMPHASIZE:
+Square = Include. Round = Exclude (and infinity).
+
+TRANSITION:
+"One last trap to watch out for."
+
+========================================================
+PAGE 49 (INTERACTIVE: Q5)
+========================================================
+OBJECTIVE:
+Test the negative division sign flip rule.
+
+TEACHER SCRIPT:
+"Look at this inequality. The leading term is negative. It is always easier to factor if you divide everything by -1 first. But what is the golden rule when you do that?"
+
+*Wait for student to select.*
+
+ASK THE STUDENT:
+"What happens to the inequality sign?"
+
+EXPECTED RESPONSE:
+Option B (It flips to $\le$).
+
+IF CORRECT:
+"Yes! If you multiply or divide an inequality by a negative number, you MUST flip the alligator sign. Never forget that on a test."
+
+IF INCORRECT:
+"If you divide an inequality by a negative number, the direction of the inequality must flip. So >= becomes <=."
+
+WHAT TO EMPHASIZE:
+The sign flip rule.
+
+TRANSITION:
+"Let's wrap up."
+
+========================================================
+PAGE 50
+========================================================
+OBJECTIVE:
+Review the lesson and check mastery.
+
+TEACHER SCRIPT:
+"We made it! We covered a massive amount of ground today. Long division, Synthetic division, Remainder Theorem, Factor Theorem, multiple unknowns, irrational family roots, and sign charts."
+
+ASK THE STUDENT:
+"Do you have any final questions about finding unknown variables or setting up sign charts before we log off?"
+
+EXPECTED RESPONSE:
+"No, I feel good."
+
+IF CORRECT:
+"Awesome. Let's look at your final score on the interactive checkpoints."
+
+IF INCORRECT:
+Answer any final questions clearly.
+
+WHAT TO EMPHASIZE:
+Praise their focus. This is a very heavy, theory-dense unit.
+
+TRANSITION:
+"Great work today. You are fully prepared to crush your unit 2 assignments. See you next session."
+
+========================================================
+FINAL TEACHER CHECKLIST
+========================================================
+• CONCEPTS SUCCESSFULLY TAUGHT: 
+  - Remainder & Factor Theorems
+  - Systems of equations for unknowns 'm' and 'n'
+  - Difference of Cubes & Factor by Grouping
+  - Non-real roots via discriminant
+  - Families with irrational roots
+  - Polynomial Inequalities (Sign charts & Graphing)
+• QUESTIONS STUDENT STRUGGLED WITH: [Fill in based on session]
+• CONCEPTS REQUIRING REVIEW: [Fill in based on session, e.g., "Review difference of cubes formula"]
+• READY TO MOVE ON: Yes
+• RECOMMENDED STARTING POINT FOR NEXT LESSON: Unit 3: Rational Functions.
