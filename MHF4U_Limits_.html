@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MHF4U: Limits</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+  <style>
+    :root {
+      --bg: #0b1120;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --accent: #38bdf8;
+      --accent-alt: #818cf8;
+      --highlight: #f59e0b;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --btn-bg: #2563eb;
+      --btn-hover: #1d4ed8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body, html {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+
+    .app-container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    header {
+      padding: 16px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(8px);
+      z-index: 20;
+    }
+
+    .course-badge {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .slide-progress {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 15px;
+      color: var(--text-sub);
+    }
+
+    .main-stage {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(30px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 60px;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0);
+    }
+
+    .slide-content {
+      width: 100%;
+      max-width: 1050px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5);
+      max-height: calc(100vh - 160px);
+      overflow-y: auto;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--heading-color, #fff);
+      line-height: 1.25;
+    }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+    }
+
+    p, li {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--body-color, #e2e8f0);
+    }
+
+    ul, ol {
+      padding-left: 24px;
+      margin: 14px 0;
+    }
+
+    li { margin-bottom: 10px; }
+
+    .math {
+      font-family: 'JetBrains Mono', monospace;
+      background: rgba(0, 0, 0, 0.45);
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .math-block {
+      display: block;
+      padding: 16px;
+      margin: 16px 0;
+      font-size: 1.15rem;
+      text-align: center;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 10px;
+      color: var(--accent);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    .box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 22px;
+    }
+
+    .interactive-card {
+      margin-top: 24px;
+      padding: 20px 24px;
+      background: rgba(56, 189, 248, 0.05);
+      border: 1px dashed rgba(56, 189, 248, 0.35);
+      border-radius: 12px;
+    }
+
+    .interactive-card h4 {
+      font-size: 1rem;
+      color: var(--highlight);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"], input[type="number"] {
+      background: #0f172a;
+      border: 1px solid var(--card-border);
+      color: var(--heading-color, #fff);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      padding: 10px 14px;
+      border-radius: 8px;
+      min-width: 160px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
+    }
+
+    .check-btn {
+      background: var(--btn-bg);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .check-btn:hover {
+      background: var(--btn-hover);
+    }
+
+    .reveal-btn {
+      background: transparent;
+      color: var(--accent-alt);
+      border: 1px solid var(--accent-alt);
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .reveal-btn:hover {
+      color: var(--heading-color, #fff);
+      border-color: var(--accent-alt);
+    }
+
+    .feedback {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .feedback.correct { color: var(--success); }
+    .feedback.incorrect { color: var(--danger); }
+
+    .solution-box {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 18px;
+      background: rgba(15, 23, 42, 0.85);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 0.95rem;
+    }
+
+    table.data-table th, table.data-table td {
+      border: 1px solid #334155;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    table.data-table th {
+      background: var(--card-bg);
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    footer {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 1000;
+      min-height: 76px;
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      border-top: 2px solid var(--accent);
+      background: #101827;
+      box-shadow: 0 -8px 24px rgba(0,0,0,.28);
+    }
+    .main-stage { padding-bottom: 76px; }
+    .nav-buttons { margin-left: auto; flex-shrink: 0; }
+    .nav-btn {
+      min-width: 124px;
+      min-height: 46px;
+      justify-content: center;
+      background: var(--btn-bg, #2563eb);
+      border: 2px solid var(--accent, #38bdf8);
+      color: #fff !important;
+      font-size: 1rem;
+      font-weight: 700;
+      box-shadow: 0 3px 10px rgba(0,0,0,.25);
+    }
+    .nav-btn:hover:not(:disabled) { background: var(--btn-hover, #1d4ed8); border-color: #fff; transform: translateY(-1px); }
+    .nav-btn:disabled { opacity: .65; background: #354154; color: #fff !important; border-color: #7b8ba4; }
+    .shortcut-hint { color: #e2e8f0; }
+
+    .nav-buttons {
+      display: flex;
+      gap: 14px;
+    }
+
+    .nav-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 10px 22px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--btn-hover);
+      border-color: var(--accent);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .shortcut-hint {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+    }
+
+    svg.chart {
+      width: 100%;
+      height: 240px;
+      background: #0f172a;
+      border-radius: 10px;
+      border: 1px solid #334155;
+    }
+
+
+    /* Per-slide theme system: each page has a distinct color palette. */
+    .slide-content { background: var(--card-bg); border-color: var(--card-border); }
+    .slide h1 { color: var(--heading-color, #fff); }
+    .slide h2, .slide p, .slide li { color: var(--body-color, #e2e8f0); }
+    .slide .tag { background: color-mix(in srgb, var(--accent) 15%, transparent); color: var(--accent); }
+    .slide .check-btn { background: var(--btn-bg); color: #fff; }
+    .slide .check-btn:hover { background: var(--btn-hover); }
+    .slide .reveal-btn { color: var(--secondary-text, var(--accent-alt)); border-color: var(--accent-alt); }
+    .slide .reveal-btn:hover { color: var(--heading-color, #fff); background: color-mix(in srgb, var(--accent-alt) 12%, transparent); }
+    .slide input[type="text"], .slide input[type="number"] { border-color: var(--card-border); }
+    .slide input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent); }
+    .slide .math-block { border-color: color-mix(in srgb, var(--accent) 35%, transparent); }
+    .slide .box, .slide .interactive-card { border-color: var(--card-border); }
+    .slide .data-table th { background: var(--bg); color: var(--accent); }
+    .slide .data-table td { color: var(--body-color, #e2e8f0); }
+    .slide .solution-box { border-left-color: var(--accent); }
+    .nav-btn { background: var(--card-bg); border-color: var(--card-border); color: var(--text-main); }
+    .nav-btn:hover:not(:disabled) { background: var(--btn-hover); border-color: var(--accent); }
+    .course-badge { color: var(--accent); }
+    .slide-progress, .shortcut-hint { color: var(--text-sub); }
+    .nav-btn:focus-visible, .check-btn:focus-visible, .reveal-btn:focus-visible { outline: 3px solid var(--accent-alt); outline-offset: 3px; }
+  footer .nav-btn { position: relative; z-index: 1001; visibility: visible; display: inline-flex; }
+.slide:nth-child(1) { --accent:#fa7878; --accent-alt:#f5cf8e; --highlight:#85ffff; --btn-bg:#b83333; --btn-hover:#8c1f1f; --heading-color:#ffe9e6; --body-color:#e8d9d8; --text-main:#ffe9e6; --text-sub:#bd9b97; --card-bg:#291a1a; --card-border:#573d3d; --bg:#130a0a; --secondary-text:#f5cf8e; }
+.slide:nth-child(2) { --accent:#78fa9e; --accent-alt:#8ef5ed; --highlight:#ff85db; --btn-bg:#33b85a; --btn-hover:#1f8c3f; --heading-color:#e6fff0; --body-color:#d8e8de; --text-main:#e6fff0; --text-sub:#97bda7; --card-bg:#1a291e; --card-border:#3d5744; --bg:#0a130d; --secondary-text:#8ef5ed; }
+.slide:nth-child(3) { --accent:#c478fa; --accent-alt:#f58edf; --highlight:#b8ff85; --btn-bg:#8133b8; --btn-hover:#5f1f8c; --heading-color:#f7e6ff; --body-color:#e3d8e8; --text-main:#f7e6ff; --text-sub:#b297bd; --card-bg:#231a29; --card-border:#4c3d57; --bg:#0f0a13; --secondary-text:#f58edf; }
+.slide:nth-child(4) { --accent:#faea78; --accent-alt:#c1f58e; --highlight:#8594ff; --btn-bg:#b8a733; --btn-hover:#8c7f1f; --heading-color:#ffffe6; --body-color:#e8e7d8; --text-main:#ffffe6; --text-sub:#bdbd97; --card-bg:#29271a; --card-border:#57533d; --bg:#13120a; --secondary-text:#c1f58e; }
+.slide:nth-child(5) { --accent:#78e4fa; --accent-alt:#8ea3f5; --highlight:#ff9985; --btn-bg:#33a1b8; --btn-hover:#1f7a8c; --heading-color:#e6f8ff; --body-color:#d8e4e8; --text-main:#e6f8ff; --text-sub:#97b2bd; --card-bg:#1a2629; --card-border:#3d5257; --bg:#0a1213; --secondary-text:#8ea3f5; }
+.slide:nth-child(6) { --accent:#fa78be; --accent-alt:#f5978e; --highlight:#85ffbd; --btn-bg:#b8337b; --btn-hover:#8c1f5a; --heading-color:#ffe6f0; --body-color:#e8d8df; --text-main:#ffe6f0; --text-sub:#bd97a7; --card-bg:#291a22; --card-border:#573d4b; --bg:#130a0f; --secondary-text:#f5978e; }
+.slide:nth-child(7) { --accent:#98fa78; --accent-alt:#8ef5b5; --highlight:#e085ff; --btn-bg:#54b833; --btn-hover:#3a8c1f; --heading-color:#e9ffe6; --body-color:#dae8d8; --text-main:#e9ffe6; --text-sub:#9cbd97; --card-bg:#1e291a; --card-border:#43573d; --bg:#0c130a; --secondary-text:#8ef5b5; }
+.slide:nth-child(8) { --accent:#7d78fa; --accent-alt:#d38ef5; --highlight:#faff85; --btn-bg:#3933b8; --btn-hover:#241f8c; --heading-color:#eae6ff; --body-color:#dad8e8; --text-main:#eae6ff; --text-sub:#9d97bd; --card-bg:#1b1a29; --card-border:#3e3d57; --bg:#0a0a13; --secondary-text:#d38ef5; }
+.slide:nth-child(9) { --accent:#faa378; --accent-alt:#f5f18e; --highlight:#85d6ff; --btn-bg:#b86033; --btn-hover:#8c431f; --heading-color:#fff1e6; --body-color:#e8dfd8; --text-main:#fff1e6; --text-sub:#bda897; --card-bg:#291f1a; --card-border:#57453d; --bg:#130d0a; --secondary-text:#f5f18e; }
+.slide:nth-child(10) { --accent:#78fac9; --accent-alt:#8edaf5; --highlight:#ff85b2; --btn-bg:#33b886; --btn-hover:#1f8c63; --heading-color:#e6fff9; --body-color:#d8e8e3; --text-main:#e6fff9; --text-sub:#97bdb3; --card-bg:#1a2923; --card-border:#3d574d; --bg:#0a1310; --secondary-text:#8edaf5; }
+.slide:nth-child(11) { --accent:#ef78fa; --accent-alt:#f58ebc; --highlight:#8fff85; --btn-bg:#ad33b8; --btn-hover:#831f8c; --heading-color:#ffe6fe; --body-color:#e8d8e8; --text-main:#ffe6fe; --text-sub:#bd97bb; --card-bg:#281a29; --card-border:#553d57; --bg:#120a13; --secondary-text:#f58ebc; }
+.slide:nth-child(12) { --accent:#dffa78; --accent-alt:#9ef58e; --highlight:#9e85ff; --btn-bg:#9cb833; --btn-hover:#758c1f; --heading-color:#f7ffe6; --body-color:#e3e8d8; --text-main:#f7ffe6; --text-sub:#b0bd97; --card-bg:#26291a; --card-border:#51573d; --bg:#11130a; --secondary-text:#9ef58e; }
+.slide:nth-child(13) { --accent:#78b9fa; --accent-alt:#9c8ef5; --highlight:#ffc285; --btn-bg:#3375b8; --btn-hover:#1f558c; --heading-color:#e6efff; --body-color:#d8dee8; --text-main:#e6efff; --text-sub:#97a5bd; --card-bg:#1a2129; --card-border:#3d4a57; --bg:#0a0f13; --secondary-text:#9c8ef5; }
+.slide:nth-child(14) { --accent:#fa7893; --accent-alt:#f5ba8e; --highlight:#85ffe6; --btn-bg:#b8334f; --btn-hover:#8c1f35; --heading-color:#ffe6e8; --body-color:#e8d8da; --text-main:#ffe6e8; --text-sub:#bd979a; --card-bg:#291a1d; --card-border:#573d42; --bg:#130a0c; --secondary-text:#f5ba8e; }
+.slide:nth-child(15) { --accent:#78fa83; --accent-alt:#8ef5d8; --highlight:#ff85f5; --btn-bg:#33b83f; --btn-hover:#1f8c28; --heading-color:#e6ffeb; --body-color:#d8e8db; --text-main:#e6ffeb; --text-sub:#97bd9f; --card-bg:#1a291b; --card-border:#3d573f; --bg:#0a130b; --secondary-text:#8ef5d8; }
+.slide:nth-child(16) { --accent:#a978fa; --accent-alt:#f58ef4; --highlight:#d1ff85; --btn-bg:#6533b8; --btn-hover:#481f8c; --heading-color:#f2e6ff; --body-color:#dfd8e8; --text-main:#f2e6ff; --text-sub:#aa97bd; --card-bg:#201a29; --card-border:#463d57; --bg:#0d0a13; --secondary-text:#f58ef4; }
+.slide:nth-child(17) { --accent:#facf78; --accent-alt:#d6f58e; --highlight:#85adff; --btn-bg:#b88c33; --btn-hover:#8c681f; --heading-color:#fffae6; --body-color:#e8e4d8; --text-main:#fffae6; --text-sub:#bdb597; --card-bg:#29241a; --card-border:#574e3d; --bg:#13100a; --secondary-text:#d6f58e; }
+.slide:nth-child(18) { --accent:#78faf5; --accent-alt:#8eb8f5; --highlight:#ff8589; --btn-bg:#33b8b2; --btn-hover:#1f8c88; --heading-color:#e6fdff; --body-color:#d8e7e8; --text-main:#e6fdff; --text-sub:#97babd; --card-bg:#1a2928; --card-border:#3d5756; --bg:#0a1313; --secondary-text:#8eb8f5; }
+.slide:nth-child(19) { --accent:#fa78d9; --accent-alt:#f58e9a; --highlight:#85ffa3; --btn-bg:#b83396; --btn-hover:#8c1f71; --heading-color:#ffe6f6; --body-color:#e8d8e2; --text-main:#ffe6f6; --text-sub:#bd97af; --card-bg:#291a25; --card-border:#573d50; --bg:#130a11; --secondary-text:#f58e9a; }
+.slide:nth-child(20) { --accent:#b3fa78; --accent-alt:#8ef5a0; --highlight:#c785ff; --btn-bg:#70b833; --btn-hover:#518c1f; --heading-color:#eeffe6; --body-color:#dee8d8; --text-main:#eeffe6; --text-sub:#a4bd97; --card-bg:#21291a; --card-border:#49573d; --bg:#0e130a; --secondary-text:#8ef5a0; }
+.slide:nth-child(21) { --accent:#788dfa; --accent-alt:#be8ef5; --highlight:#ffeb85; --btn-bg:#3349b8; --btn-hover:#1f318c; --heading-color:#e6e7ff; --body-color:#d8d9e8; --text-main:#e6e7ff; --text-sub:#9799bd; --card-bg:#1a1d29; --card-border:#3d4157; --bg:#0a0b13; --secondary-text:#be8ef5; }
+.slide:nth-child(22) { --accent:#fa8978; --accent-alt:#f5dc8e; --highlight:#85efff; --btn-bg:#b84433; --btn-hover:#8c2d1f; --heading-color:#ffece6; --body-color:#e8dbd8; --text-main:#ffece6; --text-sub:#bda097; --card-bg:#291c1a; --card-border:#57403d; --bg:#130b0a; --secondary-text:#f5dc8e; }
+.slide:nth-child(23) { --accent:#78faae; --accent-alt:#8ef0f5; --highlight:#ff85cc; --btn-bg:#33b86b; --btn-hover:#1f8c4d; --heading-color:#e6fff3; --body-color:#d8e8e0; --text-main:#e6fff3; --text-sub:#97bdab; --card-bg:#1a2920; --card-border:#3d5748; --bg:#0a130e; --secondary-text:#8ef0f5; }
+.slide:nth-child(24) { --accent:#d478fa; --accent-alt:#f58ed2; --highlight:#a8ff85; --btn-bg:#9133b8; --btn-hover:#6d1f8c; --heading-color:#fbe6ff; --body-color:#e5d8e8; --text-main:#fbe6ff; --text-sub:#b697bd; --card-bg:#251a29; --card-border:#4f3d57; --bg:#100a13; --secondary-text:#f58ed2; }
+.slide:nth-child(25) { --accent:#f9fa78; --accent-alt:#b4f58e; --highlight:#8585ff; --btn-bg:#b7b833; --btn-hover:#8c8c1f; --heading-color:#fcffe6; --body-color:#e7e8d8; --text-main:#fcffe6; --text-sub:#b8bd97; --card-bg:#29291a; --card-border:#57573d; --bg:#13130a; --secondary-text:#b4f58e; }
+.slide:nth-child(26) { --accent:#78d4fa; --accent-alt:#8e96f5; --highlight:#ffa985; --btn-bg:#3391b8; --btn-hover:#1f6c8c; --heading-color:#e6f4ff; --body-color:#d8e2e8; --text-main:#e6f4ff; --text-sub:#97adbd; --card-bg:#1a2429; --card-border:#3d4f57; --bg:#0a1013; --secondary-text:#8e96f5; }
+.slide:nth-child(27) { --accent:#fa78ae; --accent-alt:#f5a48e; --highlight:#85ffcc; --btn-bg:#b8336a; --btn-hover:#8c1f4c; --heading-color:#ffe6ed; --body-color:#e8d8dd; --text-main:#ffe6ed; --text-sub:#bd97a2; --card-bg:#291a20; --card-border:#573d47; --bg:#130a0e; --secondary-text:#f5a48e; }
+.slide:nth-child(28) { --accent:#88fa78; --accent-alt:#8ef5c2; --highlight:#f085ff; --btn-bg:#43b833; --btn-hover:#2c8c1f; --heading-color:#e6ffe6; --body-color:#d8e8d8; --text-main:#e6ffe6; --text-sub:#97bd97; --card-bg:#1c291a; --card-border:#40573d; --bg:#0b130a; --secondary-text:#8ef5c2; }
+.slide:nth-child(29) { --accent:#8e78fa; --accent-alt:#e08ef5; --highlight:#eaff85; --btn-bg:#4a33b8; --btn-hover:#311f8c; --heading-color:#ede6ff; --body-color:#dcd8e8; --text-main:#ede6ff; --text-sub:#a297bd; --card-bg:#1d1a29; --card-border:#413d57; --bg:#0c0a13; --secondary-text:#e08ef5; }
+.slide:nth-child(30) { --accent:#fab478; --accent-alt:#ebf58e; --highlight:#85c6ff; --btn-bg:#b87133; --btn-hover:#8c511f; --heading-color:#fff4e6; --body-color:#e8e1d8; --text-main:#fff4e6; --text-sub:#bdad97; --card-bg:#29211a; --card-border:#57493d; --bg:#130e0a; --secondary-text:#ebf58e; }
+.slide:nth-child(31) { --accent:#78fada; --accent-alt:#8ecdf5; --highlight:#ff85a3; --btn-bg:#33b897; --btn-hover:#1f8c71; --heading-color:#e6fffc; --body-color:#d8e8e6; --text-main:#e6fffc; --text-sub:#97bdb8; --card-bg:#1a2925; --card-border:#3d5750; --bg:#0a1311; --secondary-text:#8ecdf5; }
+.slide:nth-child(32) { --accent:#fa78f4; --accent-alt:#f58eaf; --highlight:#85ff8a; --btn-bg:#b833b2; --btn-hover:#8c1f87; --heading-color:#ffe6fb; --body-color:#e8d8e6; --text-main:#ffe6fb; --text-sub:#bd97b6; --card-bg:#291a28; --card-border:#573d56; --bg:#130a13; --secondary-text:#f58eaf; }
+.slide:nth-child(33) { --accent:#cefa78; --accent-alt:#91f58e; --highlight:#ae85ff; --btn-bg:#8bb833; --btn-hover:#678c1f; --heading-color:#f3ffe6; --body-color:#e1e8d8; --text-main:#f3ffe6; --text-sub:#abbd97; --card-bg:#24291a; --card-border:#4e573d; --bg:#10130a; --secondary-text:#91f58e; }
+.slide:nth-child(34) { --accent:#78a8fa; --accent-alt:#a98ef5; --highlight:#ffd285; --btn-bg:#3364b8; --btn-hover:#1f478c; --heading-color:#e6ecff; --body-color:#d8dce8; --text-main:#e6ecff; --text-sub:#97a0bd; --card-bg:#1a2029; --card-border:#3d4657; --bg:#0a0d13; --secondary-text:#a98ef5; }
+.slide:nth-child(35) { --accent:#fa7882; --accent-alt:#f5c78e; --highlight:#85fff5; --btn-bg:#b8333e; --btn-hover:#8c1f27; --heading-color:#ffe7e6; --body-color:#e8d8d8; --text-main:#ffe7e6; --text-sub:#bd9997; --card-bg:#291a1b; --card-border:#573d3f; --bg:#130a0b; --secondary-text:#f5c78e; }
+.slide:nth-child(36) { --accent:#78fa94; --accent-alt:#8ef5e5; --highlight:#ff85e5; --btn-bg:#33b850; --btn-hover:#1f8c36; --heading-color:#e6ffee; --body-color:#d8e8dd; --text-main:#e6ffee; --text-sub:#97bda4; --card-bg:#1a291d; --card-border:#3d5742; --bg:#0a130c; --secondary-text:#8ef5e5; }
+    @media (max-width: 760px) {
+      header { padding: 12px 16px; gap: 10px; }
+      .course-badge { font-size: 10px; letter-spacing: .6px; }
+      .slide-progress { font-size: 12px; white-space: nowrap; }
+      .slide { padding: 16px 12px; }
+      .slide-content { padding: 22px 18px; max-height: calc(100vh - 132px); }
+      h1 { font-size: 1.65rem !important; }
+      h2 { font-size: 1.05rem; margin-bottom: 16px; }
+      p, li { font-size: .96rem; }
+      .grid-2 { grid-template-columns: 1fr; gap: 14px; }
+      footer { padding: 8px 10px; gap: 8px; min-height: 66px; }
+      .main-stage { padding-bottom: 66px; }
+      .shortcut-hint { display: none; }
+      .nav-buttons { gap: 8px; width: 100%; justify-content: space-between; }
+      .nav-btn { padding: 9px 10px; min-width: 0; min-height: 44px; flex: 1; font-size: .9rem; }
+      .input-row { align-items: stretch; }
+      .input-row input { min-width: 0; width: 100%; }
+      .input-row button { flex: 1 1 auto; }
+      table.data-table { font-size: .78rem; }
+      table.data-table th, table.data-table td { padding: 7px 5px; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <header>
+    <div class="course-badge">MHF4U Advanced Functions &bull; Jensen Math &bull; Limits</div>
+    <div class="slide-progress" id="progressIndicator">Slide 1 of 36</div>
+  </header>
+
+  <main class="main-stage" id="sliderStage">
+
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <div class="slide-content" style="text-align: center; padding: 60px 40px;">
+        <span class="tag">MHF4U Mathematics</span>
+        <h1 style="font-size: 3rem; margin-top: 10px;">Limits</h1>
+        <h2>Grade 12 Advanced Functions</h2>
+        <div style="max-width: 700px; margin: 30px auto; color: #cbd5e1; font-size: 1.15rem; line-height: 1.7;">
+          Today we will explore limits using tables, graphs, and algebra.
+        </div>
+        <button class="check-btn" style="padding: 14px 32px; font-size: 1.1rem;" onclick="nextSlide()">Begin Lesson &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Unit Overview</span>
+        <h1>Lesson Roadmap</h1>
+        <h2>Today’s Learning Goals</h2>
+        <div class="grid-2" style="margin-top: 20px;">
+          <div class="box">
+            <h3 style="color: var(--accent); margin-bottom: 8px;">1. The Core Concept</h3>
+            <p>Formal limit notation, Archimedes' method of exhaustion, left-hand vs. right-hand limits, and the 3 conditions for existence.</p>
+          </div>
+          <div class="box">
+            <h3 style="color: var(--accent); margin-bottom: 8px;">2. Visualizing Limits</h3>
+            <p>Piecewise jump discontinuities, removable point discontinuities (holes), and vertical/horizontal asymptotes as limits at infinity.</p>
+          </div>
+          <div class="box">
+            <h3 style="color: var(--accent); margin-bottom: 8px;">3. Algebraic Evaluation</h3>
+            <p>Direct substitution, resolving the 0/0 indeterminate form, difference of squares, trinomial factoring, and sum/difference of cubes.</p>
+          </div>
+          <div class="box">
+            <h3 style="color: var(--accent); margin-bottom: 8px;">Rates of Change (If Time Allows)</h3>
+            <p>If time permits, connect the limit idea to secant and tangent slopes. If time allows, explore how limits connect to rates of change.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 1: Core Concept</span>
+        <h1>What is a Limit?</h1>
+        <h2>Intuition and Mathematical Definition</h2>
+        <p>A limit describes the <strong>value that a function's output approaches</strong> as the independent input variable gets arbitrarily close to a target number.</p>
+        <div class="math-block">
+          lim<sub>x &rarr; a</sub> f(x) = L
+        </div>
+        <ul>
+          <li>We read this as: <em>"The limit of f(x) as x approaches a equals L."</em></li>
+          <li><strong>Fundamental distinction:</strong> A limit cares about the behavior of f(x) <strong>near</strong> a, not necessarily at x = a.</li>
+          <li>f(a) might be undefined, yet the limit can still exist as a finite real number.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 1: Core Concept</span>
+        <h1>Archimedes' Method of Exhaustion</h1>
+        <h2>The Ancient Roots of Limits</h2>
+        <div class="grid-2">
+          <div>
+            <p>To prove that the area of a circle is A = &pi;r<sup>2</sup>, Archimedes inscribed regular polygons inside a circle.</p>
+            <ul>
+              <li>4-sided polygon (square): coarse approximation.</li>
+              <li>8-sided polygon (octagon): much closer fit.</li>
+              <li>10,000-sided polygon (myriagon): almost identical.</li>
+            </ul>
+            <p style="margin-top: 12px;">As the number of sides approaches infinity (n &rarr; &infin;), the area of the polygon approaches the area of the circle as its <strong>limiting value</strong>.</p>
+          </div>
+          <div>
+            <svg class="chart" viewBox="0 0 360 220">
+              <circle cx="90" cy="110" r="70" fill="none" stroke="#38bdf8" stroke-width="2"/>
+              <rect x="40" y="60" width="100" height="100" fill="rgba(56, 189, 248, 0.2)" stroke="#818cf8" stroke-width="2"/>
+              <circle cx="270" cy="110" r="70" fill="none" stroke="#38bdf8" stroke-width="2"/>
+              <polygon points="270,40 319,60 340,110 319,160 270,180 221,160 200,110 221,60" fill="rgba(56, 189, 248, 0.3)" stroke="#818cf8" stroke-width="2"/>
+              <text x="55" y="200" fill="#94a3b8" font-size="12">n = 4 (Square)</text>
+              <text x="235" y="200" fill="#94a3b8" font-size="12">n = 8 (Octagon)</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 1: Core Concept</span>
+        <h1>One-Sided Limits</h1>
+        <h2>Left-Hand and Right-Hand Behavior</h2>
+        <p>Values can approach a point from numbers smaller (left) or larger (right).</p>
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="box">
+            <h3 style="color: var(--accent);">Left-Hand Limit (LHL)</h3>
+            <div class="math-block" style="margin: 10px 0;">lim<sub>x &rarr; a<sup>-</sup></sub> f(x)</div>
+            <p>x approaches a strictly from values smaller than a (from the negative direction / left side of number line).</p>
+          </div>
+          <div class="box">
+            <h3 style="color: var(--accent);">Right-Hand Limit (RHL)</h3>
+            <div class="math-block" style="margin: 10px 0;">lim<sub>x &rarr; a<sup>+</sup></sub> f(x)</div>
+            <p>x approaches a strictly from values larger than a (from the positive direction / right side of number line).</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 1: Core Concept</span>
+        <h1>Criteria for Limit Existence</h1>
+        <h2>The Three Necessary Conditions</h2>
+        <p>The two-sided limit <span class="math">lim<sub>x &rarr; a</sub> f(x) = L</span> exists if and only if:</p>
+        <div class="box" style="margin: 20px 0;">
+          <ol>
+            <li><strong>Left-hand limit exists:</strong> <span class="math">lim<sub>x &rarr; a<sup>-</sup></sub> f(x) = L<sub>1</sub></span> (where L<sub>1</sub> is a real number).</li>
+            <li><strong>Right-hand limit exists:</strong> <span class="math">lim<sub>x &rarr; a<sup>+</sup></sub> f(x) = L<sub>2</sub></span> (where L<sub>2</sub> is a real number).</li>
+            <li><strong>The two one-sided limits are equal:</strong> <span class="math">L<sub>1</sub> = L<sub>2</sub> = L</span>.</li>
+          </ol>
+        </div>
+        <p style="color: var(--highlight);"><strong>Key Insight:</strong> If the left and right approaches settle on different values, or if either side diverges to infinity, the two-sided limit <strong>does not exist (DNE)</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 1: Interactive Check</span>
+        <h1>Example: Numerical Estimation</h1>
+        <h2>Evaluating f(x) = x<sup>2</sup> - 2 around x = 3</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>x</th>
+              <th>2.9</th>
+              <th>2.99</th>
+              <th style="color: var(--highlight);">3.0</th>
+              <th>3.01</th>
+              <th>3.1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>f(x)</td>
+              <td>6.41</td>
+              <td>6.9401</td>
+              <td style="color: var(--highlight);">?</td>
+              <td>7.0601</td>
+              <td>7.61</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="interactive-card">
+          <h4>Active Check: Evaluate the Limits</h4>
+          <p>What is the value of <span class="math">lim<sub>x &rarr; 3<sup>-</sup></sub> (x<sup>2</sup> - 2)</span> and <span class="math">lim<sub>x &rarr; 3</sub> (x<sup>2</sup> - 2)</span>?</p>
+          <div class="input-row">
+            <input type="number" id="q_s7" placeholder="Enter limit value">
+            <button class="check-btn" onclick="checkExact('q_s7', 7, 'fb_s7', 'sol_s7')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s7')">Show Solution</button>
+          </div>
+          <div class="feedback" id="fb_s7"></div>
+          <div class="solution-box" id="sol_s7">
+            From the left: values approach 7. From the right: values approach 7.<br>
+            Since LHL = RHL = 7, the two-sided limit is <strong>7</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 2: Visualizing Limits</span>
+        <h1>Piecewise Graphs & Jump Discontinuity</h1>
+        <h2>Analyzing a Breakpoint</h2>
+        <div class="grid-2">
+          <div>
+            <p>Consider the piecewise function:</p>
+            <div class="math-block" style="text-align: left; font-size: 0.95rem;">
+              f(x) = { x - 1, &nbsp;if x &lt; 1<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ 1, &nbsp;&nbsp;&nbsp;&nbsp;if x = 1<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{ 2 + &radic;(x - 1), if x &gt; 1
+            </div>
+            <ul>
+              <li>As x &rarr; 1<sup>-</sup>: f(x) approaches (1 - 1) = <strong>0</strong>.</li>
+              <li>As x &rarr; 1<sup>+</sup>: f(x) approaches 2 + &radic;0 = <strong>2</strong>.</li>
+              <li>Notice f(1) = 1 (isolated solid dot).</li>
+            </ul>
+          </div>
+          <div>
+            <svg class="chart" viewBox="0 0 320 220">
+              <line x1="30" y1="180" x2="290" y2="180" stroke="#475569" stroke-width="1.5"/>
+              <line x1="100" y1="20" x2="100" y2="200" stroke="#475569" stroke-width="1.5"/>
+              <!-- x < 1: y = x - 1 -->
+              <line x1="30" y1="215" x2="150" y2="180" stroke="#38bdf8" stroke-width="3"/>
+              <circle cx="150" cy="180" r="5" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5"/>
+              <!-- point at (1,1) -->
+              <circle cx="150" cy="150" r="5" fill="#38bdf8"/>
+              <!-- x > 1: y = 2 + sqrt(x-1) -->
+              <path d="M 150 120 Q 200 90 280 75" fill="none" stroke="#38bdf8" stroke-width="3"/>
+              <circle cx="150" cy="120" r="5" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5"/>
+              <text x="145" y="200" fill="#94a3b8" font-size="12">x = 1</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 2: Interactive Check</span>
+        <h1>Evaluating Jump Discontinuities</h1>
+        <h2>Applying Existence Criteria to Example 2</h2>
+        <div class="box">
+          <p>We saw that: <span class="math">lim<sub>x &rarr; 1<sup>-</sup></sub> f(x) = 0</span> and <span class="math">lim<sub>x &rarr; 1<sup>+</sup></sub> f(x) = 2</span>.</p>
+        </div>
+        <div class="interactive-card">
+          <h4>Active Check: Determine the Two-Sided Limit</h4>
+          <p>What is the value of <span class="math">lim<sub>x &rarr; 1</sub> f(x)</span>? (Type numeric answer or "DNE")</p>
+          <div class="input-row">
+            <input type="text" id="q_s9" placeholder="Enter value or DNE">
+            <button class="check-btn" onclick="checkString('q_s9', ['dne', 'does not exist'], 'fb_s9', 'sol_s9')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s9')">Show Solution</button>
+          </div>
+          <div class="feedback" id="fb_s9"></div>
+          <div class="solution-box" id="sol_s9">
+            <strong>DNE (Does Not Exist).</strong><br>
+            Since the left-hand limit (0) does not equal the right-hand limit (2), Criterion 3 fails.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 2: Visualizing Limits</span>
+        <h1>Vertical Asymptotes as Infinite Limits</h1>
+        <h2>Rational Graph f(x) = (x + 1) / (x - 4)</h2>
+        <div class="grid-2">
+          <div>
+            <p>At x = 4, the denominator becomes 0 while the numerator is 5. This generates a <strong>Vertical Asymptote</strong>.</p>
+            <ul>
+              <li>As x approaches 4 from the left (x &rarr; 4<sup>-</sup>, e.g. 3.999):<br>
+                <span class="math">(+5) / (-0.001) &rarr; -&infin;</span></li>
+              <li>As x approaches 4 from the right (x &rarr; 4<sup>+</sup>, e.g. 4.001):<br>
+                <span class="math">(+5) / (+0.001) &rarr; +&infin;</span></li>
+            </ul>
+            <p style="margin-top: 10px;">Because the values grow without bound and disagree in direction, <span class="math">lim<sub>x &rarr; 4</sub> f(x)</span> does not exist.</p>
+          </div>
+          <div>
+            <svg class="chart" viewBox="0 0 320 220">
+              <line x1="20" y1="140" x2="300" y2="140" stroke="#475569" stroke-width="1.5"/>
+              <line x1="120" y1="10" x2="120" y2="210" stroke="#475569" stroke-width="1.5"/>
+              <!-- VA at x = 4 (scaled to x = 200) -->
+              <line x1="200" y1="10" x2="200" y2="210" stroke="#ef4444" stroke-dasharray="4,4" stroke-width="2"/>
+              <!-- left branch to -inf -->
+              <path d="M 20 135 Q 160 140 192 210" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+              <!-- right branch from +inf -->
+              <path d="M 208 10 Q 220 120 300 125" fill="none" stroke="#38bdf8" stroke-width="2.5"/>
+              <text x="205" y="30" fill="#ef4444" font-size="11">x = 4</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 2: Visualizing Limits</span>
+        <h1>Horizontal Asymptotes (Limits at Infinity)</h1>
+        <h2>End Behavior of Rational Functions</h2>
+        <p>A Horizontal Asymptote represents the limit of the function as x increases or decreases without bound:</p>
+        <div class="math-block">
+          lim<sub>x &rarr; &infin;</sub> f(x) = L &nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp; lim<sub>x &rarr; -&infin;</sub> f(x) = L
+        </div>
+        <div class="box">
+          <p><strong>Rule of Leading Coefficients:</strong> For <span class="math">f(x) = (ax<sup>n</sup> + ...) / (bx<sup>n</sup> + ...)</span> where the numerator and denominator have equal degrees:</p>
+          <div class="math-block">Horizontal Asymptote: y = a / b</div>
+          <p>For <span class="math">f(x) = (x + 1)/(x - 4)</span>: <span class="math">lim<sub>x &rarr; &plusmn;&infin;</sub> f(x) = 1/1 = 1</span>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 2: Interactive Check</span>
+        <h1>Graph Practice: Question 4</h1>
+        <h2>Graph of f(x) = x<sup>2</sup> / (x + 1)</h2>
+        <p>Analyze the behavior near the vertical asymptote at x = -1.</p>
+        <div class="interactive-card">
+          <h4>Try It: Questions 4(a), 4(b), and 4(c)</h4>
+          <p>1. Find <span class="math">lim<sub>x &rarr; -1<sup>+</sup></sub> [x<sup>2</sup> / (x + 1)]</span>: (enter "infinity" or "inf")</p>
+          <div class="input-row">
+            <input type="text" id="q_s12_a" placeholder="lim as x -> -1+">
+            <button class="check-btn" onclick="checkString('q_s12_a', ['infinity', 'inf', '+inf', '+infinity', 'oo'], 'fb_s12_a')">Verify 4a</button>
+          </div>
+          <div class="feedback" id="fb_s12_a"></div>
+
+          <p style="margin-top: 14px;">2. Find <span class="math">lim<sub>x &rarr; -1<sup>-</sup></sub> [x<sup>2</sup> / (x + 1)]</span>: (enter "-infinity" or "-inf")</p>
+          <div class="input-row">
+            <input type="text" id="q_s12_b" placeholder="lim as x -> -1-">
+            <button class="check-btn" onclick="checkString('q_s12_b', ['-infinity', '-inf', '-oo'], 'fb_s12_b')">Verify 4b</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s12')">Show Full Solution</button>
+          </div>
+          <div class="feedback" id="fb_s12_b"></div>
+          <div class="solution-box" id="sol_s12">
+            4a: As x &rarr; -1 from the right (e.g. -0.999), x<sup>2</sup> &gt; 0 and x+1 &gt; 0 &rarr; <strong>+&infin;</strong>.<br>
+            4b: As x &rarr; -1 from the left (e.g. -1.001), x<sup>2</sup> &gt; 0 and x+1 &lt; 0 &rarr; <strong>-&infin;</strong>.<br>
+            4c: Two-sided limit: <strong>DNE (Does Not Exist)</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 2: Interactive Check</span>
+        <h1>Piecewise Graph Practice</h1>
+        <h2>Reading Limits of y = h(x)</h2>
+        <div class="grid-2">
+          <div class="box">
+            <p>Use the graph of h(x):</p>
+            <ul>
+              <li>At x = -1: Left piece lands on solid dot at (-1, 1). Right line starts from open circle at (-1, -2).</li>
+              <li>At x = 3: Left line segment ends at solid dot at (3, 2). Right curve launches from open circle at (3, 3).</li>
+            </ul>
+          </div>
+          <div class="interactive-card" style="margin-top: 0;">
+            <h4>Check Limits at x = -1 & x = 3</h4>
+            <div class="input-row">
+              <label style="font-size: 0.9rem;">lim<sub>x &rarr; -1<sup>+</sup></sub> h(x):</label>
+              <input type="number" id="q_s13_a" style="min-width: 90px;">
+              <button class="check-btn" onclick="checkExact('q_s13_a', -2, 'fb_s13_a')">Check</button>
+            </div>
+            <div class="feedback" id="fb_s13_a"></div>
+
+            <div class="input-row" style="margin-top: 10px;">
+              <label style="font-size: 0.9rem;">lim<sub>x &rarr; 3<sup>+</sup></sub> h(x):</label>
+              <input type="number" id="q_s13_b" style="min-width: 90px;">
+              <button class="check-btn" onclick="checkExact('q_s13_b', 3, 'fb_s13_b')">Check</button>
+            </div>
+            <div class="feedback" id="fb_s13_b"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Algebraic Limits</span>
+        <h1>Strategy 1: Direct Substitution</h1>
+        <h2>First Step</h2>
+        <p>Always attempt direct substitution first. If a function is continuous at x = a, the limit is simply the function's value:</p>
+        <div class="math-block">lim<sub>x &rarr; a</sub> f(x) = f(a)</div>
+        <p>Direct substitution works for all polynomials everywhere, and for rational functions provided the denominator is non-zero.</p>
+        <div class="box" style="margin-top: 16px;">
+          <h3 style="color: var(--accent);">Example: Direct Substitution</h3>
+          <div class="math-block">lim<sub>x &rarr; 2</sub> [3x / (x<sup>2</sup> + 2)] = [3(2)] / [2<sup>2</sup> + 2] = 6 / 6 = 1</div>
+          <p>Because the denominator does not evaluate to 0, 1 is the exact value of the limit.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Interactive Check</span>
+        <h1>Direct Substitution Practice</h1>
+        <h2>Try These: Direct Substitution</h2>
+        <div class="interactive-card">
+          <h4>Try It 1: Polynomial Powers</h4>
+          <p>Evaluate: <span class="math">lim<sub>x &rarr; -1</sub> (x<sup>4</sup> + x<sup>3</sup> + x<sup>2</sup>)</span></p>
+          <div class="input-row">
+            <input type="number" id="q_s15_a" placeholder="Enter result">
+            <button class="check-btn" onclick="checkExact('q_s15_a', 1, 'fb_s15_a')">Verify</button>
+          </div>
+          <div class="feedback" id="fb_s15_a"></div>
+        </div>
+
+        <div class="interactive-card">
+          <h4>Try It 2: Radical Expression</h4>
+          <p>Evaluate: <span class="math">lim<sub>x &rarr; 9</sub> (&radic;x + 1/&radic;x)<sup>2</sup></span> (Enter decimal or fraction a/b)</p>
+          <div class="input-row">
+            <input type="text" id="q_s15_b" placeholder="e.g. 100/9 or 11.11">
+            <button class="check-btn" onclick="checkString('q_s15_b', ['100/9', '11.11', '11.1'], 'fb_s15_b', 'sol_s15_b')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s15_b')">Show Steps</button>
+          </div>
+          <div class="feedback" id="fb_s15_b"></div>
+          <div class="solution-box" id="sol_s15_b">
+            Sub x = 9: (&radic;9 + 1/&radic;9)<sup>2</sup> = (3 + 1/3)<sup>2</sup> = (10/3)<sup>2</sup> = <strong>100/9</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Algebraic Limits</span>
+        <h1>The Indeterminate Form 0 / 0</h1>
+        <h2>When Substitution Breaks Down</h2>
+        <p>When direct substitution produces <span class="math">0 / 0</span>, this is an <strong>indeterminate form</strong>.</p>
+        <div class="box" style="margin: 20px 0;">
+          <ul>
+            <li>0/0 does <strong>not</strong> mean the limit is undefined.</li>
+            <li>0/0 does <strong>not</strong> mean the limit is 0.</li>
+            <li>It means: <em>"A common factor of (x - a) exists in both the numerator and denominator, hiding a removable discontinuity (hole)."</em></li>
+          </ul>
+        </div>
+        <p><strong>Goal:</strong> Factor algebraic expressions, cancel the common factor <span class="math">(x - a)</span>, and re-evaluate by direct substitution.</p>
+      </div>
+    </div>
+
+    <!-- Slide 17 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Algebraic Limits</span>
+        <h1>Factoring: Difference of Squares</h1>
+        <h2>Factoring Example: Difference of Squares</h2>
+        <div class="box">
+          <p>Evaluate: <span class="math">lim<sub>x &rarr; 2</sub> [(4 - x<sup>2</sup>) / (2 - x)]</span></p>
+          <ol style="margin-top: 12px;">
+            <li>Direct substitution: (4 - 4)/(2 - 2) = <strong>0/0</strong> (Indeterminate).</li>
+            <li>Factor numerator: (4 - x<sup>2</sup>) = (2 - x)(2 + x).</li>
+            <li>Cancel common factor: <span class="math">lim<sub>x &rarr; 2</sub> (2 + x)</span>.</li>
+            <li>Direct substitution: 2 + 2 = <strong>4</strong>.</li>
+          </ol>
+        </div>
+        <p style="margin-top: 14px; color: var(--accent);">On a graph, this function is the straight line y = x + 2 with a single removable hole at (2, 4).</p>
+      </div>
+    </div>
+
+    <!-- Slide 18 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Interactive Check</span>
+        <h1>Factoring Trinomials (Question 2b)</h1>
+        <h2>Decomposition & Cancellation</h2>
+        <div class="box">
+          <p>Evaluate: <span class="math">lim<sub>x &rarr; -1</sub> [(2x<sup>2</sup> + 5x + 3) / (x + 1)]</span></p>
+          <p>Step 1: Check substitution: 2(-1)<sup>2</sup> + 5(-1) + 3 = 2 - 5 + 3 = 0, and (-1) + 1 = 0 &rarr; <strong>0/0</strong>.</p>
+        </div>
+        <div class="interactive-card">
+          <h4>Active Check: Factor & Evaluate</h4>
+          <p>What is the value of this limit after factoring?</p>
+          <div class="input-row">
+            <input type="number" id="q_s18" placeholder="Enter limit value">
+            <button class="check-btn" onclick="checkExact('q_s18', 1, 'fb_s18', 'sol_s18')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s18')">Show Factoring Steps</button>
+          </div>
+          <div class="feedback" id="fb_s18"></div>
+          <div class="solution-box" id="sol_s18">
+            Factor numerator: 2x<sup>2</sup> + 5x + 3 = (x + 1)(2x + 3).<br>
+            Cancel (x + 1): lim<sub>x &rarr; -1</sub> (2x + 3).<br>
+            Substitute x = -1: 2(-1) + 3 = <strong>1</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Algebraic Limits</span>
+        <h1>Difference & Sum of Cubes Formulas</h1>
+        <h2>Factoring Formulas</h2>
+        <p>In Grade 12 Advanced Functions, sum and difference of cubes frequently appear in limit questions:</p>
+        <div class="grid-2" style="margin-top: 16px;">
+          <div class="box">
+            <h3 style="color: var(--accent);">Difference of Cubes</h3>
+            <div class="math-block" style="font-size: 1rem;">a<sup>3</sup> - b<sup>3</sup> = (a - b)(a<sup>2</sup> + ab + b<sup>2</sup>)</div>
+            <p>Example: x<sup>3</sup> - 27 = (x - 3)(x<sup>2</sup> + 3x + 9)</p>
+          </div>
+          <div class="box">
+            <h3 style="color: var(--accent);">Sum of Cubes</h3>
+            <div class="math-block" style="font-size: 1rem;">a<sup>3</sup> + b<sup>3</sup> = (a + b)(a<sup>2</sup> - ab + b<sup>2</sup>)</div>
+            <p>Example: x<sup>3</sup> + 64 = (x + 4)(x<sup>2</sup> - 4x + 16)</p>
+          </div>
+        </div>
+        <p style="margin-top: 14px; font-size: 0.95rem; color: var(--text-sub);">Mnemonic <strong>SOAP</strong> for the signs: <strong>S</strong>ame, <strong>O</strong>pposite, <strong>A</strong>lways <strong>P</strong>ositive.</p>
+      </div>
+    </div>
+
+    <!-- Slide 20 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Interactive Check</span>
+        <h1>Evaluating Difference of Cubes (Question 2c)</h1>
+        <h2>Resolving lim<sub>x &rarr; 3</sub> [(x<sup>3</sup> - 27) / (x - 3)]</h2>
+        <div class="box">
+          <p>Direct substitution yields 0/0. Apply the difference of cubes formula to cancel the denominator.</p>
+        </div>
+        <div class="interactive-card">
+          <h4>Active Check: Solve Question uestion 2(c)</h4>
+          <p>What is the value of <span class="math">lim<sub>x &rarr; 3</sub> [(x<sup>3</sup> - 27) / (x - 3)]</span>?</p>
+          <div class="input-row">
+            <input type="number" id="q_s20" placeholder="Enter value">
+            <button class="check-btn" onclick="checkExact('q_s20', 27, 'fb_s20', 'sol_s20')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s20')">Show Solution</button>
+          </div>
+          <div class="feedback" id="fb_s20"></div>
+          <div class="solution-box" id="sol_s20">
+            Factor: (x - 3)(x<sup>2</sup> + 3x + 9) / (x - 3) = x<sup>2</sup> + 3x + 9.<br>
+            Substitute x = 3: 3<sup>2</sup> + 3(3) + 9 = 9 + 9 + 9 = <strong>27</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 21 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Algebraic Limits</span>
+        <h1>Trap Alert: 0 in the Numerator Only</h1>
+        <h2>Try These: Evaluate the Limits</h2>
+        <div class="box">
+          <h3 style="color: var(--danger);">Compare 0/0 and 0/k</h3>
+          <p>Do not automatically factor without checking the denominator!</p>
+          <ul>
+            <li><strong>0 / 0</strong> is Indeterminate &rarr; Must factor and simplify.</li>
+            <li><strong>0 / (non-zero number) = 0</strong> &rarr; Complete, no further algebra needed.</li>
+          </ul>
+        </div>
+        <div class="grid-2" style="margin-top: 14px;">
+          <div class="box">
+            <h4 style="color: var(--accent);">Question 2d:</h4>
+            <div class="math-block" style="font-size: 0.95rem;">lim<sub>x &rarr; 4</sub> [(16 - x<sup>2</sup>)/(x<sup>3</sup> + 64)]</div>
+            <p>Numerator: 16 - 16 = 0<br>Denominator: 4<sup>3</sup> + 64 = 128<br>Limit = 0 / 128 = <strong>0</strong>.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--accent);">Question 2e:</h4>
+            <div class="math-block" style="font-size: 0.95rem;">lim<sub>x &rarr; 4</sub> [(x<sup>2</sup> - 16)/(x<sup>2</sup> - 5x + 6)]</div>
+            <p>Numerator: 16 - 16 = 0<br>Denominator: 16 - 20 + 6 = 2<br>Limit = 0 / 2 = <strong>0</strong>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 22 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Interactive Check</span>
+        <h1>Factoring by GCF</h1>
+        <h2>Resolving lim<sub>x &rarr; -1</sub> [(x<sup>2</sup> + x) / (x + 1)]</h2>
+        <div class="box">
+          <p>Check substitution: (-1)<sup>2</sup> + (-1) = 0, and (-1) + 1 = 0 &rarr; <strong>0/0</strong>.</p>
+        </div>
+        <div class="interactive-card">
+          <h4>Try It: Factor by Greatest Common Factor</h4>
+          <p>What is the value of <span class="math">lim<sub>x &rarr; -1</sub> [(x<sup>2</sup> + x) / (x + 1)]</span>?</p>
+          <div class="input-row">
+            <input type="number" id="q_s22" placeholder="Enter value">
+            <button class="check-btn" onclick="checkExact('q_s22', -1, 'fb_s22', 'sol_s22')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s22')">Show Solution</button>
+          </div>
+          <div class="feedback" id="fb_s22"></div>
+          <div class="solution-box" id="sol_s22">
+            Numerator factors: x(x + 1).<br>
+            Expression: [x(x + 1)] / (x + 1) = x.<br>
+            Substitute x = -1: Limit = <strong>-1</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 23 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Topic 3: Interactive Check</span>
+        <h1>Numerical Table Estimation</h1>
+        <h2>Estimating lim<sub>x &rarr; 2</sub> [(x - 2) / (x<sup>2</sup> - x - 2)]</h2>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>x</th>
+              <th>1.9</th>
+              <th>1.99</th>
+              <th>1.999</th>
+              <th>2.001</th>
+              <th>2.01</th>
+              <th>2.1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>x - 2</td>
+              <td>-0.1</td>
+              <td>-0.01</td>
+              <td>-0.001</td>
+              <td>0.001</td>
+              <td>0.01</td>
+              <td>0.1</td>
+            </tr>
+            <tr>
+              <td>x<sup>2</sup> - x - 2</td>
+              <td>-0.29</td>
+              <td>-0.0299</td>
+              <td>-0.002999</td>
+              <td>0.003001</td>
+              <td>0.0301</td>
+              <td>0.31</td>
+            </tr>
+            <tr>
+              <td>f(x)</td>
+              <td>0.3448</td>
+              <td>0.3344</td>
+              <td>0.3334</td>
+              <td>0.3332</td>
+              <td>0.3322</td>
+              <td>0.3226</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="interactive-card">
+          <h4>Active Check: Identify the Limiting Value</h4>
+          <p>What exact rational fraction (a/b) are these values converging to?</p>
+          <div class="input-row">
+            <input type="text" id="q_s23" placeholder="Enter fraction e.g. 1/3">
+            <button class="check-btn" onclick="checkString('q_s23', ['1/3', '0.333', '0.3333'], 'fb_s23', 'sol_s23')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s23')">Show Algebraic Verification</button>
+          </div>
+          <div class="feedback" id="fb_s23"></div>
+          <div class="solution-box" id="sol_s23">
+            Algebraic proof: Denominator factors to (x - 2)(x + 1).<br>
+            (x - 2) / [(x - 2)(x + 1)] = 1 / (x + 1).<br>
+            As x &rarr; 2, 1 / (2 + 1) = <strong>1/3</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 24: OPTIONAL EXTENSION — not required for the supplied Jensen limits worksheet -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Rates of Change (If Time Allows)</span>
+        <h1>Rates of Change: Secants vs Tangents</h1>
+        <h2>Bridging Algebra to Calculus</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h3 style="color: var(--accent);">Average Rate of Change (AROC)</h3>
+            <ul>
+              <li>Calculated across an <strong>interval</strong> between two distinct points [x<sub>1</sub>, x<sub>2</sub>].</li>
+              <li>Represented by the slope of a <strong>Secant Line</strong> cutting through the curve.</li>
+              <li>Formula: <span class="math">m<sub>sec</sub> = &Delta;y / &Delta;x</span></li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3 style="color: var(--highlight);">Instantaneous Rate of Change (IROC)</h3>
+            <ul>
+              <li>Calculated at <strong>one single, frozen moment</strong> x = a.</li>
+              <li>Represented by the slope of a <strong>Tangent Line</strong> skimming the curve at that single point.</li>
+              <li>Formula: <span class="math">m<sub>tan</sub> = lim<sub>h &rarr; 0</sub> [f(a + h) - f(a)] / h</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 25 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Rates of Change (If Time Allows)</span>
+        <h1>The Secant-to-Tangent Limit Process</h1>
+        <h2>A Limit Connection</h2>
+        <div class="grid-2">
+          <div>
+            <p>How do we find a slope with only <em>one</em> point? We use a limit:</p>
+            <ol>
+              <li>Pick our point of interest: (a, f(a)).</li>
+              <li>Pick a second point nearby: (a + h, f(a + h)).</li>
+              <li>Secant slope: <span class="math">m = [f(a + h) - f(a)] / h</span>.</li>
+              <li>Now, let the distance h shrink to zero: <span class="math">h &rarr; 0</span>.</li>
+            </ol>
+            <p style="margin-top: 10px;">As h &rarr; 0, the secant line rotates until it becomes the tangent line.</p>
+          </div>
+          <div>
+            <svg class="chart" viewBox="0 0 320 220">
+              <path d="M 30 190 Q 140 170 290 30" fill="none" stroke="#64748b" stroke-width="2"/>
+              <!-- Point P -->
+              <circle cx="100" cy="170" r="5" fill="#38bdf8"/>
+              <text x="85" y="195" fill="#38bdf8" font-size="12">P(a)</text>
+              <!-- Point Q -->
+              <circle cx="230" cy="90" r="5" fill="#f59e0b"/>
+              <text x="235" y="105" fill="#f59e0b" font-size="12">Q(a+h)</text>
+              <!-- Secant Line -->
+              <line x1="40" y1="205" x2="280" y2="60" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,4"/>
+              <!-- Tangent Line -->
+              <line x1="30" y1="210" x2="210" y2="110" stroke="#38bdf8" stroke-width="2.5"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 26 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Rates of Change (If Time Allows)</span>
+        <h1>The Newton Difference Quotient</h1>
+        <h2>Derivative Formula</h2>
+        <p>The exact instantaneous rate of change (derivative) is formulated as:</p>
+        <div class="math-block" style="font-size: 1.35rem;">
+          m<sub>tan</sub> = lim<sub>h &rarr; 0</sub> [f(a + h) - f(a)] / h
+        </div>
+        <div class="box">
+          <p><strong>Notice the connection to limits:</strong></p>
+          <p>If you substitute h = 0 directly: [f(a + 0) - f(a)] / 0 = <strong>0 / 0</strong> (the indeterminate form!).</p>
+          <p style="margin-top: 8px;">Every single derivative in calculus is simply an algebraic limit of the indeterminate form 0/0.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 27 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Rates of Change (If Time Allows)</span>
+        <h1>Worked Example: IROC via Difference Quotient</h1>
+        <h2>Find the slope of f(x) = x<sup>2</sup> at x = 3</h2>
+        <div class="box">
+          <p>Step 1: Setup Difference Quotient with a = 3:</p>
+          <div class="math-block" style="font-size: 1rem;">lim<sub>h &rarr; 0</sub> [f(3 + h) - f(3)] / h</div>
+          <p>Step 2: Expand f(3 + h) and f(3):</p>
+          <div class="math-block" style="font-size: 1rem;">= lim<sub>h &rarr; 0</sub> [(3 + h)<sup>2</sup> - 3<sup>2</sup>] / h<br>= lim<sub>h &rarr; 0</sub> [9 + 6h + h<sup>2</sup> - 9] / h</div>
+          <p>Step 3: Simplify and factor out h:</p>
+          <div class="math-block" style="font-size: 1rem;">= lim<sub>h &rarr; 0</sub> [6h + h<sup>2</sup>] / h = lim<sub>h &rarr; 0</sub> [h(6 + h)] / h = lim<sub>h &rarr; 0</sub> (6 + h)</div>
+          <p>Step 4: Evaluate the limit as h &rarr; 0: 6 + 0 = <strong>6</strong>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 28 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Practice</span>
+        <h1>Active Solving: Difference Quotient</h1>
+        <h2>Find IROC of g(x) = x<sup>2</sup> + 2x at x = 1</h2>
+        <div class="box">
+          <p>Compute: <span class="math">lim<sub>h &rarr; 0</sub> [g(1 + h) - g(1)] / h</span></p>
+          <p>Hint: g(1) = 1 + 2 = 3. Expand (1 + h)<sup>2</sup> + 2(1 + h) carefully.</p>
+        </div>
+        <div class="interactive-card">
+          <h4>Active Check: Compute Tangent Slope</h4>
+          <p>What is the exact instantaneous rate of change at x = 1?</p>
+          <div class="input-row">
+            <input type="number" id="q_s28" placeholder="Enter slope">
+            <button class="check-btn" onclick="checkExact('q_s28', 4, 'fb_s28', 'sol_s28')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s28')">Show Expansion</button>
+          </div>
+          <div class="feedback" id="fb_s28"></div>
+          <div class="solution-box" id="sol_s28">
+            g(1 + h) = (1 + h)<sup>2</sup> + 2(1 + h) = 1 + 2h + h<sup>2</sup> + 2 + 2h = h<sup>2</sup> + 4h + 3.<br>
+            g(1 + h) - g(1) = h<sup>2</sup> + 4h + 3 - 3 = h<sup>2</sup> + 4h.<br>
+            Divide by h: h + 4.<br>
+            Limit as h &rarr; 0: 0 + 4 = <strong>4</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 29 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Rates of Change (If Time Allows)</span>
+        <h1>Numerical Estimation of IROC (h = 0.001)</h1>
+        <h2>Using a Small Interval</h2>
+        <p>In MHF4U, when an algebraic limit is too cumbersome or a table is given, we approximate the limit with a tiny step <span class="math">h = 0.001</span>:</p>
+        <div class="math-block">IROC &asymp; [f(a + 0.001) - f(a)] / 0.001</div>
+        <div class="box">
+          <p>Example for f(x) = 1/x at x = 2:</p>
+          <ul>
+            <li>f(2) = 0.5</li>
+            <li>f(2.001) = 1 / 2.001 &asymp; 0.4997501</li>
+            <li>IROC &asymp; (0.4997501 - 0.5) / 0.001 = -0.0002499 / 0.001 &asymp; <strong>-0.25 = -1/4</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 30 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Rates of Change (If Time Allows)</span>
+        <h1>Physical Application: Instantaneous Velocity</h1>
+        <h2>Motion Under Gravity</h2>
+        <div class="box">
+          <p>A ball is thrown upward. Its height in meters after t seconds is modeled by:</p>
+          <div class="math-block">s(t) = -4.9t<sup>2</sup> + 20t + 2</div>
+          <ul>
+            <li>Position: s(t)</li>
+            <li>Average Velocity: <span class="math">AROC = [s(t<sub>2</sub>) - s(t<sub>1</sub>)] / (t<sub>2</sub> - t<sub>1</sub>)</span></li>
+            <li><strong>Instantaneous Velocity:</strong> <span class="math">v(a) = lim<sub>h &rarr; 0</sub> [s(a + h) - s(a)] / h</span></li>
+          </ul>
+        </div>
+        <p style="margin-top: 14px;">A positive velocity means the object is moving upward; a negative velocity means downward motion; zero velocity indicates the peak (turning point).</p>
+      </div>
+    </div>
+
+    <!-- Slide 31 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Practice</span>
+        <h1>Active Solving: Instantaneous Velocity</h1>
+        <h2>Calculate Velocity at t = 2 seconds</h2>
+        <div class="box">
+          <p>For <span class="math">s(t) = -4.9t<sup>2</sup> + 20t + 2</span>, find the instantaneous velocity at t = 2.</p>
+          <p>Using the limit formula: v(2) = lim<sub>h &rarr; 0</sub> [s(2 + h) - s(2)] / h.</p>
+        </div>
+        <div class="interactive-card">
+          <h4>Active Check: Compute Velocity</h4>
+          <p>Enter the instantaneous velocity in m/s at t = 2:</p>
+          <div class="input-row">
+            <input type="number" step="0.1" id="q_s31" placeholder="Velocity (m/s)">
+            <button class="check-btn" onclick="checkExact('q_s31', 0.4, 'fb_s31', 'sol_s31')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s31')">Show Solution</button>
+          </div>
+          <div class="feedback" id="fb_s31"></div>
+          <div class="solution-box" id="sol_s31">
+            v(t) = s'(t) = -9.8t + 20.<br>
+            At t = 2: v(2) = -9.8(2) + 20 = -19.6 + 20 = <strong>0.4 m/s</strong>.<br>
+            Since v(2) &gt; 0, the ball is still rising, very close to its maximum height.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 32 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Rates of Change (If Time Allows)</span>
+        <h1>Equation of the Tangent Line</h1>
+        <h2>Full Two-Step Procedure</h2>
+        <div class="box">
+          <p>To find the equation of a line tangent to y = f(x) at x = a:</p>
+          <ol style="margin-top: 10px;">
+            <li><strong>Find the slope (m):</strong> Calculate the instantaneous rate of change using the limit: <span class="math">m = lim<sub>h &rarr; 0</sub> [f(a + h) - f(a)] / h</span>.</li>
+            <li><strong>Find the point:</strong> The point is <span class="math">(a, f(a))</span>.</li>
+            <li><strong>Assemble the equation:</strong> Use point-slope form: <span class="math">y - f(a) = m(x - a)</span>.</li>
+          </ol>
+        </div>
+        <div class="math-block" style="margin-top: 16px; font-size: 1rem;">
+          Example: For f(x) = x<sup>2</sup> at x = 3 &rarr; m = 6, Point = (3, 9) &rarr; y - 9 = 6(x - 3) &rarr; y = 6x - 9
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 33 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Challenge</span>
+        <h1>Difference of Cubes Limit</h1>
+        <h2>Try this challenge</h2>
+        <div class="interactive-card">
+          <h4>Active Check: Evaluate lim<sub>x &rarr; 2</sub> [(x<sup>3</sup> - 8) / (x<sup>2</sup> - 4)]</h4>
+          <p>Notice that direct substitution gives 0/0. Both numerator and denominator must be factored!</p>
+          <div class="input-row">
+            <input type="text" id="q_s33" placeholder="Enter fraction or decimal">
+            <button class="check-btn" onclick="checkString('q_s33', ['3', '12/4', '3.0'], 'fb_s33', 'sol_s33')">Verify</button>
+            <button class="reveal-btn" onclick="toggleSol('sol_s33')">Show Solution</button>
+          </div>
+          <div class="feedback" id="fb_s33"></div>
+          <div class="solution-box" id="sol_s33">
+            Numerator: x<sup>3</sup> - 8 = (x - 2)(x<sup>2</sup> + 2x + 4).<br>
+            Denominator: x<sup>2</sup> - 4 = (x - 2)(x + 2).<br>
+            Cancel (x - 2): lim<sub>x &rarr; 2</sub> (x<sup>2</sup> + 2x + 4) / (x + 2).<br>
+            Sub x = 2: (4 + 4 + 4) / (2 + 2) = 12 / 4 = <strong>3</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 34 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Review</span>
+        <h1>Common Errors to Avoid</h1>
+        <h2>Top 4 Pitfalls to Avoid</h2>
+        <div class="grid-2">
+          <div class="box">
+            <h4 style="color: var(--danger);">1. Dropping Limit Notation</h4>
+            <p>Do not drop the prefix <span class="math">lim<sub>x &rarr; a</sub></span> until you actually perform the final substitution step. Marks are deducted for missing notation.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--danger);">2. Confusing 0/0 with 0/k</h4>
+            <p>0/0 is indeterminate (needs work). 0/5 is simply 0 (you are already done!).</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--danger);">3. One-Sided Limit Inconsistency</h4>
+            <p>If LHL = 2 and RHL = -2, the two-sided limit is <strong>DNE</strong>. Never average them.</p>
+          </div>
+          <div class="box">
+            <h4 style="color: var(--danger);">4. Difference of Cubes Signs</h4>
+            <p>Remember SOAP: (a - b)(a<sup>2</sup> + ab + b<sup>2</sup>). There is no "2ab" in the middle term!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 35 -->
+    <div class="slide">
+      <div class="slide-content">
+        <span class="tag">Summary</span>
+        <h1>Limits: Quick Reference</h1>
+        <h2>Choosing a Method</h2>
+        <div class="box">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Direct Substitution Result</th>
+                <th>Classification</th>
+                <th>Required Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>L (Real Number)</td>
+                <td>Continuous</td>
+                <td>Done. That is the limit.</td>
+              </tr>
+              <tr>
+                <td>0 / k (k &ne; 0)</td>
+                <td>Zero Value</td>
+                <td>Done. Value is 0.</td>
+              </tr>
+              <tr>
+                <td>k / 0 (k &ne; 0)</td>
+                <td>Vertical Asymptote</td>
+                <td>Analyze one-sided limits (+&infin;, -&infin;, or DNE).</td>
+              </tr>
+              <tr>
+                <td>0 / 0</td>
+                <td>Indeterminate Form</td>
+                <td>Factor, cancel common factor, re-evaluate.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 36 -->
+    <div class="slide">
+      <div class="slide-content" style="text-align: center; padding: 50px 30px;">
+        <span class="tag">Lesson Review</span>
+        <h1 style="font-size: 2.8rem;">Module Complete</h1>
+        <h2>Limits: Key Ideas, Graphs & Algebra</h2>
+        <div style="max-width: 650px; margin: 24px auto; color: #cbd5e1; font-size: 1.15rem; line-height: 1.7;">
+          Today we explored limits using tables, graphs, and algebra. Remember to compare one-sided limits and simplify carefully when substitution gives 0/0.
+        </div>
+        <button class="check-btn" style="padding: 12px 28px;" onclick="goToSlide(0)">Review From Start</button>
+      </div>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="shortcut-hint">Keyboard: &larr; Prev | &rarr; Next</div>
+    <div class="nav-buttons">
+      <button class="nav-btn" id="prevBtn" onclick="prevSlide()">&larr; Previous</button>
+      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next &rarr;</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  const progressIndicator = document.getElementById('progressIndicator');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function updatePresentation() {
+    slides.forEach((slide, idx) => {
+      slide.classList.toggle('active', idx === currentSlide);
+    });
+    // Mirror the current slide palette to the fixed header and footer controls.
+    const activeSlide = slides[currentSlide];
+    const computed = getComputedStyle(activeSlide);
+    ['--accent','--accent-alt','--highlight','--btn-bg','--btn-hover',
+     '--heading-color','--body-color','--text-main','--text-sub',
+     '--card-bg','--card-border','--bg','--secondary-text'].forEach((name) => {
+      const value = computed.getPropertyValue(name).trim();
+      if (value) document.documentElement.style.setProperty(name, value);
+    });
+    progressIndicator.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === totalSlides - 1;
+  }
+
+  function nextSlide() {
+    if (currentSlide < totalSlides - 1) {
+      currentSlide++;
+      updatePresentation();
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      updatePresentation();
+    }
+  }
+
+  function goToSlide(n) {
+    if (n >= 0 && n < totalSlides) {
+      currentSlide = n;
+      updatePresentation();
+    }
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT') return; // Don't flip slides while typing
+    if (e.key === 'ArrowRight' || e.key === ' ') {
+      nextSlide();
+    } else if (e.key === 'ArrowLeft') {
+      prevSlide();
+    }
+  });
+
+  // Interactive Validation Functions
+  function checkExact(inputId, expected, feedbackId, solId = null) {
+    const val = parseFloat(document.getElementById(inputId).value);
+    const fb = document.getElementById(feedbackId);
+    if (isNaN(val)) {
+      fb.textContent = 'Please enter a valid numeric value.';
+      fb.className = 'feedback incorrect';
+      return;
+    }
+    if (Math.abs(val - expected) < 0.05) {
+      fb.textContent = 'Correct!';
+      fb.className = 'feedback correct';
+      if (solId) document.getElementById(solId).style.display = 'block';
+    } else {
+      fb.textContent = `Incorrect. Re-check your algebraic steps.`;
+      fb.className = 'feedback incorrect';
+    }
+  }
+
+  function checkString(inputId, allowedArray, feedbackId, solId = null) {
+    const raw = document.getElementById(inputId).value.trim().toLowerCase().replace(/\s+/g, '');
+    const fb = document.getElementById(feedbackId);
+    const isMatch = allowedArray.some(ans => ans.toLowerCase().replace(/\s+/g, '') === raw);
+
+    if (isMatch) {
+      fb.textContent = 'Correct!';
+      fb.className = 'feedback correct';
+      if (solId) document.getElementById(solId).style.display = 'block';
+    } else {
+      fb.textContent = 'Incorrect. Verify your notation or check your factoring.';
+      fb.className = 'feedback incorrect';
+    }
+  }
+
+  function toggleSol(solId) {
+    const box = document.getElementById(solId);
+    if (box) {
+      box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+  }
+
+  updatePresentation();
+</script>
+</body>
+</html>
